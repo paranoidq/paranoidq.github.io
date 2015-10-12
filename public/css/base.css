@@ -121,7 +121,7 @@ a.list-group-item-lay {
   padding-left: 0px;
   padding-right: 30px;
   text-align: center;
-  color: #303030;
+  color: #656565;
 }
 .aside3-content {
 /*  padding-left: 40px;
@@ -156,11 +156,15 @@ blockquote p {
   text-align: center;
 }
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
-  color: #64717f;
+  color: #16a085;
   background-color: rgba(250, 250, 250, 0.95);
 }
 /* 显示评论按钮 */
 .show-commend {
   width: 100%;
   margin-bottom: 40px;
+}
+
+.panel-body div a strong {
+  font-weight:normal;
 }
