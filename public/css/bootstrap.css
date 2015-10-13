@@ -1542,9 +1542,8 @@ code, kbd, pre, samp {
 
 code {
     padding: 2px 4px;
-    font-size: 90%;
-    color: #c7254e;
-    background-color: #f9f2f4;
+    font-size: 100%;
+    background-color: #D6DBDF;
     border-radius: 4px
 }
 
