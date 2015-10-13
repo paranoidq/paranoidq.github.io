@@ -8,7 +8,7 @@ body, html {
   height: 100%;
   overflow: hidden; 
   background-color: rgba(250, 250, 250, 0.95);
-  font-family: Times, Microsoft YaHei;
+  font-family: Times, Apple LiGothic Medium;
 }
 .row {
   height: 100%;
@@ -110,7 +110,7 @@ a.list-group-item-lay {
   background-color: #fff;
   overflow-x: hidden;
   border-left: 1px solid #e5e8ec ;
-  font-family: Times, Microsoft YaHei;
+  /*font-family: Times, Microsoft YaHei;*/
 
   /*background-image: url(/public/img/bg_lines1.jpg);*/
 }
