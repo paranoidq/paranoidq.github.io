@@ -382,7 +382,11 @@ public class PCQueueUsingSemaphore {
     }
 }
 ```
+
 ####5. LockSupport
+
+LockSupport可以通过park(thread)和unpark(thread)，精确地指定阻塞和唤醒线程。但是貌似就欠缺了wait/notify能够让线程在一个object上等待的接口，因此我考虑要实现PC，需要自己维护一个thread的队列才可以。
+
 ####6. PipedInputStream / PipedOutputStream
 
 
@@ -397,12 +401,10 @@ public class PCQueueUsingSemaphore {
 
 ###更高效的考虑
 
-####1. 生产者消费者分离唤醒
+1. putLock与takeLock分离（jdk LinkedBlockingQueue中的实现方式）
+2. 如果能够直接处理，则直接被consumer取走，不需要再存储到queue中，减少复制的开销
 
-- putLock与takeLock分离（jdk LinkedBlockingQueue中的实现方式）， 
-- 
-
-####2. 队列的循环数组方式实现
+###队列的循环数组方式实现
 
 
 ###参考
