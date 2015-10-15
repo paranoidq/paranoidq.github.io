@@ -140,13 +140,16 @@ a.list-group-item-lay {
   line-height: 2;
 }
 
-.aside3-content .h3 {
+.aside3-content h3 {
   font-size: 25px;
   font-weight: bold;
+  margin-top: 28px;
+  margin-bottom: 0px;
 }
-.aside3-content .h4 {
+.aside3-content h4 {
   font-size: 20px;
   font-weight: bold;
+  margin-top: 20px;
 }
 blockquote p {
   font-size: 20px;
