@@ -409,4 +409,5 @@ LockSupport可以通过park(thread)和unpark(thread)，精确地指定阻塞和�
 
 ###参考
 [1] [聊聊并发-生产者消费者模式](http://www.infoq.com/cn/articles/producers-and-consumers-mode)
+
 [2] [生产者消费者问题的实现方式](http://java--hhf.iteye.com/blog/2064926)
