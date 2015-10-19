@@ -16,7 +16,7 @@ description:
 - 就绪：process进入就绪队列，等待分配CPU
 - 终止：process完成执行
 
-![process status](/public/img/posts/2015-10-19/process-schduling-1.JPG)
+![process status](https://raw.githubusercontent.com/paranoidq/paranoidq.github.io/master/public/img/posts/2015-10-19/process-schduling-1.jpg)
 
 ###进程控制
 
