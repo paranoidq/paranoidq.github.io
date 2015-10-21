@@ -151,6 +151,14 @@ a.list-group-item-lay {
   font-weight: bold;
   margin-top: 20px;
 }
+.aside3-content li>p {
+  margin-bottom: 5px;
+}
+
+.aside3-content ul {
+  margin-bottom: 10px;
+}
+
 blockquote p {
   font-size: 20px;
 }
