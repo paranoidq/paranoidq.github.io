@@ -1,11 +1,29 @@
 ---
 layout: post
-title: Linux grep
+title: Linux basic comands
 category: 技术
 tags: Linux
 keywords: 
 description: 
 ---
+### ls
+
+```
+ ls
+ ls -a # 列出所有，包括隐藏文件
+ ls -l # 列出文件的属性
+```
+
+### 查找命令
+
+#### find
+
+#### locate
+
+#### which
+
+#### whereis
+
 
 
 ###grep家族
