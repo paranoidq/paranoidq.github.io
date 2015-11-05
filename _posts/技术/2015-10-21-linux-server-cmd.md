@@ -7,6 +7,24 @@ keywords:
 description: 
 ---
 
+###ssh远程登录
+
+服务器需要开启远程服务
+
+```
+service sshd status
+
+service sshd start
+```
+
+客户端登陆：
+
+```
+ssh paranoidq@[ip]
+```
+
+
+
 ###查看Linux服务器状况
 
 ####CPU
