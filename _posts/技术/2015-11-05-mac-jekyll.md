@@ -49,6 +49,19 @@ jekyll server
 ```
 然后就可以访问localhost:4000看到你的gitpages了
 
+4.jekyll-paginate报错的问题
+
+启动报错: 
+
+```
+Deprecation: You appear to have pagination turned on, but you haven't included the `jekyll-paginate` gem. Ensure you have `gems: [jekyll-paginate]` in your configuration file.
+```
+
+解决方案：
+
+- 尝试检查jekyll-paginate包是否安装成功
+- 在config文件中包含`gems:[jekyll-paginate]`和`paginate:10`两个配置项，重启jekyll即可
+
 
 
 ### 配置sublime的markdown环境

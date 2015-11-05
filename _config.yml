@@ -1,5 +1,6 @@
 permalink: /:year/:month/:day/:title.html
-#paginate: 10
+gems: [jekyll-paginate]
+paginate: 10
 markdown: redcarpet
 redcarpet:
   extensions: ["tables"]
