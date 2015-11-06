@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Fedora install instructions & programing env configuration
-category: 技术
+title: Linux学习总结-Fedora安装和环境搭建
+category: Linux
 tags: Linux Fedora
 keywords: 
 description: 

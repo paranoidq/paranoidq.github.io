@@ -8,7 +8,7 @@ description:
 ---
 
 
-### 用户身份切换-su与sudo
+### 用户身份切换: su与sudo
 
 #### 为什么要做多用户切换
 
@@ -48,6 +48,27 @@ $ su -
 ```
 
 #### sudo
+
+只有/etc/sudoers内的用户才能执行sudo
+
+```
+# -u表示以sshd的身份执行后面的命令，并且权限是sshd（own和grp都是）
+sudo -u sshd touch /tmp/mysshd
+```
+
+修改sudo的用户：visudo（不建议直接vi /etc/sudoers）
+内容含义：
+
+```
+用户账号     登陆来源主机名=(可切换的身份)   可执行的命令（无比使用绝对路径）
+root        ALL=(ALL)                   ALL
+```
+
+输入自己密码变成root身份如何做到？
+
+```
+sudo su -
+```
 
 
 

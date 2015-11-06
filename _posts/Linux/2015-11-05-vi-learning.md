@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Vi的基本操作
-category: 技术
-tags: Mac Jekyll
+title: Linux学习总结-VI
+category: Linux
+tags: Linux Vi
 keywords: 
 description: 
 ---

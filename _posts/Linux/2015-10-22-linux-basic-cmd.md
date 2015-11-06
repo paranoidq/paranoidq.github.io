@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Linux basic comands
-category: 技术
+title: Linux学习总结-基本操作
+category: Linux
 tags: Linux
 keywords: 
 description: 
@@ -70,10 +70,7 @@ wget是个专职的下载利器，简单，专一，极致；而curl可以下载
 
 - curl是libcurl这个库支持的，wget是一个纯粹的命令行命令
 - wget可以递归，支持断点
-- curl支持更多的协议，而wget斤支持http1.0
-- 
-- 
-- 
+- curl支持更多的协议，而wget只支持http1.0（也就是必须在目标机器上存在http服务才能使用wget)
 
 
 

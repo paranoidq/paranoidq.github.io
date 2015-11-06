@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Liunx服务器useful command
-category: 技术
+title: Liunx学习总结-Server Cmds
+category: Linux
 tags: Linux
 keywords: 
 description: 
@@ -30,7 +30,14 @@ service sshd start
 ssh paranoidq@[ip]
 ```
 
+免密码登陆
 
+```
+$ ssh-keygen -t rsa 
+
+#将公钥id_rsa.pub拷贝到目标机器上的对应位置
+$ scp /Users/paranoidq/.ssh/id_rsa.pub paranoidq@192.168.235.131:/home/paranoidq/.ssh/authorized_keys 
+```
 
 ###查看Linux服务器状况
 
