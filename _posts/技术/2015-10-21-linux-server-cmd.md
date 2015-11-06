@@ -11,10 +11,17 @@ description:
 
 服务器需要开启远程服务
 
-```
+``` 
+# 针对fedora
 service sshd status
+# 通用检测方法：
+ps -e | grep ssh
 
+# fedora
 service sshd start
+# ubuntu
+/etc/init.d/ssh start[/stop/restart]
+
 ```
 
 客户端登陆：
