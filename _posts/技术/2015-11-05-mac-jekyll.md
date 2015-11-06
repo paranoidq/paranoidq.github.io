@@ -80,7 +80,6 @@ import urllib,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092
 - 重启sublime
 
 
-
 ### 参考
 
 [1] [http://www.jianshu.com/p/07064eb79740](http://www.jianshu.com/p/07064eb79740)

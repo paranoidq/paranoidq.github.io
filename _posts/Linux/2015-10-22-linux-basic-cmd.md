@@ -73,6 +73,27 @@ wget是个专职的下载利器，简单，专一，极致；而curl可以下载
 - curl支持更多的协议，而wget只支持http1.0（也就是必须在目标机器上存在http服务才能使用wget)
 
 
+### alias的设置
+
+临时设置
+
+```
+alias ssh-vm='ssh paranoidq@[ip]'
+# alias中间可以用&&连接多条命令
+alias jekyll-start='cd /Users/paraoidq/git-repo/paranoidq.github.io && sudo jekyll server '
+```
+
+永久设置
+
+```
+cd ~/.bashrc
+vi .bashrc
+# 添加相应的alias行即可
+source .bashrc # 重新载入.bashrc的配置
+```
+
+注意： 在mac中，如果安装了zsh的话，应该修改的配置文件是.zshrc
+
 
 
 
