@@ -47,6 +47,8 @@ $ su -
 # ...
 ```
 
+对于其他用户，如devstack的stack用户，开始的时候都是默认giving passwardless previleges，用`su - stack` 也会出现Authentication Failure的错误，按照上述操作即可
+
 #### sudo
 
 只有/etc/sudoers内的用户才能执行sudo
