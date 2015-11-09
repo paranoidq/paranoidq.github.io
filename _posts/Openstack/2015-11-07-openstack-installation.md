@@ -48,6 +48,38 @@ description:
     + ./stack.sh
     + 然后等待安装即可
 
+- __注：曾出现的问题__
+
+    __Problem 1.__
+
+        ./stack.sh: line 136: /root/devstack/lib/database: Permission denied
+        ...
+        sudo: >>> /etc/sudoers.d/50_stack_sh: syntax error near line 1
+
+    分析：可能是由于使用了root用户进行上述一系列操作导致的问题，所以请用一般用户进行安装
+
+    __Problem 2.__
+
+        Running local.sh ... ERROR: openstack Could not determine a suitable URL for the plugin
+
+    分析：应该是认证出现了错误，authv2和authv3的问题。解决办法(原因有待探究)：
+
+    *This error is related to the version of Keystone API you're using. As noted in https://bugs.launchpad.net/python-openstackclient/+bug/1447704 (this open bug report), it does not work when using an OS_AUTH_URL ending in "v2.0" and the variables OS\_PROJECT\_DOMAIN\_ID and OS\_USER\_DOMAIN\_ID are set.*
+
+    *The workaround is to remove the variables OS\_PROJECT\_DOMAIN_ID and OS\_USER\_DOMAIN\_ID if you wish to use v2 of the Keystone API.*
+
+
+
+    - 在accrc的admin中comment掉OS\_PROJECT\_DOMAIN\_ID和OS\_USER\_DOMAIN\_ID
+    - 修改stackrc中的IDENTITY\_API\_VERSION版本为3
+    - 参考
+        * [1 https://ask.openstack.org/en/question/67118/openstack-could-not-determine-a-suitable-url-for-the-plugin/](https://ask.openstack.org/en/question/67118/openstack-could-not-determine-a-suitable-url-for-the-plugin/)
+        * [2 https://bugs.launchpad.net/python-openstackclient/+bug/1447704](https://bugs.launchpad.net/python-openstackclient/+bug/1447704)
+        * [3 http://eavesdrop.openstack.org/irclogs/%23openstack-keystone/%23openstack-keystone.2015-02-10.log](http://eavesdrop.openstack.org/irclogs/%23openstack-keystone/%23openstack-keystone.2015-02-10.log)
+
+    __Problem 3.__
+
+
 
 #### 个性化配置（customize）
 
