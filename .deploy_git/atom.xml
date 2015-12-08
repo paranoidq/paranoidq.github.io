@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title><![CDATA[Blog of Steven Qian]]></title>
+  <title><![CDATA[Paranoid Qian's Blog]]></title>
   
   <link href="/atom.xml" rel="self"/>
-  <link href="http://yoursite.com/"/>
-  <updated>2015-12-08T11:03:57.000Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="http://paranoidq.github.io/"/>
+  <updated>2015-12-08T12:40:07.000Z</updated>
+  <id>http://paranoidq.github.io/</id>
   
   <author>
-    <name><![CDATA[Steven Qian]]></name>
-    <email><![CDATA[paranoid_qian@163.com]]></email>
+    <name><![CDATA[paranoid qian]]></name>
+    
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
     <title><![CDATA[Hello World]]></title>
-    <link href="http://yoursite.com/2015/12/08/hello-world/"/>
-    <id>http://yoursite.com/2015/12/08/hello-world/</id>
-    <published>2015-12-08T11:03:57.000Z</published>
-    <updated>2015-12-08T11:03:57.000Z</updated>
+    <link href="http://paranoidq.github.io/2015/12/08/hello-world/"/>
+    <id>http://paranoidq.github.io/2015/12/08/hello-world/</id>
+    <published>2015-12-08T12:40:07.000Z</published>
+    <updated>2015-12-08T12:40:07.000Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<a id="more"></a>
 <h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
 <h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
@@ -32,18 +32,19 @@
 <p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>Welcome to <a href="http://hexo.io/">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>]]>
+    <![CDATA[<p>Welcome to <a href="http://hexo.io/">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     
   </entry>
   
   <entry>
-    <title><![CDATA[生产者消费者问题及其Java的多种实现方式]]></title>
-    <link href="http://yoursite.com/2015/12/08/Techniques/2015-10-15-java-produce-consumer/"/>
-    <id>http://yoursite.com/2015/12/08/Techniques/2015-10-15-java-produce-consumer/</id>
-    <published>2015-12-08T11:03:57.000Z</published>
-    <updated>2015-12-08T11:03:57.000Z</updated>
+    <title><![CDATA[java producer and consumer]]></title>
+    <link href="http://paranoidq.github.io/2015/12/08/java-producer-and-consumer/"/>
+    <id>http://paranoidq.github.io/2015/12/08/java-producer-and-consumer/</id>
+    <published>2015-12-08T12:34:30.000Z</published>
+    <updated>2015-12-08T12:39:17.000Z</updated>
     <content type="html"><![CDATA[<h3 id="u751F_u4EA7_u8005_u6D88_u8D39_u8005_u6A21_u5F0F_uFF08_u4EE5_u4E0B_u7B80_u79F0PC_29"><a href="#u751F_u4EA7_u8005_u6D88_u8D39_u8005_u6A21_u5F0F_uFF08_u4EE5_u4E0B_u7B80_u79F0PC_29" class="headerlink" title="生产者消费者模式（以下简称PC)"></a>生产者消费者模式（以下简称PC)</h3><p>生产者消费者模式是通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通讯，而通过阻塞队列来进行通讯，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产者要数据，而是直接从阻塞队列里取，<code>阻塞队列就相当于一个缓冲区</code>，平衡了生产者和消费者的处理能力。</p>
 <a id="more"></a>
 <h4 id="u4E3A_u4EC0_u4E48_u4F7F_u7528PC_u6A21_u5F0F"><a href="#u4E3A_u4EC0_u4E48_u4F7F_u7528PC_u6A21_u5F0F" class="headerlink" title="为什么使用PC模式"></a>为什么使用PC模式</h4><ul>
@@ -85,9 +86,11 @@
     
     </summary>
     
-      <category term="Java MultiThreading" scheme="http://yoursite.com/tags/Java-MultiThreading/"/>
+      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
     
-      <category term="技术" scheme="http://yoursite.com/categories/%E6%8A%80%E6%9C%AF/"/>
+      <category term="producer-consumer" scheme="http://paranoidq.github.io/tags/producer-consumer/"/>
+    
+      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
     
   </entry>
   
