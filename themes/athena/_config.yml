@@ -3,6 +3,7 @@ menu:
   Home: /
   Archives: /archives
   About: /about
+  
 # Header Icon
 menu_icon:
   Home: nav-home-icon
