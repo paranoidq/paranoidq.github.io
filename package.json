@@ -1,7 +1,7 @@
 {
-  "name": "Steven Qian's Blog",
-  "version": "1.0.0",
-  "private": false,
+  "name": "hexo-site",
+  "version": "0.0.0",
+  "private": true,
   "hexo": {
     "version": "3.1.1"
   },
