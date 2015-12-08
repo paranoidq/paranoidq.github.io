@@ -76,7 +76,7 @@ plugins:
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy: 
-  type: github
+  type: git
   repository: git@github.com:paranoidq/paranoidq.github.io.git 
 
 
