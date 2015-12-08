@@ -77,7 +77,7 @@ plugins:
 ## Docs: http://hexo.io/docs/deployment.html
 deploy: 
   type: github
-  repository: git@github.com:paranoidq/paranoidq.github.io #你的GitHub Pages仓库
+  repository: git@github.com:paranoidq/paranoidq.github.io.git 
 
 
 # Disqus
