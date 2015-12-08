@@ -11,12 +11,12 @@ timezone:
 language: zh-CN
 email: paranoid_qian@163.com
 
-# # URL
-# ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-# url: http://yoursite.com
-# root: /
-# permalink: :year/:month/:day/:title/
-# permalink_defaults:
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: http://paranoidq.github.io
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
 
 # Directory
 source_dir: source
@@ -76,9 +76,23 @@ plugins:
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy: 
-  type: github
+  type: git
   repository: git@github.com:paranoidq/paranoidq.github.io.git 
+  branch: master
 
 
 # Disqus
 disqus_shortname: paranoidq
+
+
+# 社交链接，将在侧栏中显示
+# social:
+#   Homepage: http://giser.me
+#   Weibo: http://weibo.com/2283242060/
+#   GitHub: https://github.com/Jianghao
+#   Lab: http://www.lreis.ac.cn/sc/news/final.aspx?id=1241&v=1 
+#   Researchgate: https://www.researchgate.net/profile/Jianghao_Wang2
+#   Lindedin: http://www.linkedin.com/profile/view?id=137337693
+#   Twitter: https://twitter.com/JianghaoWang
+#   DouBan: http://www.douban.com/people/hellowangjh/
+#   ZhiHu: http://www.zhihu.com/people/wang-jiang-hao-51
