@@ -1,2 +1,0 @@
-cd E:\_git\paranoidq.github.io
-jekyll serve
