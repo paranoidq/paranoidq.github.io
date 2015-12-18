@@ -97,10 +97,13 @@ $ npm install //根据package.json来下载依赖包
 然后就可以继续写博客了，整个过程，手动管理的只有src，master分支本地需要，由hexo-deployer负责push。
 
 参考文献[1]中还提到了用git submodule解决第三方主题的同步问题，很不错。
+参考文献[3]中修改hexo-deployer源码，添加了自动在deploy的时候提交src的功能，很nice。
+
 
 
 ### 参考：
 1. [如何管理hexo的源文件](http://devtian.me/2015/03/17/blog-sync-solution/)
 2. [为何以及如何删除master分支](https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4-Master-%E5%88%86%E6%94%AF?locale=zh-CN)
+3. [自动化hexo的源文件提交-修改hexo-deployer源码部分](http://boenyang.github.io/2015/09/09/hello-world/)
  
 
