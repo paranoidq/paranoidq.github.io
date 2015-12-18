@@ -73,3 +73,6 @@ deploy:
   branch: master
   message: Site updated
 
+sitemap:
+  path: /sitemap.xml
+
