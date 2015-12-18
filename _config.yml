@@ -18,6 +18,7 @@ permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 # Directory
+base_dir: paranoidq.github.io
 source_dir: source
 public_dir: public
 tag_dir: tags
