@@ -23,8 +23,31 @@ categories: tools
 `git checkout -b dev`
 
 
+### 关联
+目的：避免每次都需要制定push的具体分支，可以关联后在本地分支下直接push即可
+
+两种方案：
+1. 在本地branch第一次push的时候就指定：
+    `git push -u origin <remote-branch>`
+2.  以后指定：
+    `git branch --set-upstream <local-branch> origin/<remote-branch>`
+    或
+    `git push --set-upstream origin <remote-branch>`
+你的repo下的git/config会多出类似这样的配置：
+```
+[branch "src"]
+remote = origin
+merge = refs/heads/src
+```
+
 ### 推送
-`git push origin <local-branch>`  # 推送本地分支到对应的远程分支
+`git push origin <local-branch> `  # 推送本地分支到对应的远程分支
+
+`git push` # 如果指定了远程关联，可以直接push
+
+两种配置：
+`git config --global push.default simple`(更好, 只push当前分支到你使用git pull拉取的远程代码)
+`git config --global push.default matching` （如果没有指定具体分支，会push所有名字对应的分支）
 
 
 ### 删除
