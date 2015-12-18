@@ -72,7 +72,7 @@ deploy:
   type: git
   repo: git@github.com:paranoidq/paranoidq.github.io.git
   branch: master
-  message: Site updated
+  message: Bolg site updated
 
 sitemap:
   path: /sitemap.xml
