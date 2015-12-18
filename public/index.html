@@ -717,6 +717,11 @@
 <li>如何忽略所有文件除了某些文件</li>
 </ol>
 <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ignore everything</span></span><br><span class="line"><span class="keyword">*</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># But not these files...</span></span><br><span class="line">!.gitignore</span><br><span class="line">!script.pl</span><br><span class="line">!template.latex</span><br><span class="line"><span class="comment"># etc...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ...even if they are in subdirectories</span></span><br><span class="line">!<span class="keyword">*</span>/</span><br></pre></td></tr></table></figure>
+<h3 id="u5206_u652F_u7BA1_u7406"><a href="#u5206_u652F_u7BA1_u7406" class="headerlink" title="分支管理"></a>分支管理</h3><p>创建本地分支<br><code>git checkout -b dev</code></p>
+<p>删除本地分支<br><code>git branch -d dev (用-D强行删除)</code></p>
+<p>查看本地分支<br><code>git branch</code></p>
+<p>查看包括远程分支<br><code>git branch -a</code></p>
+<p>删除远程分支<br><code>git push origin --delete dev</code></p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/12/09/Git-Fantastic-Usages/#more" rel="contents">
               阅读全文 &raquo;

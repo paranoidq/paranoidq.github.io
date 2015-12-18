@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://paranoidq.github.io/"/>
-  <updated>2015-12-17T12:14:52.000Z</updated>
+  <updated>2015-12-18T05:08:11.000Z</updated>
   <id>http://paranoidq.github.io/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://paranoidq.github.io/2015/12/18/Mac-java/"/>
     <id>http://paranoidq.github.io/2015/12/18/Mac-java/</id>
     <published>2015-12-18T02:28:26.000Z</published>
-    <updated>2015-12-17T12:14:52.000Z</updated>
+    <updated>2015-12-18T05:08:11.000Z</updated>
     <content type="html"><![CDATA[<h3 id="u65B9_u6CD51_uFF1A"><a href="#u65B9_u6CD51_uFF1A" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/jav<span class="built_in">a_home</span></span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
 <h3 id="u65B9_u6CD52_uFF1A"><a href="#u65B9_u6CD52_uFF1A" class="headerlink" title="方法2："></a>方法2：</h3><p>step-wise的方法</p>
@@ -50,7 +50,7 @@
     <link href="http://paranoidq.github.io/2015/12/11/Reading-List/"/>
     <id>http://paranoidq.github.io/2015/12/11/Reading-List/</id>
     <published>2015-12-11T05:21:50.000Z</published>
-    <updated>2015-12-17T12:14:52.000Z</updated>
+    <updated>2015-12-18T05:08:11.000Z</updated>
     <content type="html"><![CDATA[<blockquote>
 <p>汇集一些平时遇到但没有时间立马阅读的技术好书，望平时闲暇细读。同时共享给各位ITers。暂时没写书评，读过的和正在读的以后补充书评~</p>
 </blockquote>
@@ -103,7 +103,7 @@
     <link href="http://paranoidq.github.io/2015/12/11/SSH-Principles/"/>
     <id>http://paranoidq.github.io/2015/12/11/SSH-Principles/</id>
     <published>2015-12-11T03:00:21.000Z</published>
-    <updated>2015-12-17T12:14:52.000Z</updated>
+    <updated>2015-12-18T05:08:11.000Z</updated>
     <content type="html"><![CDATA[<h3 id="u524D_u63D0"><a href="#u524D_u63D0" class="headerlink" title="前提"></a>前提</h3><p>服务器需要开启远程服务<br><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor"># 针对fedora的检测方法</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="preprocessor"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="preprocessor"># 开启 in fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="preprocessor"># 开启 in ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure></p>
 <a id="more"></a>
 <h3 id="u539F_u7406"><a href="#u539F_u7406" class="headerlink" title="原理"></a>原理</h3><ol>
@@ -176,7 +176,7 @@
     <link href="http://paranoidq.github.io/2015/12/10/Linux-System-Commands-and-Shell-Practices-Reading-Records/"/>
     <id>http://paranoidq.github.io/2015/12/10/Linux-System-Commands-and-Shell-Practices-Reading-Records/</id>
     <published>2015-12-10T08:58:22.000Z</published>
-    <updated>2015-12-17T12:14:52.000Z</updated>
+    <updated>2015-12-18T05:08:11.000Z</updated>
     <content type="html"><![CDATA[<h3 id="u7528_u6237_u7BA1_u7406"><a href="#u7528_u6237_u7BA1_u7406" class="headerlink" title="用户管理"></a>用户管理</h3><h3 id="u8FDB_u7A0B_u7BA1_u7406"><a href="#u8FDB_u7A0B_u7BA1_u7406" class="headerlink" title="进程管理"></a>进程管理</h3><p>### </p>
 ]]></content>
     <summary type="html">
@@ -196,18 +196,28 @@
     <link href="http://paranoidq.github.io/2015/12/09/Git-Fantastic-Usages/"/>
     <id>http://paranoidq.github.io/2015/12/09/Git-Fantastic-Usages/</id>
     <published>2015-12-09T07:20:18.000Z</published>
-    <updated>2015-12-17T12:14:52.000Z</updated>
+    <updated>2015-12-18T05:08:11.000Z</updated>
     <content type="html"><![CDATA[<h3 id="gitignore"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore</h3><ol>
 <li>如何忽略所有文件除了某些文件</li>
 </ol>
 <figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ignore everything</span></span><br><span class="line"><span class="keyword">*</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># But not these files...</span></span><br><span class="line">!.gitignore</span><br><span class="line">!script.pl</span><br><span class="line">!template.latex</span><br><span class="line"><span class="comment"># etc...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ...even if they are in subdirectories</span></span><br><span class="line">!<span class="keyword">*</span>/</span><br></pre></td></tr></table></figure>
+<h3 id="u5206_u652F_u7BA1_u7406"><a href="#u5206_u652F_u7BA1_u7406" class="headerlink" title="分支管理"></a>分支管理</h3><p>创建本地分支<br><code>git checkout -b dev</code></p>
+<p>删除本地分支<br><code>git branch -d dev (用-D强行删除)</code></p>
+<p>查看本地分支<br><code>git branch</code></p>
+<p>查看包括远程分支<br><code>git branch -a</code></p>
+<p>删除远程分支<br><code>git push origin --delete dev</code></p>
 <a id="more"></a>
 ]]></content>
     <summary type="html">
     <![CDATA[<h3 id="gitignore"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore</h3><ol>
 <li>如何忽略所有文件除了某些文件</li>
 </ol>
-<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ignore everything</span></span><br><span class="line"><span class="keyword">*</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># But not these files...</span></span><br><span class="line">!.gitignore</span><br><span class="line">!script.pl</span><br><span class="line">!template.latex</span><br><span class="line"><span class="comment"># etc...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ...even if they are in subdirectories</span></span><br><span class="line">!<span class="keyword">*</span>/</span><br></pre></td></tr></table></figure>]]>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ignore everything</span></span><br><span class="line"><span class="keyword">*</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># But not these files...</span></span><br><span class="line">!.gitignore</span><br><span class="line">!script.pl</span><br><span class="line">!template.latex</span><br><span class="line"><span class="comment"># etc...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ...even if they are in subdirectories</span></span><br><span class="line">!<span class="keyword">*</span>/</span><br></pre></td></tr></table></figure>
+<h3 id="u5206_u652F_u7BA1_u7406"><a href="#u5206_u652F_u7BA1_u7406" class="headerlink" title="分支管理"></a>分支管理</h3><p>创建本地分支<br><code>git checkout -b dev</code></p>
+<p>删除本地分支<br><code>git branch -d dev (用-D强行删除)</code></p>
+<p>查看本地分支<br><code>git branch</code></p>
+<p>查看包括远程分支<br><code>git branch -a</code></p>
+<p>删除远程分支<br><code>git push origin --delete dev</code></p>]]>
     
     </summary>
     
@@ -222,7 +232,7 @@
     <link href="http://paranoidq.github.io/2015/12/09/mac-terminal-commands/"/>
     <id>http://paranoidq.github.io/2015/12/09/mac-terminal-commands/</id>
     <published>2015-12-09T03:59:04.000Z</published>
-    <updated>2015-12-17T12:14:52.000Z</updated>
+    <updated>2015-12-18T05:08:11.000Z</updated>
     <content type="html"><![CDATA[<p>   本文所有快捷键基于iterm2. 有些快捷键被系统屏蔽了，到<code>系统偏好设置</code>中删除无用的快捷键即可</p>
 <h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><ul>
 <li>显示光标位置： <code>command + /</code></li>
@@ -282,7 +292,7 @@
     <link href="http://paranoidq.github.io/2015/12/08/linux-server-command/"/>
     <id>http://paranoidq.github.io/2015/12/08/linux-server-command/</id>
     <published>2015-12-08T13:41:24.000Z</published>
-    <updated>2015-12-17T12:14:52.000Z</updated>
+    <updated>2015-12-18T05:08:11.000Z</updated>
     <content type="html"><![CDATA[<h3 id="ssh_u8FDC_u7A0B_u767B_u5F55"><a href="#ssh_u8FDC_u7A0B_u767B_u5F55" class="headerlink" title="ssh远程登录"></a>ssh远程登录</h3><p>服务器需要开启远程服务</p>
 <figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor"># 针对fedora</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="preprocessor"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="preprocessor"># fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="preprocessor"># ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -420,7 +430,7 @@
     <link href="http://paranoidq.github.io/2015/12/08/java-producer-and-consumer/"/>
     <id>http://paranoidq.github.io/2015/12/08/java-producer-and-consumer/</id>
     <published>2015-12-08T12:34:30.000Z</published>
-    <updated>2015-12-17T12:14:52.000Z</updated>
+    <updated>2015-12-18T05:08:11.000Z</updated>
     <content type="html"><![CDATA[<h3 id="u751F_u4EA7_u8005_u6D88_u8D39_u8005_u6A21_u5F0F_uFF08_u4EE5_u4E0B_u7B80_u79F0PC_29"><a href="#u751F_u4EA7_u8005_u6D88_u8D39_u8005_u6A21_u5F0F_uFF08_u4EE5_u4E0B_u7B80_u79F0PC_29" class="headerlink" title="生产者消费者模式（以下简称PC)"></a>生产者消费者模式（以下简称PC)</h3><p>生产者消费者模式是通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通讯，而通过阻塞队列来进行通讯，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产者要数据，而是直接从阻塞队列里取，<code>阻塞队列就相当于一个缓冲区</code>，平衡了生产者和消费者的处理能力。</p>
 <a id="more"></a>
 <h4 id="u4E3A_u4EC0_u4E48_u4F7F_u7528PC_u6A21_u5F0F"><a href="#u4E3A_u4EC0_u4E48_u4F7F_u7528PC_u6A21_u5F0F" class="headerlink" title="为什么使用PC模式"></a>为什么使用PC模式</h4><ul>
