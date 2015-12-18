@@ -45,7 +45,7 @@ merge = refs/heads/src
 
 `git push` # 如果指定了远程关联，可以直接push
 
-两种配置：
+两种配置： (注意，这个配置是写在~/.gitconfig中的，对所有的repo生效)
 `git config --global push.default simple`(更好, 只push当前分支到你使用git pull拉取的远程代码)
 `git config --global push.default matching` （如果没有指定具体分支，会push所有名字对应的分支）
 
