@@ -12,11 +12,19 @@ categories: tools
 查看包括远程分支
 `git branch -a`
 
+查看本地分支和远程分支的push情况
+`git log <local-branch> ^origin/<remote-branch>`   # 可以查看本地有远程没有的提交。
+`git log <remote-branch> ^<local-branch>`       # 可以查看远程有本地没有的提交。
+
 
 ### 创建
 
 创建本地分支
 `git checkout -b dev`
+
+
+### 推送
+`git push origin <local-branch>`  # 推送本地分支到对应的远程分支
 
 
 ### 删除
@@ -40,7 +48,7 @@ $ git init (optional)
 $ git checkout -b src
 $ git add .
 $ git commit -m "first commit for src branch"
-$ git remote add origin git@github.com:change2hao/change2hao.github.io.git (optional)
+$ git remote add origin git@github.com:<username>:<username>.github.io.git (optional)
 $ git push origin src
 ```
 
@@ -50,9 +58,26 @@ $ git push origin src
  - 忽略与origin/master不同步的本地master分支
  - 删除本地的master分支 `git branch -D master`
 
+**另外一台电脑上如何使用：**
+安装node环境和hexo-cli环境
+```
+$ brew update 
+$ brew install node
+$ npm install hexo-cli -g
+```
+
+不要执行hexo init了，而是clone远程的src仓库
+```
+git clone -b src git@github.com:<username>:<username>.github.io.git
+$ npm install //根据package.json来下载依赖包
+```
+然后就可以继续写博客了，整个过程，手动管理的只有src，master分支本地需要，由hexo-deployer负责push。
+
+参考文献[1]中还提到了用git submodule解决第三方主题的同步问题，很不错。
+
 
 ### 参考：
-[如何管理hexo的源文件](http://devtian.me/2015/03/17/blog-sync-solution/)
-[为何以及如何删除master分支](https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4-Master-%E5%88%86%E6%94%AF?locale=zh-CN)
+1. [如何管理hexo的源文件](http://devtian.me/2015/03/17/blog-sync-solution/)
+2. [为何以及如何删除master分支](https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4-Master-%E5%88%86%E6%94%AF?locale=zh-CN)
  
 
