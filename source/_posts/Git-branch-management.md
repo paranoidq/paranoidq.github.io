@@ -45,7 +45,14 @@ $ git push origin src
 ```
 
 1. optional部分，可能由于之前开始建立repo的时候已经做过了，所以不一定要在分支的过程中做了
-2. checkout的时候，需要保证master分支全部commit。（这里其实我做的不够完善，一开始应该是整个本地的网站不要init，让master分支全部被hexo-deployer接管。然后在创建分支的时候，才init。这样可以保证本地只有一个src的分支需要我手动管理。现在我的处理方法，就是master分支不去管，但是实际上你需要知道，
-3. 
+2. checkout的时候，需要保证master分支全部commit。（这里其实我做的不够完善，一开始应该是整个本地的网站不要init，让master分支全部被hexo-deployer接管。然后在创建分支的时候，才init。这样可以保证本地只有一个src的分支需要我手动管理。
+3.  如果你手贱之前已经建立了master分支，那么有两个办法：
+ - 忽略与origin/master不同步的本地master分支
+ - 删除本地的master分支 `git branch -D master`
+
+
+### 参考：
+[如何管理hexo的源文件](http://devtian.me/2015/03/17/blog-sync-solution/)
+[为何以及如何删除master分支](https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4-Master-%E5%88%86%E6%94%AF?locale=zh-CN)
  
 
