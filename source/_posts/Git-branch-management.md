@@ -99,6 +99,59 @@ $ npm install //根据package.json来下载依赖包
 参考文献[1]中还提到了用git submodule解决第三方主题的同步问题，很不错。
 参考文献[3]中修改hexo-deployer源码，添加了自动在deploy的时候提交src的功能，很nice。
 
+具体方法：
+修改`node_modules\hexo-deployer-git\lib\deployer.js`插件的代码，添加gitBaseDir函数。 注意gitBaseDir函数必须写在module块中，否则会出现错误。
+```
+function git(){
+   var len = arguments.length;
+   var args = new Array(len);
+
+   for (var i = 0; i < len; i++){
+     args[i] = arguments[i];
+   }
+
+   return spawn('git', args, {
+     cwd: deployDir,
+     verbose: verbose
+   });
+}
+ 
+function gitBaseDir(){
+var len = arguments.length;
+   var args = new Array(len);
+
+   for (var i = 0; i < len; i++){
+     args[i] = arguments[i];
+   }
+
+   return spawn('git', args, {
+     cwd: baseDir,
+     verbose: verbose
+   });
+}
+```
+
+在push函数中添加提交到src的功能
+```
+function push(repo){
+   return git('add', '-A').then(function(){
+     return git('commit', '-m', message).catch(function(){
+       // Do nothing. It's OK if nothing to commit.
+     });
+    }).then(function(){
+     return git('push', '-u', repo.url, 'master:' + repo.branch, '--force');
+    }).then(function(){
+     return gitBaseDir('checkout','source');
+    }).then(function(){
+        return gitBaseDir('add','-A').then(function(){
+            return gitBaseDir('commit','-m',message).catch(function(){
+        });
+    });
+    }).then(function(){
+        return gitBaseDir('push','-u',repo.url,'source:source','--force')
+    });
+ }
+```
 
 
 ### 参考：
