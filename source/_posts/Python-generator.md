@@ -27,11 +27,69 @@ generator需要负责两件事：
 3. generator在返回值的时候使用yield，下次执行的时候从yield下一行开始执行，函数的上一次执行状态依然保留。
 4. generator使用了与iterator相同的内建函数`next()`来获取下一个值，而next()又负责调用generator的`__next__()`。(这里可理解为python自动将带有yield的函数做了封装，使其成为了iterator) for循环隐式调用了next(generator)
 
+### 什么是迭代器iterator,以及iterable类型
+- 凡是可作用于for循环的对象都是Iterable类型；
+- 凡是可作用于next()函数的对象都是Iterator类型，它们表示一个惰性计算的序列；
+
+因此：
+1. list、dict、str等是Iterable但不是Iterator（因为没有next()函数，并且序列创建时就已知），不过可以通过iter()函数获得一个Iterator对象
+```python
+from collections import Iterator
+import itertools
+
+isinstance((x for x in range(10)), Iterator)  # True
+isinstance([], Iterator)  # False
+isinstance({}, Iterator)  # False
+isinstance(iter([]), Iterator)  # True
+
+# 因为itertools.permutations生成的Permutations对象定义了`__next__()`函数和`__iter__()`函数，所以它具备Iterator的特性
+l = [x for x in range(10)]
+ll = itertools.permutations(l)
+isinstance(ll, Iterator)   # True
+```
+
 
 ### python generator的几点注意
 1. generator和generator function不同，g function是定义，generator是generator function的一个实例，一个g function可以根据参数的不同生成不同的generator，即使参数相同，产生的也是不同的generator实例。
 2. generator只能迭代一次，再次迭代需要重新生成实例；并且只能向前迭代。
 3. generator中可以有return语句，遇到return,则generator直接抛出StopItreation异常，结束迭代过程
+
+
+### 如何创建generator
+1. 使用yield定义函数，然后用函数生成一个或多个generator实例
+```python
+def fibs(iterations):
+    n, a, b = 0, 0, 1
+    while n < iterations:
+        yield b
+        a, b = b, a+b
+        n += 1
+        
+for i in fibs(10):
+    print(i)
+```
+
+2. 使用生成器表达式
+```python
+g = (x*x for x in range(4))
+print(g) # <generator object <genexpr> at 0x101b35288>
+for x in g:
+    print(x)  # 只能迭代一次
+print(isinstance(g, types.GeneratorType))  # True
+
+# 注意区分：生成器是不会直接算出所有结果的，而列表生成式则会直接计算所有结果，并且输出
+l = [x*x for x in range(4)]
+print(l) # [0, 1, 4, 9]
+
+# 注意区分： 用itertools可以将一个列表迭代器化，但通常这样做没有意义。当然，itertools可以用于复制，合并迭代器等，这些功能就比较有用了
+l = [x*x for x in range(4)]
+ll = itertools.permutations(l)
+print(ll)  # <itertools.permutations object at 0x1012e6a98>
+print(list(ll))  # 用list可以将迭代器的结果全都算出来
+print(isinstance(ll, Iterator))  # True
+print(isinstance(ll, types.GeneratorType))  # False, 并不是Generator
+```
+
 
 
 ### 使用yield的好处
@@ -79,7 +137,6 @@ if __name__ == '__main__':
             else: 
                 return
 ```
-
 
 
 ### 允许向generator传递参数，并且随着迭代改变

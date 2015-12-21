@@ -30,6 +30,10 @@ categories: reading
     [Dive into Python](http://www.diveintopython3.net/table-of-contents.html)
     [Python核心编程]
 
+- more elegant
+    [Writting idiomatic python](https://www.jeffknupp.com/writing-idiomatic-python-ebook/)
+    [Fluent Python](http://www.amazon.cn/gp/product/1491946008/ref=as_li_ss_tl?ie=UTF8&camp=536&creative=3132&creativeASIN=1491946008&linkCode=as2&tag=flamingtop-23)
+
 - 源码
     [Python源码剖析]
     [Python标准库](https://docs.python.org/3/library/index.html)
