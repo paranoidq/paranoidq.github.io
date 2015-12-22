@@ -38,8 +38,10 @@ categories: reading
     [Python源码剖析]
     [Python标准库](https://docs.python.org/3/library/index.html)
 
-- PPT资料
+- 文章
     [Python高级编程-Dongweiming](http://dongweiming.github.io/Expert-Python/#1)
+    [Intermediate Python](http://book.pythontips.com/en/latest/index.html)
+    [Python进阶必读-文章汇总](http://dongweiming.github.io/blog/archives/pythonjin-jie-bi-du-hui-zong/)
 
 - 边角料
     [Python灰帽子](https://book.douban.com/subject/6025284/)
