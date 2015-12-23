@@ -722,6 +722,7 @@ decorator的应用值得好好进一步探索。
 
 ### 参考资料：
 [StackOverflow Answer](http://stackoverflow.com/questions/739654/how-can-i-make-a-chain-of-function-decorators-in-python/1594484#1594484)
+[函数的参数](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431752945034eb82ac80a3e64b9bb4929b16eeed1eb9000)
 
 
 
