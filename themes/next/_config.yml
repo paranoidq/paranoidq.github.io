@@ -165,10 +165,10 @@ mathjax: true
 #baidu_analytics:
 
 # Duoshuo ShortName
-#duoshuo_shortname:
+duoshuo_shortname: paranoidq
 
 # Disqus
-disqus_shortname: paranoidq
+# disqus_shortname: paranoidq
 
 # Share
 #jiathis:
