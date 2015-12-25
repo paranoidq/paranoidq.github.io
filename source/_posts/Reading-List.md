@@ -10,6 +10,7 @@ categories: reading
 ### 计算机原理
 
 1. [计算机程序的构造和解释](http://www-inst.eecs.berkeley.edu/~cs61a/fa11/61a-python/content/www/index.html)
+2. [Modern Operating System](http://book.douban.com/subject/3017583/)
 
 
 ### Linux/Unix
