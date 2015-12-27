@@ -38,7 +38,7 @@ categories: mac
 - 关闭当前标签页： `command + w`
 - 左右分割： `command + d`
 - 垂直分割： `command + shift + d`
-- 切换标签页： `command + [number]/[up/down]`
+- 切换标签页： `command + (+alt) +[number]/[up/down]`
 - 
 
 ### 文件操作

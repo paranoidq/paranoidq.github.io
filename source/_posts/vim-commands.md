@@ -1,4 +1,4 @@
-title: vim configurations and commands
+title: vim commands
 date: 2015-12-25 13:38:39
 tags: [linux, vim]
 categories: linux
