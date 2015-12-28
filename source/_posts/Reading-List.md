@@ -53,7 +53,7 @@ categories: reading
 
 ### 程序与生活
 1. [黑客与画家](https://book.douban.com/subject/6021440/)
-2. [技术的本质]()
+2. [技术的本质](https://book.douban.com/subject/25846075/)
 
 
 
