@@ -1,5 +1,4 @@
 title: Git stash使用
-date: 2015-12-25 16:04:27
 tags: [git]
 categories: [tools]
 ---

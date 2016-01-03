@@ -1,5 +1,4 @@
 title: Python super详解（译 + 进一步理解）
-date: 2015-12-31 14:10:09
 tags: [python, language]
 categories: python
 ---

@@ -1,5 +1,4 @@
 title: Mac中如何查找Java的路径
-date: 2015-12-18 10:28:26
 tags: [mac, java]
 categories: mac
 ---

@@ -1,8 +1,8 @@
-title: Reading List
-date: 2015-12-11 13:21:50
-tags: reading
+title: 技术阅读List
+tags: [reading, tech]
 categories: reading
 ---
+
 
 
 >汇集一些平时遇到但没有时间立马阅读的技术好书，望平时闲暇细读。同时共享给各位ITers。暂时没写书评，读过的和正在读的以后补充书评~
@@ -47,6 +47,9 @@ categories: reading
 - 边角料
     [Python灰帽子](https://book.douban.com/subject/6025284/)
 
+
+### Java
+[JVM程序员阅读清单](http://blog.jobbole.com/15342/#rd?sukey=69cca48b20c586694c596bd1a0df2b47d3aba2f8e9dadb8c89b4ac2fc1a2e28467be2f83b76ced3f1e6b6a7238bd3343)
 
 
 

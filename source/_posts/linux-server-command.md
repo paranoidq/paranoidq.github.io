@@ -1,5 +1,4 @@
 title: Linux Server Commands
-date: 2015-12-08 21:41:24
 tags: [linux, server]
 categories: linux
 ---

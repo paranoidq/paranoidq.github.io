@@ -1,5 +1,4 @@
 title: Java Producer and Consumer
-date: 2015-12-08 20:34:30
 tags: [java, producerconsumer]
 categories: java
 ---

@@ -1,5 +1,4 @@
 title: Mac Terminal Commands
-date: 2015-12-09 11:59:04
 tags: [mac, shortcat]
 categories: mac
 ---

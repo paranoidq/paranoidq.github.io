@@ -1,5 +1,4 @@
 title: Python generator
-date: 2015-12-19 23:59:20
 tags: [python, language]
 categories: python
 ---

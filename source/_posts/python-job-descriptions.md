@@ -1,5 +1,4 @@
 title: Python技能体系
-date: 2015-12-30 01:03:43
 tags: [python, career]
 categories: python
 ---

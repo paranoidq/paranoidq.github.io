@@ -1,5 +1,4 @@
 title: Vim 插件NERDTree命令
-date: 2015-12-26 13:55:40
 tags: [vim, nerdtree]
 categories: [linux]
 ---

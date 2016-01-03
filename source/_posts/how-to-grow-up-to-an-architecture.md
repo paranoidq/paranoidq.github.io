@@ -1,5 +1,4 @@
 title: How to grow up to be an architect(转)
-date: 2015-12-23 19:59:23
 tags: [career]
 categories: career
 ---

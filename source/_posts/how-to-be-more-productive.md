@@ -1,5 +1,4 @@
 title: How to be more productive(转)
-date: 2015-12-24 09:44:27
 tags: [效率]
 categories: [life]
 ---

@@ -1,5 +1,4 @@
 title: Python decorator(译)
-date: 2015-12-22 14:28:50
 tags: [python, decorator, language]
 categories: python
 ---

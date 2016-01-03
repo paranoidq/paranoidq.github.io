@@ -1,6 +1,5 @@
 title: 基础功力练级攻略（持续补充中...）
-date: 2015-12-29 18:39:34
-tags: [基础]
+tags: [基础, reading]
 categories: fundamental
 ---
 

@@ -1,5 +1,4 @@
 title: SSH Principles（总结和笔记）
-date: 2015-12-11 11:00:21
 tags: ssh
 categories: linux
 ---

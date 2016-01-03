@@ -1,7 +1,6 @@
 title: Git 分支管理与实践（hexo博客源文件管理）
-date: 2015-12-18 14:51:34
 tags: git
-categories: tools
+categories: 工具
 ---
 
 ### 查看

@@ -1,5 +1,4 @@
 title: Git Fantastic Usages
-date: 2015-12-09 15:20:18
 tags: git
 categories: tools
 ---

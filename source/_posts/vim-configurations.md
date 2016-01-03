@@ -1,5 +1,4 @@
 title: Vim配置  
-date: 2015-12-25 22:55:51
 tags: [linux, vim]
 categories: linux
 ---

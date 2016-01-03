@@ -1,5 +1,4 @@
 title: Python parameters
-date: 2015-12-23 14:55:09
 tags: [python, language, parameter]
 categories: python
 ---
