@@ -332,6 +332,8 @@ ps aux | grep -v grep | grep nginx
 - c: 切换显示命令名称和完整命令行
 - W: 将当前的设置写入~/.toprc文件，这是写top配置文件的推荐方法
 
+最好使用的`htop`，使用更方便快捷！！！
+
 #### pgrep
 
 查找当前运行的进程Id
