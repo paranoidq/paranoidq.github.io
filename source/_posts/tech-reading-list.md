@@ -1,6 +1,7 @@
 title: 基础功力练级攻略（持续补充中...）
 tags: [基础, reading]
 categories: fundamental
+sticky: 999
 ---
 
 

@@ -77,3 +77,10 @@ deploy:
 sitemap:
   path: /sitemap.xml
 
+# title, chinese available
+links_title: 友情链接
+# links
+links:
+  MacTalk: http://macshuo.com/
+  周梦康的博客: http://mengkang.net/
+

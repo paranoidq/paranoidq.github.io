@@ -54,10 +54,12 @@ $font-family-sans-serif   = "Avenir Next", Avenir, Tahoma, Vendana, sans-serif
 $font-family-serif        = "PT Serif", Cambria, Georgia, "Times New Roman", serif
 $font-family-monospace    = "Input Mono", "PT Mono", Consolas, Monaco, Menlo, monospace
 $font-family-chinese      = "PingFang SC", "Microsoft YaHei"
-$font-family-base         = Lato, $font-family-chinese, sans-serif
-$font-family-headings     = Lato, $font-family-chinese, sans-serif
+$font-family-base         = sans-serif, $font-family-chinese // Lato, $font-family-chinese, sans-serif
+$font-family-headings     = sans-serif, $font-family-chinese // Lato, $font-family-chinese, sans-serif
 $font-family-posts        = $font-family-base
 $font-family-icons        = 'FontAwesome'
+
+$font-all = "PingFang SC","Lantinghei SC","Open Sans",Arial,"Hiragino Sans GB","Microsoft YaHei","微软雅黑","STHeiti","WenQuanYi Micro Hei",SimSun,sans-serif
 
 
 // Font Weight
@@ -161,8 +163,8 @@ $pagination-active-border       = $grey-light
 
 $main-desktop                   = 960px
 $main-desktop                   = 1200px
-$content-desktop                = 700px
-$content-desktop-large          = 900px
+$content-desktop                = 900px
+$content-desktop-large          = 1000px
 $sidebar-desktop                = 240px
 $content-desktop-padding        = 40px
 $footer-height                  = 50px

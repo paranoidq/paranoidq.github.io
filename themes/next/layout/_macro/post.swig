@@ -127,14 +127,14 @@
           <span itemprop="description">{{ post.description }}</span>
           <div class="post-more-link text-center">
             <a class="btn" href="{{ url_for(post.path) }}">
-              {{ __('post.read_more') }} &raquo;
+              {{ __('post.read_more') }}
             </a>
           </div>
         {% elif post.excerpt  %}
           {{ post.excerpt }}
           <div class="post-more-link text-center">
             <a class="btn" href="{{ url_for(post.path) }}{% if theme.scroll_to_more %}#more{% endif %}" rel="contents">
-              {{ __('post.read_more') }} &raquo;
+              {{ __('post.read_more') }}
             </a>
           </div>
         {% elif theme.auto_excerpt.enable %}
@@ -145,7 +145,7 @@
           </span>
           <div class="post-more-link text-center">
             <a class="btn" href="{{ url_for(post.path) }}{% if theme.scroll_to_more %}#more{% endif %}" rel="contents">
-              {{ __('post.read_more') }} &raquo;
+              {{ __('post.read_more') }}
             </a>
           </div>
         {% else %}
