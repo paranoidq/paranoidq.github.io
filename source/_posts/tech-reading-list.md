@@ -70,6 +70,7 @@ REST架构设计(待定...)。现代架构设计，不会REST可不行
 )
 - [REST架构资料](http://www.jianshu.com/p/ee8059f3e097)
 - [理解本真的REST架构风格](http://www.infoq.com/cn/articles/understanding-restful-style)
+- [RESTful API介绍汇总](http://paranoidq.github.io/2016/01/05/restful-api-resources-list/)
 
 ### 安全
 - [白帽子讲Web安全](https://book.douban.com/subject/10546925/)
