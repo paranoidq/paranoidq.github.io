@@ -1,5 +1,5 @@
-title: 基础功力练级攻略（持续补充中...）
-tags: [基础, reading]
+title: 基础功力练级攻略（持续补充）
+tags: [基础, reading, 未完成]
 categories: fundamental
 sticky: 999
 ---
