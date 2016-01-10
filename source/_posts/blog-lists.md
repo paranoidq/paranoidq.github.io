@@ -5,4 +5,4 @@ sticky: 997
 ---
 
 ### 综合
-[http://blog.csdn.net/shendl](http://blog.csdn.net/shendl)
+[良少的博客](http://blog.csdn.net/shendl)
