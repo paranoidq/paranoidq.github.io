@@ -2,7 +2,7 @@ title: Python decorator(译)
 tags: [python, decorator, language]
 categories: python
 ---
-
+    
 ### Python函数就是对象
 
 首先要理解python中函数就是object。一个例子：
