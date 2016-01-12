@@ -1,7 +1,6 @@
 title: 优秀博客汇总
-tags: [blog, reading, 未完成, 置顶]
+tags: [blog, reading, 未完成]
 categories: reading
-sticky: 997
 ---
 
 ### 综合
