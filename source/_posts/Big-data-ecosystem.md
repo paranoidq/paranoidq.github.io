@@ -1,5 +1,5 @@
 title: 大数据生态圈技术总结（持续补充）
-tags: [大数据, 未完成]
+tags: [大数据, todo]
 categories: 大数据
 ---
 

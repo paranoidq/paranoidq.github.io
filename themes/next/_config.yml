@@ -29,7 +29,9 @@ menu:
   home: /
   categories: /categories
   tags: /tags
+  tops: /tags/top/
   archives: /tags/碎片/
+  todo: /tags/todo/
   about: /about
   #commonweal: /404.html
 
@@ -47,6 +49,8 @@ menu_icons:
   categories: th
   tags: tags
   archives: archive
+  todo: TODO
+  tops: TOP
   commonweal: heartbeat
 
 

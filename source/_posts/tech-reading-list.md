@@ -1,7 +1,6 @@
 title: 技术阅读List
-tags: [reading, tech, 未完成, 置顶]
+tags: [reading, tech, todo, top]
 categories: reading
-sticky: 998
 ---
 
 

@@ -1,5 +1,5 @@
 title: java.util.ResourceBundle 源码分析
-tags: [java, ResourceBundle, 源码, 未完成]
+tags: [java, ResourceBundle, 源码, todo]
 categories: [java]
 ---
 

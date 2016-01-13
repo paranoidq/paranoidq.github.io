@@ -2,6 +2,7 @@ title:
   archive: 碎片
   category: 分类
   tag: 标签
+  todo: TODO
 
 menu:
   home: 首页
@@ -10,6 +11,8 @@ menu:
   tags: 标签
   about: 关于
   search: 搜索
+  todo: TODO
+  tops: 置顶
   commonweal: 公益404
 
 
