@@ -30,10 +30,26 @@ WeakHashMap的问题在于，实际上作为一个缓存应用，还是希望缓
 #### SoftReference
 比WeakReference更"weak"，即即使没有外部的强引用指向缓存对象，GC依然不回收。只有等到JVM的内存快满了的时候，才回收这些SoftReference对象。这不正是我们希望达到的缓存特性么？(值得一提的是，SUN没有提供这种比WeakHashMap更合理的缓存实现形式，不知为何)
 
+当软可及对象被回收之后，虽然这个SoftReference对象的get()方法返回null,但这个SoftReference对象已经不再具有存在的价值，需要一个适当的清除机制，避免大量SoftReference对象带来的内存泄漏
+Soft引用可以和一个引用队列（ReferenceQueue）联合使用，如果软引用所引用的对象被垃圾回收器回收，Java虚拟机就会把这个软引用加入到与之关联的引用队列中，关联的方法例如：
+```java
+ReferenceQueue queue = new  ReferenceQueue();  
+SoftReference  ref=new  SoftReference(aMyObject, queue);  
+```
+那么当这个SoftReference所软引用的aMyOhject被垃圾收集器回收的同时，ref所强引用的SoftReference对象被列入ReferenceQueue。也就是说，ReferenceQueue中保存的对象是Reference对象，而且是已经失去了它所软引用的对象的Reference对象。另外从ReferenceQueue这个名字也可以看出，它是一个队列，当我们调用它的poll()方法的时候，如果这个队列中不是空队列，那么将返回队列前面的那个Reference对象。
+
+清除的方法：
+```java
+SoftReference ref = null;  
+while ((ref = (SoftReference) q.poll()) != null) {  
+    // 清除ref  
+}  
+```
 
 ### 摆脱GC控制，用SoftReference实现一个更适合缓存的HashMap
 
-实现的几点优化：
+#### 实现的几点优化：
+
 - 每次改变Map(put, remove, clear)或获取map size的时候都去遍历查看哪些SoftReference对象被GC回收了。如何检查？很简单，通过一个ReferenceQueue来实现。
 - 自己设计一个LinkedList，保存最近被访问的缓存对象的强引用，避免被GC回收这些最近使用的对象。
 - 使用装饰模式来包装原来的HashMap方法
@@ -122,6 +138,9 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V>{
         return hash.size();
     }
 
+    /** Here we go through the ReferenceQueue and remove garbage
+    collected SoftValue objects from the HashMap by looking them
+    up using the SoftValue.key data member. */
     private void processQueue() {
         SoftValue<V> sv;
         while ((sv = (SoftValue<V>)queue.poll()) != null) {
@@ -130,6 +149,9 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V>{
         }
     }
 
+    /** We define our own subclass of SoftReference which contains
+    not only the value but also the key to make it easier to find
+    the entry in the HashMap after it's been garbage collected. */
     private static class SoftValue<V> extends SoftReference<V> {
         private final Object key;
 
@@ -190,7 +212,7 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V>{
 
 ```
 
-关于测试程序的几点说明:
+#### 关于测试程序的几点说明:
 
 1. `byte[] block = new byte[11*_1MB]`希望占用JVM空间，然后触发GC回收SoftReference的缓存对象，但是并不成功。原因在于:
  大对象直接在老年代分配，而不会占用Eden空间，也就是Map的存储空间。从这张图可以看出，确实是占用了Old空间，而不是Eden。图中7、8行分别是OC(老年代总空间)和OU(老年代使用空间)。
@@ -226,7 +248,7 @@ Five=5
 4. 如何监控JVM的使用情况
  ```plain
  jps # 找到运行的java程序的vid
- jstat -gc [vid] 1000
+ jstat -gc [vid] 1000  # 每1s显示一次
  ```
  关于jstat输出：
  ```plain
