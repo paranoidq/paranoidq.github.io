@@ -29,9 +29,8 @@ menu:
   home: /
   categories: /categories
   tags: /tags
+  archives: /tags/碎片/
   about: /about
-  #archives: /archives
-  
   #commonweal: /404.html
 
 
@@ -47,7 +46,7 @@ menu_icons:
   about: user
   categories: th
   tags: tags
-  #archives: archive
+  archives: archive
   commonweal: heartbeat
 
 

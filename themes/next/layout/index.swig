@@ -27,7 +27,7 @@
       {% set posts_normal = page.posts.find({sticky: 0}) %}
     {% endif %}
 
-    {% for post in posts_normal %}
+    {% for post in posts_normal %} 
       {{ post_template.render(post, true) }}
     {% endfor %}
 

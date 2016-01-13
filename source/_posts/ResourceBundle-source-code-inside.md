@@ -116,3 +116,4 @@ ResourceBundle.Control.needsReload();
 ### 参考
 java.util.ResourceBundle源码(JDK1.8)
 [http://blog.csdn.net/haiyan0106/article/details/2257725](http://blog.csdn.net/haiyan0106/article/details/2257725)
+[Java WeakReference与SoftReference](http://san-yun.iteye.com/blog/1683558)
