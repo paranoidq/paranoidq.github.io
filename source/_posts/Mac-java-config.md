@@ -1,6 +1,6 @@
 title: Mac中如何查找Java的路径
-tags: [mac, java]
-categories: mac
+tags: [mac, java, 碎片]
+categories: [java]
 ---
 
 
