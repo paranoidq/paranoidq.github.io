@@ -10,6 +10,7 @@ $ sudo add-apt-repository ppa:webupd8team/java
 $ sudo apt-get update
 $ sudo apt-get install oracle-java8-installer
 ```
+<!--more-->
 
 ### 设置JDK为默认环境
 ```
@@ -34,6 +35,7 @@ Press enter to keep the current choice[*], or type selection number: 2
 1. 查看java路径
  - `which java`参考我的另一篇文章：[Mac下查找Java路径](http://paranoidq.github.io/2016/01/03/Mac-java-config/)
  - 或 sudo update-alternatives --config java
+ - 或 readlink -f /usr/bin/java
 
 2. 添加如下环境变量到~/.bashrc
  ```
