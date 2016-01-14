@@ -48,8 +48,10 @@ Press enter to keep the current choice[*], or type selection number: 2
 3. `source .bashrc`
 
  注：
- - 添加到`~./bashrc`只对本用户生效，添加到`/etc/profile`则对所有用户生效。
- - 网上直接添加/etc/environment的方法，实际上等同于对所有用户生效，不推荐。
+ - ~~添加到`~./bashrc`只对本用户生效，添加到`/etc/profile`则对所有用户生效~~。
+ - ~~网上直接添加/etc/environment的方法，实际上等同于对所有用户生效，不推荐~~。
+ 
+ 这里的解释不对，具体区别参见 [https://wido.me/sunteya/understand-bashrc-and-profile](https://wido.me/sunteya/understand-bashrc-and-profile)
 
 ### 参考资料
 
