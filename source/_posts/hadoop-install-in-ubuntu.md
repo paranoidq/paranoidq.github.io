@@ -4,6 +4,7 @@ tags: [hadoop]
 categories: [big data]
 ---
 
+<!--more-->
 
 ### 参考 
 [http://www.bogotobogo.com/Hadoop/BigData_hadoop_Install_on_ubuntu_single_node_cluster.php](http://www.bogotobogo.com/Hadoop/BigData_hadoop_Install_on_ubuntu_single_node_cluster.php)
