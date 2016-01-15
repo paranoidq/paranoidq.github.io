@@ -4,11 +4,12 @@ tags: [hadoop]
 categories: [big data]
 ---
 
-<!--more-->
 
 ### 参考 
-[http://www.bogotobogo.com/Hadoop/BigData_hadoop_Install_on_ubuntu_single_node_cluster.php](http://www.bogotobogo.com/Hadoop/BigData_hadoop_Install_on_ubuntu_single_node_cluster.php)
-[http://stackoverflow.com/questions/29059250/cant-start-namenode-daemon-and-datanode-daemon-in-hadoop](http://stackoverflow.com/questions/29059250/cant-start-namenode-daemon-and-datanode-daemon-in-hadoop)
+[hadoop_Install_on_ubuntu_single_node_cluster](http://www.bogotobogo.com/Hadoop/BigData_hadoop_Install_on_ubuntu_single_node_cluster.php)
+[start hadoop时的文件夹权限问题](http://stackoverflow.com/questions/29059250/cant-start-namenode-daemon-and-datanode-daemon-in-hadoop)
+
+<!--more-->
 
 ### 权限问题
 ```
