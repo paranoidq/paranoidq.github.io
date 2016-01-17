@@ -1,5 +1,5 @@
 title: Hadoop(1) 单机安装（Ubuntu）
-date: 2016-01-14 22:05:28
+date: 2016-01-15 16:27:28
 tags: [hadoop]
 categories: [big data]
 ---
