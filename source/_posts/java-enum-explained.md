@@ -87,7 +87,7 @@ public enum Currency {
  toString();
  // 貌似我查了一下源码，可重写的方法只有toString()了。
  ```
- 注意，下面几个方法在JDK1.8的版本中，我查看了下，不能继承了。[http://www.cnblogs.com/frankliiu-java/archive/2010/12/07/1898721.html](http://www.cnblogs.com/frankliiu-java/archive/2010/12/07/1898721.html)这篇参考的博文中的相关说法我认为可能是之前的JDK版本。
+ 注意，下面几个方法在JDK1.8的版本中，是不能继承的。
  ```java
  // 单例，所以所有子类维持固定的语义
  public final boolean equals(Object other) {
@@ -98,6 +98,7 @@ public enum Currency {
     return super.hashCode();
 }
  // 不支持clone，很明显，单例！
+ // 另外，因为Object的clone是protected，子类不能扩大父类的限制符，所以为protected
  protected final Object clone() {
     throw new CloneNotSupportedException();
  }
