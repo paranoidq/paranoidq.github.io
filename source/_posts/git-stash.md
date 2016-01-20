@@ -1,5 +1,5 @@
 title: Git stash使用
-tags: [git, 碎片]
+tags: [git]
 categories: [tools]
 ---
 

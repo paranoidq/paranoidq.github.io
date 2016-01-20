@@ -1,52 +1,41 @@
-title: Git Fantastic Usages
-tags: git
-date: 2016-01-20 12:20:08
-categories: tools
+title: Git撤销修改操作指南
+date: 2016-01-19 18:45:27
+tags: [git, 碎片]
+categories: [tools]
 ---
 
-### .gitignore
 
-1. 如何忽略所有文件除了某些文件
+### 问题
+ItelliJ 重命名文件后git commit error的一个坑
 
+
+I also faced the almost same situation, in my case I have created a file and added to git (using git add ), after adding to git I have renamed the file. While committing I got the same type error. 
 ```
-# Ignore everything
-*
-
-# But not these files...
-!.gitignore
-!script.pl
-!template.latex
-# etc...
-
-# ...even if they are in subdirectories
-!*/
+Error:error: pathspec 'app/src/main/java/blahblah/FooBar.java' did not match any file(s) known to git.
 ```
-
-### 分支管理
-
-创建本地分支
-`git checkout -b dev`
-
-删除本地分支
-`git branch -d dev (用-D强行删除)`
-
-查看本地分支
-`git branch`
-
-查看包括远程分支
-`git branch -a`
-
-删除远程分支
-`git push origin --delete dev`
-
-
-
 <!--more-->
+### Stackoverflow 解决方法：
 
+其实是大小写的问题，改名后的文件并没有被stage到暂存区，还在工作区。
 
-### 撤销删除
+use git status to see the staged files you can see your old file in the list
 
-注： checkout、reset既可以用于commit级别的，也可以用于文件级别的。revert只能用于commit级别的。
+```
+$ git status
+$ app/src/main/java/blahblah/FOOBar.java
+```
+use git reset to remove file from staging
+```
+$ git reset app/src/main/java/blahblah/FOOBar.java
+```
+After removing from staging you can add your new file
+
+```
+$ git add app/src/main/java/blahblah/FooBar.java
+```
+after this you can commit
+
+### Git 撤销修改的操作
 
 #### Case1: 修改了工作区，没有add
 ```
@@ -77,7 +66,7 @@ $ git reset <commit_id>  // 反悔之前的回退操作
 
 ### Case4：回退远程版本库
 
-git rest 适合在自己的版本库工作，不能用于远端版本库。可以用`git push -f`命令强行推送回退后修改的内容，但是会影响他人的更新合并。更好的建议是使用revert，它不会删除原有的commit，而是添加了一个commit，内容就是你想要反悔到的那个版本。
+git rest 适合在自己的版本库工作，不能用于远端版本库。可以用`git push -f`命令强行推送回退后修改的内容，但是会影响他人的更新合并。更好的建议是使用revert。
 
 [https://ruby-china.org/topics/11637](https://ruby-china.org/topics/11637)
 ```
@@ -138,3 +127,5 @@ $
 $ git checkout <commit_id>
 $ git checkout HEAD~n
 ```
+
+
