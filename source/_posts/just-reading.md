@@ -12,3 +12,4 @@ categories: [reading]
 
 ### 趋势
 [微信力量](https://book.douban.com/subject/26651382/)
+[创业维艰](http://book.douban.com/subject/26306686/)

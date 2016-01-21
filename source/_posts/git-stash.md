@@ -1,5 +1,6 @@
 title: Git stash使用
 tags: [git]
+date: 2015-12-10 12:20:08
 categories: [tools]
 ---
 

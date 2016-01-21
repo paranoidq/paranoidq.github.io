@@ -22,13 +22,15 @@ categories: tools
 !*/
 ```
 
+<!--more-->
+
 ### 分支管理
 
 创建本地分支
 `git checkout -b dev`
 
 删除本地分支
-`git branch -d dev (用-D强行删除)`
+`git branch -d dev (用-D强行删除没有merge到master的分支)`
 
 查看本地分支
 `git branch`
@@ -41,7 +43,7 @@ categories: tools
 
 
 
-<!--more-->
+
 
 
 ### 撤销删除
