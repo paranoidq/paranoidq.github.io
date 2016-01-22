@@ -38,4 +38,14 @@ docker-machine stop demo
 docker-machine ssh demo
 ```
 
+### 获取镜像
+```
+docker run -d nginx # -d表示后台运行
+docker ps           # 查看正在运行的镜像
+docker ps -a        # 查看所有镜像
+docker kill <name>  # 停止镜像
+docker rm <name>    # 移除镜像
+docker images       # 查看本地已有的镜像
+```
+
 
