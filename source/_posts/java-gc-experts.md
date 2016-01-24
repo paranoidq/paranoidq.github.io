@@ -1,6 +1,6 @@
 title: GC专家系列-笔记
-date: 2016-01-22 14:47:29
-tags: [java, jvm]
+date: 2016-01-24 22:20:29
+tags: [java, jvm, gc]
 categories: [java]
 ---
 
@@ -128,6 +128,78 @@ GCT: Total garbage collection time.
 
 #### HPJMeter
 - 分析--verbose:gc输出的结果的GUI
+
+
+### GC调优
+
+GC调优未必需要，如果你做了以下三个事情：
+- 通过-Xms和-Xmx指定了JVM的堆内存大小
+- 使用了-server选项
+- 系统未产生太多的超市日志
+
+**gc调优是不得已的选择！**
+
+
+#### GC调优的目标分为两类：
+
+- 降低移动到老年代的对象数量
+- 缩短Full GC的执行时间
+
+老年代的GC较新生代会耗时更长，因此减少移动到老年代的对象数量可以降低full GC的频率。减少对象转移到老年代可能会被误解为把对象保留在新生代，然而这是不可能的，相反你可以**调整新生代的空间大小。**
+如果企图通过缩小老年代空间的方式来降低Full GC执行时间，可能会面临OutOfMemoryError或者带来更频繁的Full GC。如果通过增加老年代空间来减少Full GC执行次数，单次Full GC耗时将会增加。因此，__需要为老年代空间设置适当的大小__。
+
+__GC调优的基本规则是对两台或更多的服务器设置不同的选项，并对比性能表现，然后把被证明能提升性能的选项添加到应用服务器上.__
+
+
+#### 影响GC的选项：
+1. 空间设置：
+ - 堆空间：
+        + -Xms(启动JVM时的初始堆空间大小)
+        + -Xmx(堆空间最大值)
+
+ - 新生代空间：
+        + XX:NewRatio（新生代与老年代比例）
+        + -XX:NewSize (新生代大小)
+        + -XX:SurvivorRatio（Eden区与Survivor区的比例）
+ 
+ -XX:PermSize和-XX:MaxPermSize可以设置永久代的大小，但是只有PermSize不足爆OutMemoryError的时候才需要。(JDK1.8采用了Meta之后，基本更加不再需要设置了)
+
+2. GC类型：
+ - Serial GC
+ - Parallel New GC
+ - Parallel Scavenge GC
+ - CMS GC
+ - G1
+ 
+ 通常Serial GC只有在client端用。
+
+
+#### GC调优的过程
+1. 监控
+2. 分析数据并决定是否需要GC调优
+ - 如果分析结果显示GC耗时在0.1-0.3秒以内的话，一般不需要花费额外的时间做GC调优。然而，如果GC耗时达到1-3秒甚至10秒以上，就需要立即对系统进行GC调优。
+ - 如果你的应用分配了10GB的内存，且不能降低内存容量的话，其实是没办法进行GC调优的。这种情况下，你首先要去思考为什么需要分配这么大的内存
+3. 设置GC类型和内存大小
+4. 分析调优的结果
+5. 如果结果可接受，则对所有服务应用调优选项并停止调优
+
+
+如果GC执行时间满足以下判断条件，那么GC调优并没那么必须。
+- Minor GC执行迅速(50毫秒以内)
+- Minor GC执行不频繁(间隔10秒左右一次)
+- Full GC执行迅速(1秒以内)
+- Full GC执行不频繁(间隔10分钟左右一次)
+
+内存大小与GC执行次数、每次GC耗时之间的关系：
+
+- 大内存
+    会降低GC执行次数
+    相应的会增加GC执行耗时
+- 小内存
+    会缩知单次GC耗时
+    相应的会增加GC执行次数
+
+GC调优的两个案例[http://segmentfault.com/a/1190000004303843](http://segmentfault.com/a/1190000004303843)
 
 
 原文出处: [http://www.cubrid.org/blog/tags/Garbage%20Collection/](http://www.cubrid.org/blog/tags/Garbage%20Collection/)
