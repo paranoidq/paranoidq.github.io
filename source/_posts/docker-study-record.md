@@ -32,6 +32,11 @@ docker-machine start demo
 docker-machine stop demo
 ```
 
+查看docker-machine
+```
+docker-machine ls
+```
+
 ### ssh连接
 
 ```
