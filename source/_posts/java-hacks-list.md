@@ -1,4 +1,5 @@
 title: Java问题及Hacks汇总
+date: 2016-1-28 15:10:00
 tags: [java, hacks, top]
 categories: [java, 未完成]
 ---
@@ -14,3 +15,6 @@ categories: [java, 未完成]
 
 ### 库
 - [Guava](http://www.cnblogs.com/peida/archive/2013/06/08/3120820.html)
+
+### 多线程
+- [估算线程池的合理大小](http://niklasschlimm.blogspot.jp/2012/03/threading-stories-about-robust-thread.html)
