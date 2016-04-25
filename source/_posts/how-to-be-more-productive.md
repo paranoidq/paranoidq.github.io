@@ -1,6 +1,8 @@
 title: How to be more productive(转)
 tags: [效率]
-categories: [life]
+categories: 
+- 思绪
+- 生活
 ---
 
 

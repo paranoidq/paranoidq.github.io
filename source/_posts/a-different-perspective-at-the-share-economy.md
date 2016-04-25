@@ -1,7 +1,9 @@
 title: 换个角度看共享经济（转载）
 date: 2016-01-19 13:55:06
 tags: [o2o, 互联网]
-categories: [观点]
+categories: 
+- 思绪
+- 经济
 ---
 
 原文链接：[http://www.ikent.me/blog/5081](http://www.ikent.me/blog/5081)

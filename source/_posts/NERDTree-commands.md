@@ -1,6 +1,8 @@
 title: Vim 插件NERDTree命令
-tags: [vim, nerdtree]
-categories: [linux]
+tags: [Linux, Vim, NerdTree]
+categories: 
+- Linux
+- Vim
 ---
 
 

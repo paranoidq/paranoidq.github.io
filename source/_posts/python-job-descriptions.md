@@ -1,6 +1,8 @@
 title: Python技能体系
-tags: [python, career]
-categories: python
+tags: [Python]
+categories: 
+- Python
+- 攻略
 ---
 
 

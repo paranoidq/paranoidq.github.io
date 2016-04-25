@@ -1,12 +1,13 @@
 title: 技术阅读List
-tags: [reading, tech, todo, top]
-categories: reading
+tags: [阅读, 技术, TODO, TOP]
+categories: 
+- 阅读
+- 技术
 ---
 
 
 
 > 技术好书收集
-
 
 
 ## 后端技术

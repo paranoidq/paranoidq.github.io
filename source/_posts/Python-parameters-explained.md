@@ -1,6 +1,8 @@
 title: Python parameters
-tags: [python, language, parameter]
-categories: python
+tags: [Python]
+categories: 
+- Python
+- 语言机制
 ---
 
 ### 提纲

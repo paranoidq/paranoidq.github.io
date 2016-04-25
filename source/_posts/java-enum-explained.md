@@ -1,7 +1,9 @@
 title: Java Enum详解
 date: 2016-01-17 19:43:24
-tags: [java, enum, todo]
-categories: [java]
+tags: [Java, Enum, TODO]
+categories: 
+- Java 
+- 语言机制
 ---
 
 ### 不用Enum的基本写法

@@ -1,6 +1,8 @@
 title: Java Producer and Consumer
-tags: [java, producerconsumer]
-categories: java
+tags: [Java, ProducerConsumer]
+categories: 
+- Java
+- 设计模式
 ---
 
 ### 生产者消费者模式（以下简称PC)

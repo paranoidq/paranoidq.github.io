@@ -1,7 +1,9 @@
 title: GC专家系列-笔记
 date: 2016-01-24 22:20:29
-tags: [java, jvm, gc]
-categories: [java]
+tags: [Java, JVM, GC]
+categories: 
+- Java
+- JVM
 ---
 
 1. [理解Java垃圾回收](http://segmentfault.com/a/1190000004233812)

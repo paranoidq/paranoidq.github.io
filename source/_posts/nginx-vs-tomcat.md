@@ -1,6 +1,8 @@
 title: nginx与tomcat有什么区别
-tags: [nginx, tomcat, 服务器, 碎片]
-categories: [nginx, tomcat]
+tags: [Nginx, Tomcat, 服务器, 碎片]
+categories: 
+- 中间件
+- Nginx
 ---
 
 ### 解析

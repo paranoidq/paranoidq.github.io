@@ -1,7 +1,8 @@
 title: 架构是一种思维模式(笔记)
 date: 2016-01-25 13:40:06
-tags: [架构, architecture]
-categories: [架构]
+tags: [架构]
+categories: 
+- 架构
 ---
 
 原文链接：[老于聊架构](http://mp.weixin.qq.com/s?__biz=MzA5Nzc4OTA1Mw==&mid=408185184&idx=1&sn=9b9c7f6015770dfe26e69a41a5876cc3&scene=0#wechat_redirect)

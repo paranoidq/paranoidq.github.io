@@ -1,7 +1,9 @@
-title: python split的坑
+title: Python split函数的坑
 date: 2016-02-23 09:34:04
-tags: [python, 碎片]
-categories: python
+tags: [Python, 坑]
+categories: 
+- Python
+- 语言机制
 ---
 
 

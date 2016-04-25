@@ -1,7 +1,9 @@
 title: Java单例的实现方式及问题(转载 + 整理)
 date: 2016-01-17 20:07:35
-tags: [java]
-categories: [java]
+tags: [Java]
+categories: 
+- Java
+- 设计模式
 ---
 
 ### 7种主要的实现方式

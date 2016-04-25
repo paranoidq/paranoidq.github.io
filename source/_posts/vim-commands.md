@@ -1,6 +1,8 @@
-title: vim commands
-tags: [linux, vim]
-categories: linux
+title: Vim Commands
+tags: [Linux, Vim]
+categories: 
+- Linux
+- Vim
 ---
 
 

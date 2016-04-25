@@ -1,7 +1,9 @@
 title: 解读2015之容器篇：扩张与进化（转载）
 date: 2016-01-19 15:42:04
 tags: [docker, 行业动态]
-categories: [docker]
+categories: 
+- 虚拟化
+- docker
 ---
 
 解读docker，runc等容器技术发展的好文，值得一读拓展视野。

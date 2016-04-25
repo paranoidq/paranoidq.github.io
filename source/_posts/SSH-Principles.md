@@ -1,6 +1,8 @@
 title: SSH Principles（总结和笔记）
 tags: ssh
-categories: linux
+categories: 
+- Linux
+- SSH
 ---
 
 ### 前提

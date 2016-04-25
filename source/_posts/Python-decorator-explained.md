@@ -1,6 +1,8 @@
 title: Python decorator(译)
-tags: [python, decorator, language]
-categories: python
+tags: [Python, decorator]
+categories: 
+- Python
+- 语言机制
 ---
     
 ### Python函数就是对象

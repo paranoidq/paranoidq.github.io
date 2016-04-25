@@ -1,6 +1,8 @@
 title: SoftReference及其缓存应用
-tags: [java, softreference, 缓存]
-categories: [java]
+tags: [Java, SoftReference, 缓存]
+categories: 
+- Java
+- JDK
 ---
 
 ### 参考原文

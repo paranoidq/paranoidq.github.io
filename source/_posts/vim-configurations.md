@@ -1,6 +1,8 @@
 title: Vim配置  
-tags: [linux, vim]
-categories: linux
+tags: [Linux, Vim]
+categories: 
+- Linux
+- Vim
 ---
 
 

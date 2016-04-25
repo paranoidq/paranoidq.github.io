@@ -29,9 +29,9 @@ menu:
   home: /
   categories: /categories
   tags: /tags
-  tops: /tags/top/
+  tops: /tags/TOP/
   archives: /tags/碎片/
-  todo: /tags/todo/
+  todo: /tags/TODO/
   about: /about
   #commonweal: /404.html
 

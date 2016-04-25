@@ -1,7 +1,9 @@
 title: Java问题及Hacks汇总
 date: 2016-1-28 15:10:00
-tags: [java, hacks, top]
-categories: [java, 未完成]
+tags: [Java, Hacks, TOP]
+categories: 
+- Java
+- 总结
 ---
 
 

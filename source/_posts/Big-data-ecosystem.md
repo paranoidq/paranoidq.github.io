@@ -1,6 +1,8 @@
 title: 大数据生态圈技术总结（持续补充）
-tags: [大数据, todo]
-categories: 大数据
+tags: [大数据, TODO]
+categories: 
+- 大数据
+- 汇总
 ---
 
 ### 分布式文件系统

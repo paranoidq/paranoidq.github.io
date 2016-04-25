@@ -1,6 +1,8 @@
 title: Linux Server Commands
-tags: [linux, server]
-categories: linux
+tags: [Linux, Server]
+categories: 
+- Linux
+- 命令
 ---
 
 

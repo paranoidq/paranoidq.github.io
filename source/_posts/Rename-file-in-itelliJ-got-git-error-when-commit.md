@@ -1,7 +1,9 @@
 title: Git撤销修改操作指南
 date: 2016-01-19 18:45:27
-tags: [git, 碎片]
-categories: [tools]
+tags: [Git, 碎片]
+categories: 
+- 工具
+- Git
 ---
 
 
