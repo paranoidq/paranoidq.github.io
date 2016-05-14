@@ -1,6 +1,6 @@
 title: Java Enum详解
-date: 2016-01-17 19:43:24
-tags: [Java, Enum, TODO]
+date: 2016-05-14 20:31:24
+tags: [Java, Enum]
 categories: 
 - Java 
 - 语言机制
