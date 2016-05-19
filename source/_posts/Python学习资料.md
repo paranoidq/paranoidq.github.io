@@ -1,38 +1,13 @@
-title: 技术阅读List
-tags: [阅读, 技术, TODO, TOP]
-categories: 
-- 阅读
-- 技术
+title: Python学习资料
+tags:
+  - Python
+  - 攻略
+categories:
+  - Python
+date: 2015-12-18 13:25:33
 ---
 
 
-
-> 技术好书收集
-
-
-## 后端技术
-### Java
-1. [JVM程序员阅读清单](http://blog.jobbole.com/15342/#rd?sukey=69cca48b20c586694c596bd1a0df2b47d3aba2f8e9dadb8c89b4ac2fc1a2e28467be2f83b76ced3f1e6b6a7238bd3343)
-2. 看透Spring MVC：源代码分析与实践 
-
-<!--more-->
-<hr/>
-## 大数据
-### Hadoop
-1. 深入理解hadoop（原书第2版）(深入剖析Hadoop系统及其重要组件)
-
-### Spark
-1. 深入理解Spark：核心思想与源码分析 (阿里巴巴资深Java开发和大数据专家撰写)
-
-<hr/>
-
-## 虚拟化
-### Docker
-1. Docker进阶与实战 (华为Docker实践小组)
-
-<hr/>
-
-## 脚本、运维
 ### Python
 - 入门
     [Python Manunal - Tutorials](https://docs.python.org/3/tutorial/    )   
@@ -61,8 +36,6 @@ categories:
 - 边角料
     [Python灰帽子](https://book.douban.com/subject/6025284/)
 
-### Shell
-1. [《Advanced Bash: Scrpiting Guide》](http://www.tldp.org/LDP/abs/html/)
 
 
 

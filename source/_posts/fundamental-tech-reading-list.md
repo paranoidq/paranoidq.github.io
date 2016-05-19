@@ -1,9 +1,11 @@
 title: 基础功力练级攻略（持续补充）
-tags: [基础, TODO, TOP]
-categories: 
-- 基础
-- 攻略
-
+tags:
+  - 基础
+  - TOP
+  - 攻略
+categories:
+  - 基础
+date: 2015-12-29 18:39:34
 ---
 
 

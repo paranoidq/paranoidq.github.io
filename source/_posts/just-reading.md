@@ -1,9 +1,11 @@
-title: 阅读书目
+title: 人文阅读书目
+tags:
+  - TODO
+  - 阅读
+categories:
+  - 阅读
+  - 推荐
 date: 2016-01-18 14:24:07
-tags: [阅读, TODO]
-categories: 
-- 阅读
-- 推荐
 ---
 
 ### 人文
