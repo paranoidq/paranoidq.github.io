@@ -31,7 +31,7 @@ A Developer.
 
 ### About This Blog
 
-Sacrifice is the key to success.
+The sacrifice, that's the price of a good trick.    
 
 架构、开发、运维、基础
 生活、评论、读书

@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Paranoid Qian's Blog
+title: 百末旨酒布兰生
 subtitle: 
-description: Sacrifice is the Secret of Life
+description: Sacrifice, that's the price of a good trick
 author: Paranoid Qian
 language: zh-Hans
 timezone:
@@ -82,6 +82,16 @@ links_title: 友情链接
 # links
 links:
   MacTalk: http://macshuo.com/
-  周梦康的博客: http://mengkang.net/
-  良少的博客: http://blog.csdn.net/shendl
+  HollisChuang: http://www.hollischuang.com/
+ # 周梦康的博客: http://mengkang.net/
+ # 良少的博客: http://blog.csdn.net/shendl
+ #
+ 
+
+admin:
+    name: hexo
+    password: hey
+    secret: hey hexo
+# expire: 60*24*100
+
 
