@@ -1,10 +1,9 @@
 title: Vim配置
 tags:
-  - Linux
-  - Vim
+  - linux
+  - vim
 categories:
-  - Linux
-  - Vim
+  - linux
 date: 2015-12-28 14:06:53
 ---
 

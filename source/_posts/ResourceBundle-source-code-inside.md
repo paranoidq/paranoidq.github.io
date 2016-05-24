@@ -1,8 +1,7 @@
 title: java.util.ResourceBundle 源码分析
-tags: [Java, ResourceBundle, 源码, TOOD]
+tags: [java, resourcebundle, jdk, TOOD]
 categories: 
-- Java
-- JDK
+- java
 ---
 
 ### ResourceBundle简介

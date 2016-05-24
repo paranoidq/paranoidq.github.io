@@ -1,8 +1,10 @@
 title: 设计模式汇总
+tags:
+  - 设计模式
+  - java
+categories:
+  - 设计模式
 date: 2016-05-16 15:16:18
-tags: [Java, 设计模式]
-categories: 
-- 设计模式
 ---
 
 1. 单例模式 

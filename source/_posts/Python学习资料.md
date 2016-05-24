@@ -1,9 +1,10 @@
 title: Python学习资料
 tags:
-  - Python
+  - python
   - 攻略
+  - top
 categories:
-  - Python
+  - python
 date: 2015-12-18 13:25:33
 ---
 

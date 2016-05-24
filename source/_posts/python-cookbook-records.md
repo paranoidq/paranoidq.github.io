@@ -1,8 +1,7 @@
 title: Python Cookbook Useful Cases
-tags: [Python, Cookbook]
+tags: [python, cookbook, 碎片]
 categories: 
-- Python
-- 汇总
+- python
 ---
 
 如题， Python Cookbook中有用的cases。

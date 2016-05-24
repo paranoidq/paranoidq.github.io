@@ -1,9 +1,8 @@
 title: Java的类加载器
 date: 2016-01-28 15:30:49
-tags: [Java, ClassLoader]
+tags: [java, classLoader, jvm]
 categories: 
-- Java
-- JVM
+- java
 ---
 
 ### 什么是类加载器

@@ -1,9 +1,8 @@
 title: Java问题及Hacks汇总
 date: 2016-1-28 15:10:00
-tags: [Java, Hacks, TOP]
+tags: [java, 攻略, 碎片]
 categories: 
-- Java
-- 总结
+- java
 ---
 
 

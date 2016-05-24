@@ -1,9 +1,8 @@
 title: Linux服务器常见配置和管理(ubuntu为例)
 date: 2016-01-14 14:58:24
-tags: [Linux, Ubuntu, TODO]
+tags: [linux, ubuntu, server, todo]
 categories: 
-- Linux
-- 服务器
+- linux
 ---
 
 [添加新账户](https://www.digitalocean.com/community/tutorials/how-to-add-and-delete-users-on-an-ubuntu-14-04-vps)

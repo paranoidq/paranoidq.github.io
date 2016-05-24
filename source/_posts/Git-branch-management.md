@@ -1,8 +1,7 @@
 title: Git 分支管理与实践（hexo博客源文件管理）
-tags: Git
+tags: git
 categories: 
-- 工具
-- Git
+- git
 ---
 
 ### 查看

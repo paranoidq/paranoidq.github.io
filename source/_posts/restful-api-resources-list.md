@@ -1,9 +1,10 @@
 title: Restful Api介绍资源汇总
+tags:
+  - 架构
+  - rest
+categories:
+  - 架构
 date: 2016-01-25 16:27:27
-tags: [架构, RestAPI]
-categories: 
-- 架构
-- Rest
 ---
 
 1. [http://mengkang.net/620.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io](http://mengkang.net/620.html?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)

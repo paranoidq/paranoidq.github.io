@@ -1,15 +1,18 @@
 title: Linux学习资料
 tags:
-  - Linux
-  - 攻略
+  - linux
+  - 资料
+  - top
 categories:
-  - Linux
+  - linux
 date: 2016-05-19 19:23:05
 ---
 
 #### 基础入门
 
 《鸟哥的Linux私房菜》
+
+<!--more-->
 
 #### 命令和Shell
 《Linux命令行与Shell脚本编程大全》

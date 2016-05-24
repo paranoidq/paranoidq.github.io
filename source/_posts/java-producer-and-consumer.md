@@ -1,7 +1,6 @@
 title: Java Producer and Consumer
-tags: [Java, ProducerConsumer]
+tags: [java, 生产者消费者]
 categories: 
-- Java
 - 设计模式
 ---
 

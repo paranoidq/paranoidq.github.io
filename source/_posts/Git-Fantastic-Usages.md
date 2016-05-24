@@ -1,9 +1,8 @@
 title: Git Fantastic Usages
-tags: Git
+tags: git
 date: 2016-01-20 12:20:08
 categories: 
-- 工具
-- Git 
+- git 
 ---
 
 ### .gitignore

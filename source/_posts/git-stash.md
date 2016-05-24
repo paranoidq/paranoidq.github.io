@@ -1,9 +1,8 @@
 title: Git stash使用
-tags: Git
+tags: git
 date: 2015-12-10 12:20:08
 categories: 
-- 工具
-- Git
+- git
 ---
 
 在配置alias的时候，偶然敲错了一个gsta的命令，用`alias | grep gsta`查看发现是git stash。网上查阅了资料之后发现git stash还蛮有用的，故记录一下。

@@ -1,9 +1,10 @@
 title: Java Exception处理总结
-date: 2016-05-04 15:00:21
-tags: [Java, Exception]
+tags:
+  - java
+  - exception
 categories:
-- Java
-- 语言机制
+  - java
+date: 2016-05-04 15:00:21
 ---
 
 ### 基本理解

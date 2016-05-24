@@ -1,9 +1,10 @@
 title: Python技能体系
 tags:
-  - Python
+  - python
   - 攻略
+  - top
 categories:
-  - Python
+  - python
 date: 2015-12-30 01:03:43
 ---
 

@@ -1,9 +1,8 @@
 title: Ubuntu如何安装JDK，并配置为默认
 date: 2016-01-14 14:10:08
-tags: [Linux, Ubuntu, Java, JDK, 碎片]
+tags: [linux, ubuntu, java, jdk, 碎片]
 categories: 
-- Java
-- 配置
+- java
 ---
 
 ### Install Oracle JDK

@@ -2,7 +2,6 @@ title: Docker学习笔记
 date: 2016-01-20 18:26:21
 tags: [docker]
 categories: 
-- 虚拟化
 - docker
 ---
 

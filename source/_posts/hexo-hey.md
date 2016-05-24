@@ -1,4 +1,4 @@
-title: Hexo博客管理神奇：hexo hey
+title: Hexo博客管理神器：hexo hey
 tags:
   - 碎片
   - hexo

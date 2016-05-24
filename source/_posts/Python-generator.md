@@ -1,8 +1,7 @@
 title: Python generator
-tags: [Python]
+tags: [python, generator]
 categories: 
-- Python
-- 语言机制
+- python
 ---
 
 

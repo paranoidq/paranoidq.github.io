@@ -1,9 +1,8 @@
 title: Linux命令行Tips
 date: 2016-01-28 17:08:12
-tags: [Linux]
+tags: [linux, 资料]
 categories: 
-- Linux
-- 命令
+- linux
 ---
 
 ### 原文链接

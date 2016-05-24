@@ -1,10 +1,10 @@
 title: Linux netstat解析
 tags:
-  - Linux
   - netstat
+  - linux
+  - server
 categories:
-  - Linux
-  - 服务器
+  - linux
 date: 2016-05-19 11:04:40
 ---
 

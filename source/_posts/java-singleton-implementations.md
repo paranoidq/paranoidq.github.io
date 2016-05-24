@@ -1,6 +1,6 @@
 title: Java单例的实现方式及问题(转载 + 整理)
 date: 2016-01-17 20:07:35
-tags: [Java, 设计模式]
+tags: [java, 设计模式, 单例]
 categories: 
 - 设计模式
 ---

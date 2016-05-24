@@ -1,9 +1,9 @@
 title: How to find process and kill it
 tags:
-  - Linux
+  - linux
+  - server
 categories:
-  - Linux
-  - 服务器
+  - linux
 date: 2016-05-18 21:38:10
 ---
 

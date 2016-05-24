@@ -1,8 +1,7 @@
 title: Hadoop(1) 单机安装（Ubuntu）
 date: 2016-01-15 16:27:28
-tags: [hadoop]
+tags: [hadoop, 配置]
 categories: 
-- 大数据
 - Hadoop
 ---
 

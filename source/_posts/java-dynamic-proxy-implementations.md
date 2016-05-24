@@ -1,9 +1,8 @@
 title: Java动态代理的几种实现方式
 date: 2016-01-18 15:48:27
-tags: [Java, 动态代理]
+tags: [java, 动态代理]
 categories: 
-- Java
-- 动态代理
+- java
 ---
 
 ### 静态代理的问题

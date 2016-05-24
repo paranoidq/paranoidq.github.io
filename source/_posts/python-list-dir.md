@@ -1,12 +1,12 @@
-title: Python实用Cases
-date: 2016-05-14 20:22:44
-tags: [Python, 碎片, TODO]
+title: Python如何列出目录下的所有文件
+tags:
+  - python
+  - 碎片
 categories:
-- Python
-- Cookbook
+  - python
+date: 2016-05-14 20:22:44
 ---
 
-### 如何列出目录下的所有文件
 
 [https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#](https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#)
 ```python

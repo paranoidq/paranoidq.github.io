@@ -1,8 +1,7 @@
 title: Mac Terminal Commands
-tags: [Mac, 快捷键]
+tags: [mac, 快捷键]
 categories: 
-- Mac
-- 命令
+- mac
 ---
 
 

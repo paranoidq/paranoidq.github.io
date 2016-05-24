@@ -1,9 +1,10 @@
 title: Java Enum详解
+tags:
+  - java
+  - enum
+categories:
+  - java
 date: 2016-05-14 20:31:24
-tags: [Java, Enum]
-categories: 
-- Java 
-- 语言机制
 ---
 
 ### 不用Enum的基本写法

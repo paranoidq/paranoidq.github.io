@@ -1,8 +1,7 @@
 title: Python super详解（译 + 进一步理解）
-tags: [Python]
+tags: [python, super]
 categories: 
-- Python
-- 语言机制
+- python
 ---
 
 ## 翻译：Python's super() considered super!
