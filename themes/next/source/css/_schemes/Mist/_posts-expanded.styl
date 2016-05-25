@@ -1,7 +1,36 @@
 // Post Expanded
 // --------------------------------------------------
+
+.posts-expand > div {
+  box-shadow: 0px 0px 1px 1px #d3d3d3
+  border-radius: 8px;
+  background: #fff;
+  padding: 20px;
+
+}
+
+#About_Me {
+  box-shadow: 0px 0px 1px 1px #d3d3d3
+  border-radius: 8px 8px 0px 0px;
+  background: #fff;
+  padding: 20px;
+  border-bottom: 1px #fff;
+  margin-bottom: 0px;
+
+}
+.posts-expand > ul {
+  box-shadow: 0px 0px 1px 1px #d3d3d3
+  border-radius: 0px 0px 8px 8px ;
+  background: #fff;
+  padding: 20px;
+  padding-left: 40px;
+  border-top: 1px #fff;
+}
+
+
+
 .posts-expand {
-  padding-top: 0;
+  
 
   .post-title,
   .post-meta {
@@ -48,16 +77,21 @@
   a {
     padding: 0;
     font-size: $font-size-base;
-    color: $grey-dim;
-    background: none;
+    color: #CFD8DC;
+    background: #455A64; 
     border: none;
-    border-bottom: 2px solid $grey-dim;
+    
     transition-property: border;
 
     +mobile() { font-size: $font-size-small; }
     +desktop-large() { font-size: $font-size-large; }
 
-
-    &:hover { border-bottom-color: $black-deep; }
+    line-height: 1;
+    padding: 5px;
+    border-radius: 4px;
+    &:hover { 
+        color: #FFFFFF;
+        background: #455A64; 
+    }
   }
 }

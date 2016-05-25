@@ -1,5 +1,5 @@
 title: java.util.ResourceBundle 源码分析
-tags: [java, resourcebundle, jdk, TOOD]
+tags: [java, resourcebundle, jdk, todo]
 categories: 
 - java
 ---

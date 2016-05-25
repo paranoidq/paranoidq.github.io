@@ -1,6 +1,6 @@
 title: GC专家系列-笔记
 date: 2016-01-24 22:20:29
-tags: [java, jVM, gc]
+tags: [java, jvm, gc]
 categories: 
 - java
 ---

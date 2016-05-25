@@ -5,34 +5,11 @@ comments: false
 ---
 
 ### About Me
-A Developer.
 
-江苏南通人，硕士毕业于东南大学计算机系，本科毕业于东南大学软件工程系
-
-精通：
-- Java, Spring
-
-熟悉：
-- C/C++
-- Python
-- Linux
-- MySQL, NoSQL（Casssandra, Redis等）
-- HTML, CSS, JQuery等前端生态栈
-
-了解：
-- Docker (正在熟悉中)
-- 高负载高并发架构设计
-
-工具：
-- Git/SVN
-
-
-
-
-### About This Blog
-
-The sacrifice, that's the price of a good trick.    
-
-架构、开发、运维、基础
-生活、评论、读书
+- 程序猿一枚
+- 东南大学13级小硕
+- 技术栈：
+    + 专注: java/j2ee/jvm
+    + 了解: python/c++/javascript
+    + 工具: git/svn linux/vim/shell
 
