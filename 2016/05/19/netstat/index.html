@@ -1,0 +1,813 @@
+<!doctype html>
+<html class="theme-next ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux,server,netstat," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="百末旨酒布兰生" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="常见参数1234567891011-a 显示所有选项，默认不显示LISTEN相关-t 显示TCP相关-u 显示UDP相关-n 不显示别名-l 仅列出LISTEN状态的服务-p 显示相关的程序名 （需要root权限才能显示http、ftp等服务）-r 显示路由表-e 显示扩展信息，如uid等-s 按协议进行统计-c 每隔固定时间，执行该命令
+LISTEN和LISTENING的状态只有用-a或者-l才">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux netstat解析">
+<meta property="og:url" content="http://paranoidq.github.io/2016/05/19/netstat/index.html">
+<meta property="og:site_name" content="百末旨酒布兰生">
+<meta property="og:description" content="常见参数1234567891011-a 显示所有选项，默认不显示LISTEN相关-t 显示TCP相关-u 显示UDP相关-n 不显示别名-l 仅列出LISTEN状态的服务-p 显示相关的程序名 （需要root权限才能显示http、ftp等服务）-r 显示路由表-e 显示扩展信息，如uid等-s 按协议进行统计-c 每隔固定时间，执行该命令
+LISTEN和LISTENING的状态只有用-a或者-l才">
+<meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux netstat解析">
+<meta name="twitter:description" content="常见参数1234567891011-a 显示所有选项，默认不显示LISTEN相关-t 显示TCP相关-u 显示UDP相关-n 不显示别名-l 仅列出LISTEN状态的服务-p 显示相关的程序名 （需要root权限才能显示http、ftp等服务）-r 显示路由表-e 显示扩展信息，如uid等-s 按协议进行统计-c 每隔固定时间，执行该命令
+LISTEN和LISTENING的状态只有用-a或者-l才">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide',
+    motion: false
+  };
+</script>
+
+  <title> Linux netstat解析 | 百末旨酒布兰生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">百末旨酒布兰生</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">孤舟蓑笠翁，独钓寒江雪</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tops">
+          <a href="/tags/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-收藏 fa-fw"></i> <br />
+            
+            收藏
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/tags/碎片/" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            碎片
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/tags/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-TODO fa-fw"></i> <br />
+            
+            待办
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <form class="site-search-form">
+    <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+  </form>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'y8KLPRJrwwY5Yy5cHpLP','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux netstat解析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-19T11:04:40+08:00" content="2016-05-19">
+              2016-05-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/19/netstat/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/19/netstat/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h3 id="u5E38_u89C1_u53C2_u6570"><a href="#u5E38_u89C1_u53C2_u6570" class="headerlink" title="常见参数"></a>常见参数</h3><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby">a 显示所有选项，默认不显示LISTEN相关</span><br><span class="line"></span>-<span class="ruby">t 显示TCP相关</span><br><span class="line"></span>-<span class="ruby">u 显示UDP相关</span><br><span class="line"></span>-<span class="ruby">n 不显示别名</span><br><span class="line"></span>-<span class="ruby">l 仅列出LISTEN状态的服务</span><br><span class="line"></span></span><br><span class="line">-<span class="ruby">p 显示相关的程序名 （需要root权限才能显示http、ftp等服务）</span><br><span class="line"></span>-<span class="ruby">r 显示路由表</span><br><span class="line"></span>-<span class="ruby">e 显示扩展信息，如uid等</span><br><span class="line"></span>-<span class="ruby">s 按协议进行统计</span><br><span class="line"></span>-<span class="ruby">c 每隔固定时间，执行该命令</span></span><br></pre></td></tr></table></figure>
+<p>LISTEN和LISTENING的状态只有用-a或者-l才能看到</p>
+<a id="more"></a>
+<h3 id="u5217_u51FA_u6240_u6709_u8FDE_u63A5"><a href="#u5217_u51FA_u6240_u6709_u8FDE_u63A5" class="headerlink" title="列出所有连接"></a>列出所有连接</h3><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># netstat -a | more</span></span><br><span class="line"> Active Internet connections (servers <span class="keyword">and</span> established)</span><br><span class="line"> Proto Recv-Q Send-Q Local Address           Foreign Address         State</span><br><span class="line"> tcp        <span class="number">0</span>      <span class="number">0</span> localhost:<span class="number">30037</span>         *:*                     LISTEN</span><br><span class="line"> udp        <span class="number">0</span>      <span class="number">0</span> *:bootpc                *:*</span><br><span class="line"> </span><br><span class="line">Active UNIX domain sockets (servers <span class="keyword">and</span> established)</span><br><span class="line"> Proto RefCnt Flags       <span class="keyword">Type</span>       State         I-<span class="keyword">Node</span>   <span class="title">Path</span></span><br><span class="line"> unix  <span class="number">2</span>      [ ACC ]     STREAM     LISTENING     <span class="number">6135</span>     /tmp/.X11-unix/X0</span><br><span class="line"> unix  <span class="number">2</span>      [ ACC ]     STREAM     LISTENING     <span class="number">5140</span>     /var/run/acpid.socket</span><br></pre></td></tr></table></figure>
+<h3 id="u5217_u51FATCP_u7AEF_u53E3"><a href="#u5217_u51FATCP_u7AEF_u53E3" class="headerlink" title="列出TCP端口"></a>列出TCP端口</h3><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">netstat -at</span><br><span class="line"> Active Internet connections (servers <span class="keyword">and</span> established)</span><br><span class="line"> Proto Recv-Q Send-Q Local Address           Foreign Address         State</span><br><span class="line"> tcp        <span class="number">0</span>      <span class="number">0</span> <span class="symbol">localhost:</span><span class="number">30037</span>         *<span class="symbol">:*</span>                     LISTEN</span><br><span class="line"> tcp        <span class="number">0</span>      <span class="number">0</span> <span class="symbol">localhost:</span>ipp           *<span class="symbol">:*</span>                     LISTEN</span><br><span class="line"> tcp        <span class="number">0</span>      <span class="number">0</span> *<span class="symbol">:smtp</span>                  *<span class="symbol">:*</span>                     LISTEN</span><br><span class="line"> tcp6       <span class="number">0</span>      <span class="number">0</span> <span class="symbol">localhost:</span>ipp           [<span class="symbol">:</span><span class="symbol">:</span>]<span class="symbol">:*</span>                  LISTEN</span><br></pre></td></tr></table></figure>
+<h3 id="u5217_u51FA_u6240_u6709_u5904_u4E8E_u76D1_u542C_u72B6_u6001_u7684_Sockets"><a href="#u5217_u51FA_u6240_u6709_u5904_u4E8E_u76D1_u542C_u72B6_u6001_u7684_Sockets" class="headerlink" title="列出所有处于监听状态的 Sockets"></a>列出所有处于监听状态的 Sockets</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">netstat</span> <span class="selector-tag">-l</span></span><br><span class="line"> <span class="selector-tag">Active</span> <span class="selector-tag">Internet</span> <span class="selector-tag">connections</span> (<span class="selector-tag">only</span> <span class="selector-tag">servers</span>)</span><br><span class="line"> <span class="selector-tag">Proto</span> <span class="selector-tag">Recv-Q</span> <span class="selector-tag">Send-Q</span> <span class="selector-tag">Local</span> <span class="selector-tag">Address</span>           <span class="selector-tag">Foreign</span> <span class="selector-tag">Address</span>         <span class="selector-tag">State</span></span><br><span class="line"> <span class="selector-tag">tcp</span>        0      0 <span class="selector-tag">localhost</span><span class="selector-pseudo">:ipp</span>           *:*                     <span class="selector-tag">LISTEN</span></span><br><span class="line"> <span class="selector-tag">tcp6</span>       0      0 <span class="selector-tag">localhost</span><span class="selector-pseudo">:ipp</span>           <span class="selector-attr">[::]</span>:*                  <span class="selector-tag">LISTEN</span></span><br><span class="line"> <span class="selector-tag">udp</span>        0      0 *<span class="selector-pseudo">:49119</span>                 *:*</span><br></pre></td></tr></table></figure>
+<h3 id="u5728_netstat__u8F93_u51FA_u4E2D_u663E_u793A_PID__u548C_u8FDB_u7A0B_u540D_u79F0_netstat_-p"><a href="#u5728_netstat__u8F93_u51FA_u4E2D_u663E_u793A_PID__u548C_u8FDB_u7A0B_u540D_u79F0_netstat_-p" class="headerlink" title="在 netstat 输出中显示 PID 和进程名称 netstat -p"></a>在 netstat 输出中显示 PID 和进程名称 netstat -p</h3><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># <span class="selector-tag">netstat</span> <span class="selector-tag">-pt</span></span><br><span class="line"> <span class="selector-tag">Active</span> <span class="selector-tag">Internet</span> <span class="selector-tag">connections</span> (w/o servers)</span><br><span class="line"> <span class="selector-tag">Proto</span> <span class="selector-tag">Recv-Q</span> <span class="selector-tag">Send-Q</span> <span class="selector-tag">Local</span> <span class="selector-tag">Address</span>           <span class="selector-tag">Foreign</span> <span class="selector-tag">Address</span>         <span class="selector-tag">State</span>       <span class="selector-tag">PID</span>/<span class="selector-tag">Program</span> <span class="selector-tag">name</span></span><br><span class="line"> <span class="selector-tag">tcp</span>        <span class="selector-tag">1</span>      <span class="selector-tag">0</span> <span class="selector-tag">ramesh-laptop</span><span class="selector-class">.loc</span><span class="selector-pseudo">:47212</span> <span class="selector-tag">192</span><span class="selector-class">.168</span><span class="selector-class">.185</span><span class="selector-class">.75</span><span class="selector-pseudo">:www</span>        <span class="selector-tag">CLOSE_WAIT</span>  <span class="selector-tag">2109</span>/<span class="selector-tag">firefox</span></span><br><span class="line"> <span class="selector-tag">tcp</span>        <span class="selector-tag">0</span>      <span class="selector-tag">0</span> <span class="selector-tag">ramesh-laptop</span><span class="selector-class">.loc</span><span class="selector-pseudo">:52750</span> <span class="selector-tag">lax</span><span class="selector-pseudo">:www</span> <span class="selector-tag">ESTABLISHED</span> <span class="selector-tag">2109</span>/<span class="selector-tag">firefox</span></span><br></pre></td></tr></table></figure>
+<h3 id="u5728_netstat__u8F93_u51FA_u4E2D_u4E0D_u663E_u793A_u4E3B_u673A_uFF0C_u7AEF_u53E3_u548C_u7528_u6237_u540D__28host_2C_port_or_user_29"><a href="#u5728_netstat__u8F93_u51FA_u4E2D_u4E0D_u663E_u793A_u4E3B_u673A_uFF0C_u7AEF_u53E3_u548C_u7528_u6237_u540D__28host_2C_port_or_user_29" class="headerlink" title="在 netstat 输出中不显示主机，端口和用户名 (host, port or user)"></a>在 netstat 输出中不显示主机，端口和用户名 (host, port or user)</h3><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -<span class="keyword">an</span></span><br></pre></td></tr></table></figure>
+<h3 id="u627E_u51FA_u7A0B_u5E8F_u8FD0_u884C_u7684_u7AEF_u53E3"><a href="#u627E_u51FA_u7A0B_u5E8F_u8FD0_u884C_u7684_u7AEF_u53E3" class="headerlink" title="找出程序运行的端口"></a>找出程序运行的端口</h3><p>并不是所有的进程都能找到，没有权限的会不显示，使用 root 权限查看所有的信息。<br><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># netstat -ap | grep ssh</span><br><span class="line"> tcp        <span class="number">1</span>      <span class="number">0</span> dev-<span class="built_in">db</span>:ssh           <span class="number">101.174</span><span class="meta">.100</span><span class="meta">.22</span>:<span class="number">39213</span>        CLOSE_WAIT  -</span><br><span class="line"> tcp        <span class="number">1</span>      <span class="number">0</span> dev-<span class="built_in">db</span>:ssh           <span class="number">101.174</span><span class="meta">.100</span><span class="meta">.22</span>:<span class="number">57643</span>        CLOSE_WAIT  -</span><br></pre></td></tr></table></figure></p>
+<p>找出运行在指定端口的进程<br><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># netstat -an | grep ':80'</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>注意：</strong></p>
+<ol>
+<li><p>使用 -p 选项时，netstat 必须运行在 root 权限之下，不然它就不能得到运行在 root 权限下的进程名，而很多服务包括 http 和 ftp 都运行在 root 权限之下。</p>
+</li>
+<li><p>相比进程名和进程号而言，查看进程的拥有者会更有用。使用 -ep 选项可以同时查看进程名和用户名。</p>
+</li>
+<li><p>假如你将 -n 和 -e 选项一起使用，User 列的属性就是用户的 ID 号，而不是用户名。</p>
+</li>
+</ol>
+<h3 id="u663E_u793A_u7F51_u7EDC_u63A5_u53E3_u5217_u8868"><a href="#u663E_u793A_u7F51_u7EDC_u63A5_u53E3_u5217_u8868" class="headerlink" title="显示网络接口列表"></a>显示网络接口列表</h3><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># netstat -i</span></span><br><span class="line"><span class="meta"># netstat -ie  (显示详细信息)</span></span><br></pre></td></tr></table></figure>
+<h3 id="u6CE8_u610F"><a href="#u6CE8_u610F" class="headerlink" title="注意"></a>注意</h3><p><strong>Linux下和OSX下的netstat没有联系，基本用法也不相同！！！！</strong></p>
+<p>在OSX下建议改用lsof<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i -P <span class="string">| grep -i "</span><span class="number">3000</span><span class="string">"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u539F_u6587_u53C2_u8003"><a href="#u539F_u6587_u53C2_u8003" class="headerlink" title="原文参考"></a>原文参考</h3><p><a href="http://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html" target="_blank" rel="external">http://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html</a><br><a href="https://linux.cn/article-2434-1.html" target="_blank" rel="external">https://linux.cn/article-2434-1.html</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+            <a href="/tags/server/" rel="tag">#server</a>
+          
+            <a href="/tags/netstat/" rel="tag">#netstat</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/18/how-to-find-process-and-kill-it/" rel="next" title="How to find process and kill it">
+                <i class="fa fa-chevron-left"></i> How to find process and kill it
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/19/hexo-hey/" rel="prev" title="Hexo博客管理神器：hexo hey">
+                Hexo博客管理神器：hexo hey <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/19/netstat/"
+           data-title="Linux netstat解析" data-url="http://paranoidq.github.io/2016/05/19/netstat/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Paranoid Qian" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Paranoid Qian</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">So we beat on, boats against the current, borne back ceaselessly into the past.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/tags/碎片/">
+              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/paranoidq" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2094289700/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.hollischuang.com/" target="_blank">HollisChuang</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5E38_u89C1_u53C2_u6570"><span class="nav-number">1.</span> <span class="nav-text">常见参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5217_u51FA_u6240_u6709_u8FDE_u63A5"><span class="nav-number">2.</span> <span class="nav-text">列出所有连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5217_u51FATCP_u7AEF_u53E3"><span class="nav-number">3.</span> <span class="nav-text">列出TCP端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5217_u51FA_u6240_u6709_u5904_u4E8E_u76D1_u542C_u72B6_u6001_u7684_Sockets"><span class="nav-number">4.</span> <span class="nav-text">列出所有处于监听状态的 Sockets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5728_netstat__u8F93_u51FA_u4E2D_u663E_u793A_PID__u548C_u8FDB_u7A0B_u540D_u79F0_netstat_-p"><span class="nav-number">5.</span> <span class="nav-text">在 netstat 输出中显示 PID 和进程名称 netstat -p</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5728_netstat__u8F93_u51FA_u4E2D_u4E0D_u663E_u793A_u4E3B_u673A_uFF0C_u7AEF_u53E3_u548C_u7528_u6237_u540D__28host_2C_port_or_user_29"><span class="nav-number">6.</span> <span class="nav-text">在 netstat 输出中不显示主机，端口和用户名 (host, port or user)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u627E_u51FA_u7A0B_u5E8F_u8FD0_u884C_u7684_u7AEF_u53E3"><span class="nav-number">7.</span> <span class="nav-text">找出程序运行的端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u663E_u793A_u7F51_u7EDC_u63A5_u53E3_u5217_u8868"><span class="nav-number">8.</span> <span class="nav-text">显示网络接口列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6CE8_u610F"><span class="nav-number">9.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u539F_u6587_u53C2_u8003"><span class="nav-number">10.</span> <span class="nav-text">原文参考</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paranoid Qian</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"paranoidq"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>

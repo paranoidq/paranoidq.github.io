@@ -1,0 +1,854 @@
+<!doctype html>
+<html class="theme-next ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,exception," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="百末旨酒布兰生" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="基本理解异常的本质：
+
+编程错误导致的异常，如NullPointerException和IllegalArgumentException。
+客户端错误导致的异常，如解析一个不正常的xml文档抛出异常。
+资源错误导致的异常，如系统内存不足、网络连接失败、数据库连接失败。
+
+Java两种异常类型：
+
+Unchecked Exception
+Checked Exception均继承于Exception">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Exception处理总结">
+<meta property="og:url" content="http://paranoidq.github.io/2016/05/04/java-exception/index.html">
+<meta property="og:site_name" content="百末旨酒布兰生">
+<meta property="og:description" content="基本理解异常的本质：
+
+编程错误导致的异常，如NullPointerException和IllegalArgumentException。
+客户端错误导致的异常，如解析一个不正常的xml文档抛出异常。
+资源错误导致的异常，如系统内存不足、网络连接失败、数据库连接失败。
+
+Java两种异常类型：
+
+Unchecked Exception
+Checked Exception均继承于Exception">
+<meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java Exception处理总结">
+<meta name="twitter:description" content="基本理解异常的本质：
+
+编程错误导致的异常，如NullPointerException和IllegalArgumentException。
+客户端错误导致的异常，如解析一个不正常的xml文档抛出异常。
+资源错误导致的异常，如系统内存不足、网络连接失败、数据库连接失败。
+
+Java两种异常类型：
+
+Unchecked Exception
+Checked Exception均继承于Exception">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide',
+    motion: false
+  };
+</script>
+
+  <title> Java Exception处理总结 | 百末旨酒布兰生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">百末旨酒布兰生</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">孤舟蓑笠翁，独钓寒江雪</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tops">
+          <a href="/tags/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-收藏 fa-fw"></i> <br />
+            
+            收藏
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/tags/碎片/" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            碎片
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/tags/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-TODO fa-fw"></i> <br />
+            
+            待办
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <form class="site-search-form">
+    <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+  </form>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'y8KLPRJrwwY5Yy5cHpLP','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java Exception处理总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-04T15:00:21+08:00" content="2016-05-04">
+              2016-05-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/04/java-exception/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/04/java-exception/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h3 id="u57FA_u672C_u7406_u89E3"><a href="#u57FA_u672C_u7406_u89E3" class="headerlink" title="基本理解"></a>基本理解</h3><p>异常的本质：</p>
+<ul>
+<li>编程错误导致的异常，如NullPointerException和IllegalArgumentException。</li>
+<li>客户端错误导致的异常，如解析一个不正常的xml文档抛出异常。</li>
+<li>资源错误导致的异常，如系统内存不足、网络连接失败、数据库连接失败。</li>
+</ul>
+<p>Java两种异常类型：</p>
+<ul>
+<li>Unchecked Exception</li>
+<li>Checked Exception<br>均继承于Exception</li>
+</ul>
+<a id="more"></a>
+<h3 id="u5B9E_u8DF5_u7ECF_u9A8C"><a href="#u5B9E_u8DF5_u7ECF_u9A8C" class="headerlink" title="实践经验"></a>实践经验</h3><h4 id="1-_u5F02_u5E38_u53D1_u751F_u65F6_u5BA2_u6237_u7AEF_u5982_u4F55_u5E94_u5BF9_uFF1F"><a href="#1-_u5F02_u5E38_u53D1_u751F_u65F6_u5BA2_u6237_u7AEF_u5982_u4F55_u5E94_u5BF9_uFF1F" class="headerlink" title="1.异常发生时客户端如何应对？"></a>1.异常发生时客户端如何应对？</h4><p>如果客户端可以采取行动恢复，则用checked exception。否则就应该使用unchecked exception。<br>尽量使用unchecked exception，不要强迫客户端API必须处理它们。<br>对于所有的编程错误，使用unchecked exception。</p>
+<h4 id="2-_u4FDD_u6301_u5C01_u88C5_u6027"><a href="#2-_u4FDD_u6301_u5C01_u88C5_u6027" class="headerlink" title="2.保持封装性"></a>2.保持封装性</h4><p>不要将针对某些特性实现的checked exception用到更高层次去。例如不要让SQLException扩散到逻辑层，因为逻辑层不需要知道SQLException。大部分情况下，应该将其转化为unchecked exception抛出<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dataAccessCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//... some code that throws SQLException</span></span><br><span class="line">    &#125; <span class="keyword">catch</span>(SQLException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>大多数例如FileNotFoundException的异常客户端无法恢复，此时其实应该通过返回一些信息给最上层逻辑，然后由业务逻辑决定提示用户如何重新操作。(??)如果强行抛出checked exception，会导致客户端API必须处理无法处理的异常，同时错误的信息无法给到最上层的用户逻辑层。</p>
+<p><strong>实际上，在项目中应该讲这个异常转化为自定义的runtime异常，记录SQLException的异常信息，然后在外层可以选择同一catch之后log。之所以是转化为runtime异常而不是checked exception，是因为大多数情况下，这种SQLException无法恢复，系统要做的工作实际上仅仅是log或者给用户“友好”的提示</strong></p>
+<h4 id="3-_u81EA_u5B9A_u4E49_u5F02_u5E38"><a href="#3-_u81EA_u5B9A_u4E49_u5F02_u5E38" class="headerlink" title="3.自定义异常"></a>3.自定义异常</h4><p>如果自定义异常没有有用额外信息，那么直接用RuntimeException即可。</p>
+<h4 id="4-_u5F02_u5E38_u6587_u6863_u5316"><a href="#4-_u5F02_u5E38_u6587_u6863_u5316" class="headerlink" title="4.异常文档化"></a>4.异常文档化</h4><p>@throws标签指明API可能抛出的<strong>所有</strong>异常，包括checked exception和unchecked exception。</p>
+<h4 id="5-_u6700_u5916_u5C42catch_RuntimeException"><a href="#5-_u6700_u5916_u5C42catch_RuntimeException" class="headerlink" title="5.最外层catch RuntimeException"></a>5.最外层catch RuntimeException</h4><p>虽然runtime exception是程序员犯下的错误，但是为了程序在运行的时候不崩溃，所以仍然要在最外层catch所有的异常，并打log，便于之后的bugfix。(<a href="ulricqin.com/post/java-exception">ulricqin.com/post/java-exception</a>)</p>
+<h4 id="6-_u629B_u51FA_u548C_u6355_u83B7"><a href="#6-_u629B_u51FA_u548C_u6355_u83B7" class="headerlink" title="6.抛出和捕获"></a>6.抛出和捕获</h4><p><strong>尽早抛出，尽晚捕获</strong></p>
+<p>尽早抛出能够具体显示异常发生的位置。<br>尽晚捕获：只有在代码能够处理时才捕获，否则应该继续抛出。过早捕获会导致上层能够处理的调用程序无法获得异常通知。</p>
+<h4 id="7-_u5229_u7528try_with_resources_u6253_u5F00_u548C_u81EA_u52A8_u5173_u95ED_u8D44_u6E90"><a href="#7-_u5229_u7528try_with_resources_u6253_u5F00_u548C_u81EA_u52A8_u5173_u95ED_u8D44_u6E90" class="headerlink" title="7.利用try with resources打开和自动关闭资源"></a>7.利用try with resources打开和自动关闭资源</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>(MyResouce mr = <span class="keyword">new</span> MyResource()) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当运行至try-catch块之外后，资源会被运行环境自动关闭，无需finally。</p>
+<h4 id="8-_u907F_u514D_u7A7Acatch_u5757"><a href="#8-_u907F_u514D_u7A7Acatch_u5757" class="headerlink" title="8.避免空catch块"></a>8.避免空catch块</h4><p>要么抛出，要么就要在catch中做出具体的处理。</p>
+<h4 id="9-_u4E0D_u8981_u7528_u5F02_u5E38_u505A_u63A7_u5236_u6D41_u4E4B_u7528"><a href="#9-_u4E0D_u8981_u7528_u5F02_u5E38_u505A_u63A7_u5236_u6D41_u4E4B_u7528" class="headerlink" title="9.不要用异常做控制流之用"></a>9.不要用异常做控制流之用</h4><h3 id="u5982_u4F55_u6784_u5EFA_u4F18_u96C5_u7684Java_u5F02_u5E38_u5904_u7406_u6846_u67B6"><a href="#u5982_u4F55_u6784_u5EFA_u4F18_u96C5_u7684Java_u5F02_u5E38_u5904_u7406_u6846_u67B6" class="headerlink" title="如何构建优雅的Java异常处理框架"></a>如何构建优雅的Java异常处理框架</h3><ul>
+<li>设计一个系统的异常基类AppException，继承与RuntimeException，包含自定义的异常处理逻辑。</li>
+<li>系统中所有的异常都应该转译为AppException，当异常发生时，客户端接收AppException，并根据内部的原始信息进行处理。</li>
+<li>根据不同的层次和逻辑，设计子类，如AppDAOExcepion等，根据需要将原始异常都转化为自定义的子类异常抛出，由于这些自定义异常是unchecked exception，因此不会破坏中间层的代码的API。</li>
+<li>根据需要，在恰当的层次捕获这些AppException，然后做处理、提示和log。</li>
+</ul>
+<p>具体而言，例如在三层架构中dao-service-controller:</p>
+<ul>
+<li>自定义异常，包括基类和分类的异常。</li>
+<li>service将dao层和自身的异常进行转译封装，按照具体的分类，然后抛出为AppException。</li>
+<li>controller根据需要处理这些异常信息，可以集中捕获并进行log。</li>
+</ul>
+<p>Spring的异常框架可以借鉴一下！！！</p>
+<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="blog.jobbole.com/18291/">异常处理最佳实践</a></li>
+<li><a href="ulricqin.com/post/java-exception">ulricqin.com/post/java-exception</a></li>
+<li><a href="blog.csdn.net/hp91035/article/details/49305225">blog.csdn.net/hp91035/article/details/49305225</a></li>
+</ol>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+            <a href="/tags/exception/" rel="tag">#exception</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/25/白色巨塔影评/" rel="next" title="白色巨塔影评（转）">
+                <i class="fa fa-chevron-left"></i> 白色巨塔影评（转）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/14/python-list-dir/" rel="prev" title="Python如何列出目录下的所有文件">
+                Python如何列出目录下的所有文件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/04/java-exception/"
+           data-title="Java Exception处理总结" data-url="http://paranoidq.github.io/2016/05/04/java-exception/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Paranoid Qian" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Paranoid Qian</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">So we beat on, boats against the current, borne back ceaselessly into the past.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/tags/碎片/">
+              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/paranoidq" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2094289700/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.hollischuang.com/" target="_blank">HollisChuang</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u57FA_u672C_u7406_u89E3"><span class="nav-number">1.</span> <span class="nav-text">基本理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B9E_u8DF5_u7ECF_u9A8C"><span class="nav-number">2.</span> <span class="nav-text">实践经验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-_u5F02_u5E38_u53D1_u751F_u65F6_u5BA2_u6237_u7AEF_u5982_u4F55_u5E94_u5BF9_uFF1F"><span class="nav-number">2.1.</span> <span class="nav-text">1.异常发生时客户端如何应对？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-_u4FDD_u6301_u5C01_u88C5_u6027"><span class="nav-number">2.2.</span> <span class="nav-text">2.保持封装性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-_u81EA_u5B9A_u4E49_u5F02_u5E38"><span class="nav-number">2.3.</span> <span class="nav-text">3.自定义异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-_u5F02_u5E38_u6587_u6863_u5316"><span class="nav-number">2.4.</span> <span class="nav-text">4.异常文档化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-_u6700_u5916_u5C42catch_RuntimeException"><span class="nav-number">2.5.</span> <span class="nav-text">5.最外层catch RuntimeException</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-_u629B_u51FA_u548C_u6355_u83B7"><span class="nav-number">2.6.</span> <span class="nav-text">6.抛出和捕获</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-_u5229_u7528try_with_resources_u6253_u5F00_u548C_u81EA_u52A8_u5173_u95ED_u8D44_u6E90"><span class="nav-number">2.7.</span> <span class="nav-text">7.利用try with resources打开和自动关闭资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-_u907F_u514D_u7A7Acatch_u5757"><span class="nav-number">2.8.</span> <span class="nav-text">8.避免空catch块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-_u4E0D_u8981_u7528_u5F02_u5E38_u505A_u63A7_u5236_u6D41_u4E4B_u7528"><span class="nav-number">2.9.</span> <span class="nav-text">9.不要用异常做控制流之用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5982_u4F55_u6784_u5EFA_u4F18_u96C5_u7684Java_u5F02_u5E38_u5904_u7406_u6846_u67B6"><span class="nav-number">3.</span> <span class="nav-text">如何构建优雅的Java异常处理框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paranoid Qian</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"paranoidq"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>

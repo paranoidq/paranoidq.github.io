@@ -1,0 +1,819 @@
+<!doctype html>
+<html class="theme-next ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="百末旨酒布兰生" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content=".gitignore
+如何忽略所有文件除了某些文件
+
+1234567891011# Ignore everything*# But not these files...!.gitignore!script.pl!template.latex# etc...# ...even if they are in subdirectories!*/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git Fantastic Usages">
+<meta property="og:url" content="http://paranoidq.github.io/2016/01/20/Git-Fantastic-Usages/index.html">
+<meta property="og:site_name" content="百末旨酒布兰生">
+<meta property="og:description" content=".gitignore
+如何忽略所有文件除了某些文件
+
+1234567891011# Ignore everything*# But not these files...!.gitignore!script.pl!template.latex# etc...# ...even if they are in subdirectories!*/">
+<meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git Fantastic Usages">
+<meta name="twitter:description" content=".gitignore
+如何忽略所有文件除了某些文件
+
+1234567891011# Ignore everything*# But not these files...!.gitignore!script.pl!template.latex# etc...# ...even if they are in subdirectories!*/">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide',
+    motion: false
+  };
+</script>
+
+  <title> Git Fantastic Usages | 百末旨酒布兰生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">百末旨酒布兰生</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">孤舟蓑笠翁，独钓寒江雪</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tops">
+          <a href="/tags/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-收藏 fa-fw"></i> <br />
+            
+            收藏
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/tags/碎片/" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            碎片
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/tags/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-TODO fa-fw"></i> <br />
+            
+            待办
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <form class="site-search-form">
+    <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+  </form>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'y8KLPRJrwwY5Yy5cHpLP','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Git Fantastic Usages
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-01-20T12:20:08+08:00" content="2016-01-20">
+              2016-01-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/20/Git-Fantastic-Usages/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/20/Git-Fantastic-Usages/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h3 id="gitignore"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore</h3><ol>
+<li>如何忽略所有文件除了某些文件</li>
+</ol>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># Ignore everything</span></span><br><span class="line">*</span><br><span class="line"></span><br><span class="line"><span class="meta"># But not these files...</span></span><br><span class="line">!.gitignore</span><br><span class="line">!script.pl</span><br><span class="line">!template.latex</span><br><span class="line"><span class="meta"># etc...</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># ...even if they are in subdirectories</span></span><br><span class="line">!*/</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="u5206_u652F_u7BA1_u7406"><a href="#u5206_u652F_u7BA1_u7406" class="headerlink" title="分支管理"></a>分支管理</h3><p>创建本地分支<br><code>git checkout -b dev</code></p>
+<p>删除本地分支<br><code>git branch -d dev (用-D强行删除没有merge到master的分支)</code></p>
+<p>查看本地分支<br><code>git branch</code></p>
+<p>查看包括远程分支<br><code>git branch -a</code></p>
+<p>删除远程分支<br><code>git push origin --delete dev</code></p>
+<h3 id="u64A4_u9500_u5220_u9664"><a href="#u64A4_u9500_u5220_u9664" class="headerlink" title="撤销删除"></a>撤销删除</h3><p>注： checkout、reset既可以用于commit级别的，也可以用于文件级别的。revert只能用于commit级别的。</p>
+<h4 id="Case1_3A__u4FEE_u6539_u4E86_u5DE5_u4F5C_u533A_uFF0C_u6CA1_u6709add"><a href="#Case1_3A__u4FEE_u6539_u4E86_u5DE5_u4F5C_u533A_uFF0C_u6CA1_u6709add" class="headerlink" title="Case1: 修改了工作区，没有add"></a>Case1: 修改了工作区，没有add</h4><figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- &lt;<span class="keyword">file</span>&gt; <span class="comment">// 用版本库的版本替换工作区的版本</span></span><br></pre></td></tr></table></figure>
+<h4 id="Case2_3A__u4FEE_u6539_u4E86_u5DE5_u4F5C_u533A_uFF0C_u5E76_u4E14add_u4E86_uFF0C_u4F46_u662F_u8FD8_u6CA1_u6709commit"><a href="#Case2_3A__u4FEE_u6539_u4E86_u5DE5_u4F5C_u533A_uFF0C_u5E76_u4E14add_u4E86_uFF0C_u4F46_u662F_u8FD8_u6CA1_u6709commit" class="headerlink" title="Case2: 修改了工作区，并且add了，但是还没有commit"></a>Case2: 修改了工作区，并且add了，但是还没有commit</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">reset</span> <span class="keyword">HEAD</span> &lt;<span class="keyword">file</span>&gt; // 撤销<span class="keyword">add</span>，回退到工作区（<span class="comment">--mixed）</span></span><br><span class="line">git checkout <span class="comment">-- &lt;file&gt; // 回退工作区到前一次的commit状态，此时工作区clean</span></span><br></pre></td></tr></table></figure>
+<h4 id="Case3_3A__u5DF2_u7ECFcommit_u4E86"><a href="#Case3_3A__u5DF2_u7ECFcommit_u4E86" class="headerlink" title="Case3: 已经commit了"></a>Case3: 已经commit了</h4><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard &lt;commit_id&gt; <span class="comment">// 回退commit</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 查看commit_id</span></span><br><span class="line"><span class="symbol">$</span> git <span class="built-in">log</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">$</span> git reflog <span class="comment">// 记录每一次的命令，可以反悔某一次回退</span></span><br><span class="line"><span class="symbol">$</span> git reset &lt;commit_id&gt;  <span class="comment">// 反悔之前的回退操作</span></span><br></pre></td></tr></table></figure>
+<p>注：</p>
+<ul>
+<li>–soft： staged snapshot 和 working directory 都未被改变 (建议在命令行执行后，再输入 git status 查看状态)</li>
+<li>–mixed： staged snapshot 被更新， working directory 未被更改。【这是默认选项】（建议同上)</li>
+<li>–hard： staged snapshot 和 working directory 都将回退，彻底删除没有commit的更改（危险！）</li>
+</ul>
+<h3 id="Case4_uFF1A_u56DE_u9000_u8FDC_u7A0B_u7248_u672C_u5E93"><a href="#Case4_uFF1A_u56DE_u9000_u8FDC_u7A0B_u7248_u672C_u5E93" class="headerlink" title="Case4：回退远程版本库"></a>Case4：回退远程版本库</h3><p>git rest 适合在自己的版本库工作，不能用于远端版本库。可以用<code>git push -f</code>命令强行推送回退后修改的内容，但是会影响他人的更新合并。更好的建议是使用revert，它不会删除原有的commit，而是添加了一个commit，内容就是你想要反悔到的那个版本。</p>
+<p><a href="https://ruby-china.org/topics/11637" target="_blank" rel="external">https://ruby-china.org/topics/11637</a><br><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ git log</span><br><span class="line">commit e7c8599d29b61579ef31789309b4e691d6d3a83f</span><br><span class="line"><span class="symbol">Author:</span> fsword <span class="params">&lt;li.jianye@gmail.com&gt;</span></span><br><span class="line"><span class="symbol">Date:</span>   Sat Jun <span class="number">8</span> <span class="number">14</span>:<span class="number">27</span>:<span class="number">11</span> <span class="number">2013</span> +<span class="number">0800</span></span><br><span class="line"></span><br><span class="line">    补充后续计划和调整方案</span><br><span class="line"></span><br><span class="line">commit d501310d245fe50959e8bcc1f5465bb64d67d1c8</span><br><span class="line"><span class="symbol">Author:</span> fsword <span class="params">&lt;li.jianye@gmail.com&gt;</span></span><br><span class="line"><span class="symbol">Date:</span>   Fri Jun <span class="number">7</span> <span class="number">14</span>:<span class="number">36</span>:<span class="number">49</span> <span class="number">2013</span> +<span class="number">0800</span></span><br><span class="line"></span><br><span class="line">    完成基本的设计</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>决定放弃最近提交的 e7c8599d29b61579ef31789309b4e691d6d3a83f<br><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="keyword">revert </span>e7c8599d29b61579ef31789309b4e691d6d3a83f</span><br></pre></td></tr></table></figure></p>
+<p>现在查看log，发现多了一次commit，其内容就是回到了原来的那个阶段</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">commit <span class="number">7752</span>d450a91a4c9663f5cd03f7ef3ff6d4848a12</span><br><span class="line"><span class="symbol">Author:</span> fsword <span class="params">&lt;li.jianye@gmail.com&gt;</span></span><br><span class="line"><span class="symbol">Date:</span>   Tue Jun <span class="number">11</span> <span class="number">01</span>:<span class="number">35</span>:<span class="number">58</span> <span class="number">2013</span> +<span class="number">0800</span></span><br><span class="line"></span><br><span class="line">    Revert <span class="string">"补充后续计划和调整方案"</span></span><br><span class="line"></span><br><span class="line">    This reverts commit e7c8599d29b61579ef31789309b4e691d6d3a83f.</span><br><span class="line"></span><br><span class="line">commit e7c8599d29b61579ef31789309b4e691d6d3a83f</span><br><span class="line"><span class="symbol">Author:</span> fsword <span class="params">&lt;li.jianye@gmail.com&gt;</span></span><br><span class="line"><span class="symbol">Date:</span>   Sat Jun <span class="number">8</span> <span class="number">14</span>:<span class="number">27</span>:<span class="number">11</span> <span class="number">2013</span> +<span class="number">0800</span></span><br><span class="line"></span><br><span class="line">    补充后续计划和调整方案</span><br><span class="line"></span><br><span class="line">commit d501310d245fe50959e8bcc1f5465bb64d67d1c8</span><br><span class="line"><span class="symbol">Author:</span> fsword <span class="params">&lt;li.jianye@gmail.com&gt;</span></span><br><span class="line"><span class="symbol">Date:</span>   Fri Jun <span class="number">7</span> <span class="number">14</span>:<span class="number">36</span>:<span class="number">49</span> <span class="number">2013</span> +<span class="number">0800</span></span><br><span class="line"></span><br><span class="line">    完成基本的设计</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>比较一下，发现已经和提交前一样了<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">$</span> git diff d501310d245fe50959e8bcc1f5465bb64d67d1c8</span><br><span class="line"><span class="symbol">$</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Case5_3A_Review_u524D_u9762_u7684_u67D0_u4E00_u4E2A_u7248_u672C_u63D0_u4EA4"><a href="#Case5_3A_Review_u524D_u9762_u7684_u67D0_u4E00_u4E2A_u7248_u672C_u63D0_u4EA4" class="headerlink" title="Case5: Review前面的某一个版本提交"></a>Case5: Review前面的某一个版本提交</h4><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>git checkout &lt;commit_id&gt;</span><br><span class="line"><span class="variable">$ </span>git checkout HEAD~n</span><br></pre></td></tr></table></figure>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag">#git</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/19/Rename-file-in-itelliJ-got-git-error-when-commit/" rel="next" title="Git撤销修改操作指南">
+                <i class="fa fa-chevron-left"></i> Git撤销修改操作指南
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/20/docker-study-record/" rel="prev" title="Docker学习笔记">
+                Docker学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/20/Git-Fantastic-Usages/"
+           data-title="Git Fantastic Usages" data-url="http://paranoidq.github.io/2016/01/20/Git-Fantastic-Usages/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Paranoid Qian" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Paranoid Qian</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">So we beat on, boats against the current, borne back ceaselessly into the past.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/tags/碎片/">
+              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/paranoidq" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2094289700/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.hollischuang.com/" target="_blank">HollisChuang</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#gitignore"><span class="nav-number">1.</span> <span class="nav-text">.gitignore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5206_u652F_u7BA1_u7406"><span class="nav-number">2.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u64A4_u9500_u5220_u9664"><span class="nav-number">3.</span> <span class="nav-text">撤销删除</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Case1_3A__u4FEE_u6539_u4E86_u5DE5_u4F5C_u533A_uFF0C_u6CA1_u6709add"><span class="nav-number">3.1.</span> <span class="nav-text">Case1: 修改了工作区，没有add</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Case2_3A__u4FEE_u6539_u4E86_u5DE5_u4F5C_u533A_uFF0C_u5E76_u4E14add_u4E86_uFF0C_u4F46_u662F_u8FD8_u6CA1_u6709commit"><span class="nav-number">3.2.</span> <span class="nav-text">Case2: 修改了工作区，并且add了，但是还没有commit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Case3_3A__u5DF2_u7ECFcommit_u4E86"><span class="nav-number">3.3.</span> <span class="nav-text">Case3: 已经commit了</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Case4_uFF1A_u56DE_u9000_u8FDC_u7A0B_u7248_u672C_u5E93"><span class="nav-number">4.</span> <span class="nav-text">Case4：回退远程版本库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Case5_3A_Review_u524D_u9762_u7684_u67D0_u4E00_u4E2A_u7248_u672C_u63D0_u4EA4"><span class="nav-number">4.1.</span> <span class="nav-text">Case5: Review前面的某一个版本提交</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paranoid Qian</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"paranoidq"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>

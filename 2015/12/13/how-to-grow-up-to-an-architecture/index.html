@@ -1,0 +1,830 @@
+<!doctype html>
+<html class="theme-next ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="架构,career," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="百末旨酒布兰生" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="互联网的蓬勃发展，让无数的「屌丝」程序员在一夜之间，仿佛都变成了「香饽饽」。但是，没有几个做开发的同学真的想做一辈子「码农」，很多同学都希望当上CTO，最终迎娶「白富美」，从此过上幸福美满的生活。
+诚然，CTO 的路不是那么好走的，而其中最重要的先决条件就是你要先成为一名优秀的架构师，那么普通程序员如何才能成为架构师呢？让我们听听移动开发精英群里，这些国内顶级的大牛怎么说！本文系 OneAPM 市">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to grow up to be an architect(转)">
+<meta property="og:url" content="http://paranoidq.github.io/2015/12/13/how-to-grow-up-to-an-architecture/index.html">
+<meta property="og:site_name" content="百末旨酒布兰生">
+<meta property="og:description" content="互联网的蓬勃发展，让无数的「屌丝」程序员在一夜之间，仿佛都变成了「香饽饽」。但是，没有几个做开发的同学真的想做一辈子「码农」，很多同学都希望当上CTO，最终迎娶「白富美」，从此过上幸福美满的生活。
+诚然，CTO 的路不是那么好走的，而其中最重要的先决条件就是你要先成为一名优秀的架构师，那么普通程序员如何才能成为架构师呢？让我们听听移动开发精英群里，这些国内顶级的大牛怎么说！本文系 OneAPM 市">
+<meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="How to grow up to be an architect(转)">
+<meta name="twitter:description" content="互联网的蓬勃发展，让无数的「屌丝」程序员在一夜之间，仿佛都变成了「香饽饽」。但是，没有几个做开发的同学真的想做一辈子「码农」，很多同学都希望当上CTO，最终迎娶「白富美」，从此过上幸福美满的生活。
+诚然，CTO 的路不是那么好走的，而其中最重要的先决条件就是你要先成为一名优秀的架构师，那么普通程序员如何才能成为架构师呢？让我们听听移动开发精英群里，这些国内顶级的大牛怎么说！本文系 OneAPM 市">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide',
+    motion: false
+  };
+</script>
+
+  <title> How to grow up to be an architect(转) | 百末旨酒布兰生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">百末旨酒布兰生</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">孤舟蓑笠翁，独钓寒江雪</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tops">
+          <a href="/tags/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-收藏 fa-fw"></i> <br />
+            
+            收藏
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/tags/碎片/" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            碎片
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/tags/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-TODO fa-fw"></i> <br />
+            
+            待办
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <form class="site-search-form">
+    <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+  </form>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'y8KLPRJrwwY5Yy5cHpLP','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                How to grow up to be an architect(转)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2015-12-13T13:55:06+08:00" content="2015-12-13">
+              2015-12-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/career/" itemprop="url" rel="index">
+                    <span itemprop="name">career</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/12/13/how-to-grow-up-to-an-architecture/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/13/how-to-grow-up-to-an-architecture/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>互联网的蓬勃发展，让无数的「屌丝」程序员在一夜之间，仿佛都变成了「香饽饽」。但是，没有几个做开发的同学真的想做一辈子「码农」，很多同学都希望当上CTO，最终迎娶「白富美」，从此过上幸福美满的生活。</p>
+<p>诚然，CTO 的路不是那么好走的，而其中最重要的先决条件就是你要先成为一名优秀的架构师，那么普通程序员如何才能成为架构师呢？让我们听听移动开发精英群里，这些国内顶级的大牛怎么说！本文系 OneAPM 市场部王鹏整理。</p>
+<a id="more"></a>
+<p>三生社群副总裁，ThinkPHP核心开发者罗飞总结：</p>
+<p>程序员可能的发展路线是什么？</p>
+<p>先说说这张图，它几乎表示出了一个程序员可能走的所有职业路线。 当我们刚开始还是个初级开发的时候只能把自己变成高级，开发者才能有更多的选择。你可以选择管理线、专家线或者小老板线。（图有四个象限，x轴代表金钱， y轴代表时间。）</p>
+<p>我们学习知识的路线是： 技术-&gt;技术+管理-&gt;技术+管理+商业。但是随着阶段不一样，我们学习的知识也有不同，刚开始我们只做开发，只需要学习技术知识就行了，后面我们做到了管理职位，不仅要懂技术还要学习管理知识，然后我们想要成为CTO\CEO或小老板，必须得学习一些商业知识才行。</p>
+<p>想成为架构师，你需要经历3个阶段的磨练！</p>
+<p>从技术上来讲，要成为高级工程师或架构师，我认为可能需要经历3个阶段： 实现-&gt;借鉴-&gt;优化。</p>
+<p>第一个阶段：实现</p>
+<p>在这阶段我们只在乎功能的实现，不会考虑性能优化，我们会觉得一些功能不会做，一些功能自己没做，我们只要实现了功能，就觉得很有成就感。在这个阶段中，我们要多去做事，没做过的就去做。要注意培养自己的全面能力，前端、后端、服务器等要去接触。其实，这个阶段就好比人类的居住环境，原始人的时候只考虑实现遮风避雨就行了，不考虑住得舒不舒服，所以找个山洞住就可以了。</p>
+<p>第二个阶段：借鉴</p>
+<p>当我们觉得基本所有功能自己都能实现的时候，我们会遇到自己的第一个瓶颈，这时候不要自满，要发现那只是自己的第一个瓶颈而已。其实，我们每个人自己的提升空间还很大，这时候建议大家多借鉴别人的东西，看一些开源程序的代码，其实读别人的程序能学到很多东西。或许有人认为别人能实现的自己也能实现，不屑于看别人的东西，但这显然阻碍了自己进步的空间！</p>
+<p>美国一位大师Matt Zandstra说过这样一句话：“我们正在努力开发的功能，或许已经被其他程序员实现过无数次，我们怎么不借鉴他们的，而是把重心放在自己特有的业务逻辑上呢？”这个阶段我还是拿人类居住环境来做比喻：人类在一定阶段后， 好像能借鉴鸟搭鸟窝的形式，自己能“搭建”茅草屋了。</p>
+<p>第三个阶段：优化</p>
+<p>当我们功能都能实现了，也借鉴了许多别人的东西时候，借鉴阶段也是有瓶颈的，当我们看了一两年开源代码后， 再看新的程序，已经看不出新的编程思想了，感觉编程思想都是以前看过的。这个时候，我们的重心会想着怎么优化我们的代码：</p>
+<p>我们会考虑代码的可读性、安全性、可扩展性。这时候建议大家可以看一些设计模式、编程思想、安全方面的书。 我说的这三个阶段可能属于从初级程序员到高级程序员的阶段，离真正的架构师可能还有点距离，因为真正很牛的架构师还会理解公司业务需求，能知道什么阶段用什么技术！这是非常重要的。</p>
+<hr>
+<p>经典语录分享：</p>
+<p>唐巧：我的观点是，程序员能够成长为架构师，不仅要靠自己的努力，很大程度上也依赖于机遇。淘宝的系统经历过10次重写，每次都面临新的挑战，这些参与其中的每个人都得到了亲自的锻炼和成长，这也是他们赶上了好时候：电子商务和淘宝的快速发展。</p>
+<p>在这波人过了之后，现在的新人如果想在电商系统上有所深入的成长，再想成为架构师就很难了，因为他们无法深入理解这些设计原理，为什么这样设计能够避免各种“坑”？</p>
+<p>当然，移动开发领域正经历快速变革和发展的时期，这几年做移动开发的人，可以看到这个系统的演进过程，他们很可能成为移动开发专家。他们也有机会去设计一些非常基础的、有挑战的系统，来解决现在移动开发中遇到的问题。总的来说，就是找准趋势，顺势而为，才可能在技术上接触到挑战和机会，单纯的努力可能不一定有效果。</p>
+<hr>
+<p>冯军：我觉得架构师不在于掌握多少前沿的技术语言和牛逼的技术，而是在于对业务和技术发展的理解，能站在公司的角度，明确在不同的阶段用不同的技术架构，能够快速支持业务的发展，保障平台的稳健。</p>
+<p>而且，架构师的技术栈会多元化，因为架构师不仅仅要做好技术（技术不仅仅是包含于开发层面，还有前端构建，运维，测试等领域），还要理解业务，不懂业务的架构师不是一名好架构师。当然，架构也不是设计出来的，而是伴随着项目的发展一步步不断演进出来的。</p>
+<hr>
+<p>薛伟：程序员在基于本位模块开发上，应该多想想支撑业务及整体需求，多考虑支撑业务问题的实际解决，以及突破所辖模块及端的协作兄弟的换位技术思考。只要多实践，多务实解决切实问题，就能自然发展成为架构师，所有技术架构思维其实都是相通的。</p>
+<hr>
+<p>Sama：这个世界上最重要的是人，我们索要学习的也都是人创造的。所以跟随大师和领会大师的意图也非常重要，试想一下你有关注过大师的社交号或者社区吗？大师的作品有没有详细研究过？有没有每天坚持用谷歌查看现在世界上任何与架构有关的文章？有没有遇到问题去学习背后的原理？如果你做到了，就说明你已经在架构师的路上了！</p>
+<p>还有一点就是工具集，架构师的工具集都是精心对比研究过的，因为在架构师眼里效率是至上的。正如「王牌特工」里师傅带给徒弟的特工「武器库」一样！</p>
+<hr>
+<p>富丽饼干：没有完美的架构，只有最适合需求的架构！架构师更要理解需求，理解产品方向和产品经理的思维，一味追求技术上完美的架构，最后很容易做成空中楼阁，百度腾讯都很强调架构师对产品的理解和产品经理的沟通能力。</p>
+<hr>
+<p>陈驰远：在技术方面，我觉得架构师首先得了解自己做的业务，业务上有规划，能找到现阶段最适合解决业务上问题的方案，并且对之后的发展有概念和对策。同时，保持对业界技术的关注，知道如何使用新技术解放生产力。永远只有最合适业务的架构！</p>
+<p>此外，借力也很关键，架构师得有一定的人脉，遇到自己不擅长的问题，能找到擅长问题的牛人，向他们学习，可以少走很多弯路！</p>
+<hr>
+<p>伍星：架构师的成长离不开平台的发展。小平台很难造就优秀架构师，架构师都是在瓶颈和崩溃中成长的!</p>
+<hr>
+<p>李帅：基础扎实，多思考，多实践！而且每个人的情况都不太一样，需要因人而异，但最根本的就是对编程的热爱以及对美的思考！（貌似已经提升到哲学的范畴了！）</p>
+<hr>
+<p>牛逼的人都是自学成才的，别指望有人能把你教成大牛！（送给所有阅读本文的程序员同学）</p>
+<p>转自<a href="http://toutiao.io/shares/158348/url" target="_blank" rel="external">开发者头条</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/架构/" rel="tag">#架构</a>
+          
+            <a href="/tags/career/" rel="tag">#career</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/10/git-stash/" rel="next" title="Git stash使用">
+                <i class="fa fa-chevron-left"></i> Git stash使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/18/Python学习资料/" rel="prev" title="Python学习资料">
+                Python学习资料 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/13/how-to-grow-up-to-an-architecture/"
+           data-title="How to grow up to be an architect(转)" data-url="http://paranoidq.github.io/2015/12/13/how-to-grow-up-to-an-architecture/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Paranoid Qian" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Paranoid Qian</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">So we beat on, boats against the current, borne back ceaselessly into the past.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/tags/碎片/">
+              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/paranoidq" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2094289700/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.hollischuang.com/" target="_blank">HollisChuang</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paranoid Qian</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"paranoidq"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>

@@ -1,0 +1,941 @@
+<!doctype html>
+<html class="theme-next ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,jvm,gc," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="百末旨酒布兰生" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="理解Java垃圾回收
+Java垃圾回收的监控
+GC调优
+Apache的MaxClients设置及其对Tomcat Full GC的影响">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GC专家系列-笔记">
+<meta property="og:url" content="http://paranoidq.github.io/2016/01/24/java-gc-experts/index.html">
+<meta property="og:site_name" content="百末旨酒布兰生">
+<meta property="og:description" content="理解Java垃圾回收
+Java垃圾回收的监控
+GC调优
+Apache的MaxClients设置及其对Tomcat Full GC的影响">
+<meta property="og:image" content="http://paranoidq.github.io/img/2016-1-22-1.png">
+<meta property="og:image" content="http://paranoidq.github.io/img/2016-1-22-2.png">
+<meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GC专家系列-笔记">
+<meta name="twitter:description" content="理解Java垃圾回收
+Java垃圾回收的监控
+GC调优
+Apache的MaxClients设置及其对Tomcat Full GC的影响">
+<meta name="twitter:image" content="http://paranoidq.github.io/img/2016-1-22-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide',
+    motion: false
+  };
+</script>
+
+  <title> GC专家系列-笔记 | 百末旨酒布兰生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">百末旨酒布兰生</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">孤舟蓑笠翁，独钓寒江雪</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tops">
+          <a href="/tags/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-收藏 fa-fw"></i> <br />
+            
+            收藏
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/tags/碎片/" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            碎片
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/tags/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-TODO fa-fw"></i> <br />
+            
+            待办
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <form class="site-search-form">
+    <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+  </form>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'y8KLPRJrwwY5Yy5cHpLP','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                GC专家系列-笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-01-24T22:20:29+08:00" content="2016-01-24">
+              2016-01-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/24/java-gc-experts/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/java-gc-experts/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><ol>
+<li><a href="http://segmentfault.com/a/1190000004233812" target="_blank" rel="external">理解Java垃圾回收</a></li>
+<li><a href="http://segmentfault.com/a/1190000004255118" target="_blank" rel="external">Java垃圾回收的监控</a></li>
+<li><a href="http://segmentfault.com/a/1190000004303843" target="_blank" rel="external">GC调优</a></li>
+<li><a href="http://segmentfault.com/a/1190000004316645" target="_blank" rel="external">Apache的MaxClients设置及其对Tomcat Full GC的影响</a></li>
+</ol>
+<a id="more"></a>
+<h3 id="u57FA_u4E8E_u5206_u4EE3_u7684_u5783_u573E_u56DE_u6536"><a href="#u57FA_u4E8E_u5206_u4EE3_u7684_u5783_u573E_u56DE_u6536" class="headerlink" title="基于分代的垃圾回收"></a>基于分代的垃圾回收</h3><h4 id="u5F31_u5206_u4EE3_u5047_u8BBE"><a href="#u5F31_u5206_u4EE3_u5047_u8BBE" class="headerlink" title="弱分代假设"></a>弱分代假设</h4><ul>
+<li>大多数对象很快不可达</li>
+<li>极少数对象出现旧对象持有新对象的引用</li>
+</ul>
+<h4 id="u57FA_u672C_u5206_u4EE3"><a href="#u57FA_u672C_u5206_u4EE3" class="headerlink" title="基本分代"></a>基本分代</h4><p><img src="/img/2016-1-22-1.png" alt="java-gc-areas"></p>
+<ul>
+<li>新生代(minor gc)</li>
+<li>老年代(major gc/full gc)</li>
+<li>永久代（方法区）存储着类和接口的元信息以及interned的字符串信息。(major gc/full gc)</li>
+</ul>
+<p><strong>注1：JDK1.7+的变化</strong></p>
+<ul>
+<li>String#intern移出perm区到heap区。<a href="http://tech.meituan.com/in_depth_understanding_string_intern.html" target="_blank" rel="external">http://tech.meituan.com/in_depth_understanding_string_intern.html</a></li>
+<li>JDK1.8移出perm区，改用native memory实现meta区。<a href="http://www.infoq.com/cn/articles/Java-PERMGEN-Removed" target="_blank" rel="external">http://www.infoq.com/cn/articles/Java-PERMGEN-Removed</a></li>
+</ul>
+<p><strong>注2：老年代的对象需要持有新生代对象的引用</strong></p>
+<ul>
+<li>为了处理这种场景，在老年代中设计了”索引表(card table)”，是一个512字节的数据块。不管何时老年代需要持有新生代对象的引用时，都会记录到此表中。当新生代中需要执行GC时，通过搜索此表决定新生代的对象是否为GC的目标对象，从而降低遍历所有老年代对象进行检查的代价。该索引表使用写栅栏(write barrier)进行管理。write barrier是一个允许高性能执行minor GC的设备。尽管它会引入一个数据位的开销，却能带来总体GC时间的大幅降低</li>
+</ul>
+<h4 id="u65B0_u751F_u4EE3"><a href="#u65B0_u751F_u4EE3" class="headerlink" title="新生代"></a>新生代</h4><p><img src="/img/2016-1-22-2.png" alt="java-eden-areas"></p>
+<p>1个Eden区 + 2个Survivor区</p>
+<ul>
+<li>大多数新生对象都被分配在Eden区。</li>
+<li>第一次GC过后Eden中还存活的对象被移到其中一个Survivor区。</li>
+<li>再次GC过程中，Eden中还存活的对象会被移到之前已移入对象的Survivor区。</li>
+<li>一旦该Survivor区域无空间可用时，还存活的对象会从当前Survivor区移到另一个空的Survivor区。而当前Survivor区就会再次置空。</li>
+<li>经过数次在两个Survivor区域移动后还存活的对象最后会被移动到老年代。</li>
+</ul>
+<p><strong>注：如何实现Eden区高效的内存分配：</strong><br>指针碰撞(bump-the-pointer)”和”TLABs(Thread-Local Allocation Buffers)</p>
+<ul>
+<li>Bump-the-pointer技术会跟踪在Eden上新创建的对象。由于新对象被分配在Eden空间的最上面，所以后续如果有新对象创建，只需要判断新创建对象的大小是否满足剩余的Eden空间。如果新对象满足要求，则其会被分配到Eden空间，同样位于Eden的最上面。所以当有新对象创建时，只需要判断此新对象的大小即可，因此具有更快的内存分配速度。</li>
+<li>在多线程环境下，将会有别样的状况。为了满足多个线程在Eden空间上创建对象时的线程安全，不可避免的会引入锁，因此随着锁竞争的开销，创建对象的性能也大打折扣。在HotSpot中正是通过TLABs解决了多线程问题。TLABs允许每个线程在Eden上有自己的小片空间，线程只能访问其自己的TLAB区域，因此bump-the-pointer能通过TLAB在不加锁的情况下完成快速的内存分配。</li>
+</ul>
+<h4 id="u8001_u5E74_u4EE3"><a href="#u8001_u5E74_u4EE3" class="headerlink" title="老年代"></a>老年代</h4><p>五种GC</p>
+<ul>
+<li>Serial GC</li>
+<li>Parallel GC</li>
+<li>Parallel Old GC(Parallel Compacting GC)</li>
+<li>Concurrent Mark &amp; Sweep GC (or “CMS”)</li>
+<li>Garbage First (G1) GC<br>（这里原文讲得不好，参见周志明老师的《深入理解JVM虚拟机》第三章）</li>
+</ul>
+<p><a href="http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html" target="_blank" rel="external">如何选择和设置虚拟机参数</a></p>
+<h3 id="GC_u76D1_u63A7"><a href="#GC_u76D1_u63A7" class="headerlink" title="GC监控"></a>GC监控</h3><h4 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jps # 找到运行的java程序的vid</span><br><span class="line">jstat -gc [vid] 1000  # 每1s显示一次</span><br></pre></td></tr></table></figure>
+<p>其他选项：</p>
+<ul>
+<li>gc  输出堆空间上各分区当前的大小及使用量(Ede, Survivor, Old等)，GC执行的总次数以及累积消耗的执行时长。</li>
+<li>gccapacity  输出堆空间上各分区的最小和最大容量，当前大小，每个区上的GC执行次数(不输出当前使用量和累积的GC耗时)。</li>
+<li>gccause 除了输出 -gcutil提供的信息外，还会输出最后一次GC和当前GC的原因。</li>
+<li>gcnew   新生代上的GC性能数据。</li>
+<li>gcnewcapacity   新生代容量的统计信息。</li>
+<li>gcold   老年代的GC性能数据。</li>
+<li>gcoldcapacity   老年代容量的统计信息。</li>
+<li>gcpermcapacity  持久代(方法区)上的统计信息。</li>
+<li>gcutil  以%的格式输出每个分区的使用量。同时也会输出GC执行的总次数及累积耗时。</li>
+</ul>
+<p>GC输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">S0C: Current survivor space 0 capacity (kB).</span><br><span class="line"></span><br><span class="line">S1C: Current survivor space 1 capacity (kB).</span><br><span class="line"></span><br><span class="line">S0U: Survivor space 0 utilization (kB).</span><br><span class="line"></span><br><span class="line">S1U: Survivor space 1 utilization (kB).</span><br><span class="line"></span><br><span class="line">EC: Current eden space capacity (kB).</span><br><span class="line"></span><br><span class="line">EU: Eden space utilization (kB).</span><br><span class="line"></span><br><span class="line">OC: Current old space capacity (kB).</span><br><span class="line"></span><br><span class="line">OU: Old space utilization (kB).</span><br><span class="line"></span><br><span class="line">MC: Metaspace capacity (kB).</span><br><span class="line"></span><br><span class="line">MU: Metacspace utilization (kB).</span><br><span class="line"></span><br><span class="line">CCSC: Compressed class space capacity (kB).</span><br><span class="line"></span><br><span class="line">CCSU: Compressed class space used (kB).</span><br><span class="line"></span><br><span class="line">YGC: Number of young generation garbage collection events.</span><br><span class="line"></span><br><span class="line">YGCT: Young generation garbage collection time.</span><br><span class="line"></span><br><span class="line">FGC: Number of full GC events.</span><br><span class="line"></span><br><span class="line">FGCT: Full garbage collection time.</span><br><span class="line"></span><br><span class="line">GCT: Total garbage collection time.</span><br></pre></td></tr></table></figure></p>
+<p>尤其需要关注YGC, YGCT, FGC, FGCT和GCT数量的变化。</p>
+<h4 id="u2013verbose_3Agc"><a href="#u2013verbose_3Agc" class="headerlink" title="–verbose:gc"></a>–verbose:gc</h4><ul>
+<li>运行Java应用时的一个JVM选项</li>
+<li>输出每次GC前后新生代和老年代的容量变化及GC耗时</li>
+</ul>
+<h4 id="VisualVM_+_Visual_GC_u63D2_u4EF6"><a href="#VisualVM_+_Visual_GC_u63D2_u4EF6" class="headerlink" title="VisualVM + Visual GC插件"></a>VisualVM + Visual GC插件</h4><ul>
+<li>jvisualvm</li>
+</ul>
+<h4 id="HPJMeter"><a href="#HPJMeter" class="headerlink" title="HPJMeter"></a>HPJMeter</h4><ul>
+<li>分析–verbose:gc输出的结果的GUI</li>
+</ul>
+<h3 id="GC_u8C03_u4F18"><a href="#GC_u8C03_u4F18" class="headerlink" title="GC调优"></a>GC调优</h3><p>GC调优未必需要，如果你做了以下三个事情：</p>
+<ul>
+<li>通过-Xms和-Xmx指定了JVM的堆内存大小</li>
+<li>使用了-server选项</li>
+<li>系统未产生太多的超市日志</li>
+</ul>
+<p><strong>gc调优是不得已的选择！</strong></p>
+<h4 id="GC_u8C03_u4F18_u7684_u76EE_u6807_u5206_u4E3A_u4E24_u7C7B_uFF1A"><a href="#GC_u8C03_u4F18_u7684_u76EE_u6807_u5206_u4E3A_u4E24_u7C7B_uFF1A" class="headerlink" title="GC调优的目标分为两类："></a>GC调优的目标分为两类：</h4><ul>
+<li>降低移动到老年代的对象数量</li>
+<li>缩短Full GC的执行时间</li>
+</ul>
+<p>老年代的GC较新生代会耗时更长，因此减少移动到老年代的对象数量可以降低full GC的频率。减少对象转移到老年代可能会被误解为把对象保留在新生代，然而这是不可能的，相反你可以<strong>调整新生代的空间大小。</strong><br>如果企图通过缩小老年代空间的方式来降低Full GC执行时间，可能会面临OutOfMemoryError或者带来更频繁的Full GC。如果通过增加老年代空间来减少Full GC执行次数，单次Full GC耗时将会增加。因此，<strong>需要为老年代空间设置适当的大小</strong>。</p>
+<p><strong>GC调优的基本规则是对两台或更多的服务器设置不同的选项，并对比性能表现，然后把被证明能提升性能的选项添加到应用服务器上.</strong></p>
+<h4 id="u5F71_u54CDGC_u7684_u9009_u9879_uFF1A"><a href="#u5F71_u54CDGC_u7684_u9009_u9879_uFF1A" class="headerlink" title="影响GC的选项："></a>影响GC的选项：</h4><ol>
+<li><p>空间设置：</p>
+<ul>
+<li><p>堆空间：</p>
+<ul>
+<li>-Xms(启动JVM时的初始堆空间大小)</li>
+<li>-Xmx(堆空间最大值)</li>
+</ul>
+</li>
+<li><p>新生代空间：</p>
+<ul>
+<li>XX:NewRatio（新生代与老年代比例）</li>
+<li>-XX:NewSize (新生代大小)</li>
+<li>-XX:SurvivorRatio（Eden区与Survivor区的比例）</li>
+</ul>
+</li>
+</ul>
+<p>-XX:PermSize和-XX:MaxPermSize可以设置永久代的大小，但是只有PermSize不足爆OutMemoryError的时候才需要。(JDK1.8采用了Meta之后，基本更加不再需要设置了)</p>
+</li>
+<li><p>GC类型：</p>
+<ul>
+<li>Serial GC</li>
+<li>Parallel New GC</li>
+<li>Parallel Scavenge GC</li>
+<li>CMS GC</li>
+<li>G1</li>
+</ul>
+<p>通常Serial GC只有在client端用。</p>
+</li>
+</ol>
+<h4 id="GC_u8C03_u4F18_u7684_u8FC7_u7A0B"><a href="#GC_u8C03_u4F18_u7684_u8FC7_u7A0B" class="headerlink" title="GC调优的过程"></a>GC调优的过程</h4><ol>
+<li>监控</li>
+<li>分析数据并决定是否需要GC调优<ul>
+<li>如果分析结果显示GC耗时在0.1-0.3秒以内的话，一般不需要花费额外的时间做GC调优。然而，如果GC耗时达到1-3秒甚至10秒以上，就需要立即对系统进行GC调优。</li>
+<li>如果你的应用分配了10GB的内存，且不能降低内存容量的话，其实是没办法进行GC调优的。这种情况下，你首先要去思考为什么需要分配这么大的内存</li>
+</ul>
+</li>
+<li>设置GC类型和内存大小</li>
+<li>分析调优的结果</li>
+<li>如果结果可接受，则对所有服务应用调优选项并停止调优</li>
+</ol>
+<p>如果GC执行时间满足以下判断条件，那么GC调优并没那么必须。</p>
+<ul>
+<li>Minor GC执行迅速(50毫秒以内)</li>
+<li>Minor GC执行不频繁(间隔10秒左右一次)</li>
+<li>Full GC执行迅速(1秒以内)</li>
+<li>Full GC执行不频繁(间隔10分钟左右一次)</li>
+</ul>
+<p>内存大小与GC执行次数、每次GC耗时之间的关系：</p>
+<ul>
+<li>大内存<br>  会降低GC执行次数<br>  相应的会增加GC执行耗时</li>
+<li>小内存<br>  会缩知单次GC耗时<br>  相应的会增加GC执行次数</li>
+</ul>
+<p>GC调优的两个案例<a href="http://segmentfault.com/a/1190000004303843" target="_blank" rel="external">http://segmentfault.com/a/1190000004303843</a></p>
+<p>原文出处: <a href="http://www.cubrid.org/blog/tags/Garbage%20Collection/" target="_blank" rel="external">http://www.cubrid.org/blog/tags/Garbage%20Collection/</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+            <a href="/tags/jvm/" rel="tag">#jvm</a>
+          
+            <a href="/tags/gc/" rel="tag">#gc</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/20/docker-study-record/" rel="next" title="Docker学习笔记">
+                <i class="fa fa-chevron-left"></i> Docker学习笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/25/architecture-is-a-pattern-of-thinking/" rel="prev" title="架构是一种思维模式(笔记)">
+                架构是一种思维模式(笔记) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/24/java-gc-experts/"
+           data-title="GC专家系列-笔记" data-url="http://paranoidq.github.io/2016/01/24/java-gc-experts/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Paranoid Qian" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Paranoid Qian</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">So we beat on, boats against the current, borne back ceaselessly into the past.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/tags/碎片/">
+              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/paranoidq" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2094289700/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.hollischuang.com/" target="_blank">HollisChuang</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u57FA_u4E8E_u5206_u4EE3_u7684_u5783_u573E_u56DE_u6536"><span class="nav-number">1.</span> <span class="nav-text">基于分代的垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u5F31_u5206_u4EE3_u5047_u8BBE"><span class="nav-number">1.1.</span> <span class="nav-text">弱分代假设</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u57FA_u672C_u5206_u4EE3"><span class="nav-number">1.2.</span> <span class="nav-text">基本分代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u65B0_u751F_u4EE3"><span class="nav-number">1.3.</span> <span class="nav-text">新生代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u8001_u5E74_u4EE3"><span class="nav-number">1.4.</span> <span class="nav-text">老年代</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC_u76D1_u63A7"><span class="nav-number">2.</span> <span class="nav-text">GC监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#jstat"><span class="nav-number">2.1.</span> <span class="nav-text">jstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u2013verbose_3Agc"><span class="nav-number">2.2.</span> <span class="nav-text">–verbose:gc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VisualVM_+_Visual_GC_u63D2_u4EF6"><span class="nav-number">2.3.</span> <span class="nav-text">VisualVM + Visual GC插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HPJMeter"><span class="nav-number">2.4.</span> <span class="nav-text">HPJMeter</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC_u8C03_u4F18"><span class="nav-number">3.</span> <span class="nav-text">GC调优</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GC_u8C03_u4F18_u7684_u76EE_u6807_u5206_u4E3A_u4E24_u7C7B_uFF1A"><span class="nav-number">3.1.</span> <span class="nav-text">GC调优的目标分为两类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u5F71_u54CDGC_u7684_u9009_u9879_uFF1A"><span class="nav-number">3.2.</span> <span class="nav-text">影响GC的选项：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC_u8C03_u4F18_u7684_u8FC7_u7A0B"><span class="nav-number">3.3.</span> <span class="nav-text">GC调优的过程</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paranoid Qian</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"paranoidq"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>

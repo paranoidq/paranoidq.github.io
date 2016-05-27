@@ -1,0 +1,818 @@
+<!doctype html>
+<html class="theme-next ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux,资料," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="百末旨酒布兰生" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="原文链接Unix高手的十个习惯Unix高手的另外十个习惯
+在单个命令中创建目录树12$ mkdir -p tmp/a/b/c$ mkdir -p project/&amp;#123;lib/ext,bin,src,doc/&amp;#123;html,info,pdf&amp;#125;, demo/stat/a&amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux命令行Tips">
+<meta property="og:url" content="http://paranoidq.github.io/2016/01/28/linux-command-tips/index.html">
+<meta property="og:site_name" content="百末旨酒布兰生">
+<meta property="og:description" content="原文链接Unix高手的十个习惯Unix高手的另外十个习惯
+在单个命令中创建目录树12$ mkdir -p tmp/a/b/c$ mkdir -p project/&amp;#123;lib/ext,bin,src,doc/&amp;#123;html,info,pdf&amp;#125;, demo/stat/a&amp;#125;">
+<meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux命令行Tips">
+<meta name="twitter:description" content="原文链接Unix高手的十个习惯Unix高手的另外十个习惯
+在单个命令中创建目录树12$ mkdir -p tmp/a/b/c$ mkdir -p project/&amp;#123;lib/ext,bin,src,doc/&amp;#123;html,info,pdf&amp;#125;, demo/stat/a&amp;#125;">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide',
+    motion: false
+  };
+</script>
+
+  <title> Linux命令行Tips | 百末旨酒布兰生 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">百末旨酒布兰生</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">孤舟蓑笠翁，独钓寒江雪</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tops">
+          <a href="/tags/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-收藏 fa-fw"></i> <br />
+            
+            收藏
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/tags/碎片/" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            碎片
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/tags/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-TODO fa-fw"></i> <br />
+            
+            待办
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <form class="site-search-form">
+    <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+  </form>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'y8KLPRJrwwY5Yy5cHpLP','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux命令行Tips
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-01-28T17:08:12+08:00" content="2016-01-28">
+              2016-01-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/28/linux-command-tips/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/28/linux-command-tips/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h3 id="u539F_u6587_u94FE_u63A5"><a href="#u539F_u6587_u94FE_u63A5" class="headerlink" title="原文链接"></a>原文链接</h3><p><a href="http://www.ibm.com/developerworks/cn/aix/library/au-badunixhabits.html#six" target="_blank" rel="external">Unix高手的十个习惯</a><br><a href="https://www.ibm.com/developerworks/cn/aix/library/au-unixtips/" target="_blank" rel="external">Unix高手的另外十个习惯</a></p>
+<h3 id="u5728_u5355_u4E2A_u547D_u4EE4_u4E2D_u521B_u5EFA_u76EE_u5F55_u6811"><a href="#u5728_u5355_u4E2A_u547D_u4EE4_u4E2D_u521B_u5EFA_u76EE_u5F55_u6811" class="headerlink" title="在单个命令中创建目录树"></a>在单个命令中创建目录树</h3><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p tmp/a/b/c</span><br><span class="line">$ mkdir -p project/&#123;<span class="class"><span class="keyword">lib</span>/<span class="title">ext</span>,<span class="title">bin</span>,<span class="title">src</span>,<span class="title">doc</span>/&#123;<span class="title">html</span>,<span class="title">info</span>,<span class="title">pdf</span>&#125;, <span class="title">demo</span>/<span class="title">stat</span>/<span class="title">a</span>&#125;</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="u66F4_u6539_u8DEF_u5F84_uFF0C_u800C_u4E0D_u8981_u79FB_u52A8_u5B58_u6863"><a href="#u66F4_u6539_u8DEF_u5F84_uFF0C_u800C_u4E0D_u8981_u79FB_u52A8_u5B58_u6863" class="headerlink" title="更改路径，而不要移动存档"></a>更改路径，而不要移动存档</h3><p>直接解压到指定的目录，而不用移动存档然后再解压<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar xvf -C tmp/a/b/c newarc<span class="selector-class">.tar</span><span class="selector-class">.gz</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u5C06_u547D_u4EE4_u4E0E_u63A7_u5236_u64CD_u4F5C_u7B26_u7EC4_u5408_u4F7F_u7528"><a href="#u5C06_u547D_u4EE4_u4E0E_u63A7_u5236_u64CD_u4F5C_u7B26_u7EC4_u5408_u4F7F_u7528" class="headerlink" title="将命令与控制操作符组合使用"></a>将命令与控制操作符组合使用</h3><h4 id="u4EC5_u5F53_u53E6_u4E00_u4E2A_u547D_u4EE4_u8FD4_u56DE_u96F6_u9000_u51FA_u72B6_u6001_u65F6_u624D_u8FD0_u884C_u67D0_u4E2A_u547D_u4EE4"><a href="#u4EC5_u5F53_u53E6_u4E00_u4E2A_u547D_u4EE4_u8FD4_u56DE_u96F6_u9000_u51FA_u72B6_u6001_u65F6_u624D_u8FD0_u884C_u67D0_u4E2A_u547D_u4EE4" class="headerlink" title="仅当另一个命令返回零退出状态时才运行某个命令"></a>仅当另一个命令返回零退出状态时才运行某个命令</h4><p>如果目录不存在，则不会解压<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd tmp<span class="regexp">/a/</span>b<span class="regexp">/b &amp;&amp; tar xvf ~/</span>archive.tar</span><br></pre></td></tr></table></figure></p>
+<h4 id="u4EC5_u5F53_u53E6_u4E00_u4E2A_u547D_u4EE4_u8FD4_u56DE_u975E_u96F6_u9000_u51FA_u72B6_u6001_u65F6_u624D_u8FD0_u884C_u67D0_u4E2A_u547D_u4EE4"><a href="#u4EC5_u5F53_u53E6_u4E00_u4E2A_u547D_u4EE4_u8FD4_u56DE_u975E_u96F6_u9000_u51FA_u72B6_u6001_u65F6_u624D_u8FD0_u884C_u67D0_u4E2A_u547D_u4EE4" class="headerlink" title="仅当另一个命令返回非零退出状态时才运行某个命令"></a>仅当另一个命令返回非零退出状态时才运行某个命令</h4><p>如果已经存在目录，则不会再新建了<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd tmp<span class="regexp">/a/</span>b<span class="regexp">/c || mkdir -p tmp/</span>a<span class="regexp">/b/</span>c</span><br></pre></td></tr></table></figure></p>
+<h4 id="u7ED3_u5408_u8D77_u6765"><a href="#u7ED3_u5408_u8D77_u6765" class="headerlink" title="结合起来"></a>结合起来</h4><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd tmp<span class="regexp">/a/</span>b<span class="regexp">/c || mkdir -p tmp/</span>a<span class="regexp">/b/</span>c &amp;&amp; tar xvf -C tmp<span class="regexp">/a/</span>b<span class="regexp">/c ~/</span>archive.tar</span><br></pre></td></tr></table></figure>
+<h3 id="u8C28_u614E_u4F7F_u7528_u53D8_u91CF"><a href="#u8C28_u614E_u4F7F_u7528_u53D8_u91CF" class="headerlink" title="谨慎使用变量"></a>谨慎使用变量</h3><p>最好将变量调用包括在双括号中<br>如果直接在字母数字文本后面使用变量名称，还要将变量名称包括在方括号中，使其与周围的文本区分。否则shell可能将尾随的文本解释为变量名的一部分，从而返回null（下面的例子-4）<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ ls tmp/       - <span class="number">1</span></span><br><span class="line"><span class="selector-tag">a</span> <span class="selector-tag">b</span></span><br><span class="line">$ VAR=<span class="string">"tmp/*"</span>   - <span class="number">2</span></span><br><span class="line">$ echo <span class="variable">$VAR</span></span><br><span class="line">tmp/<span class="selector-tag">a</span> tmp/<span class="selector-tag">b</span></span><br><span class="line">$ echo <span class="string">"$VAR"</span>   - <span class="number">3</span></span><br><span class="line">tmp<span class="comment">/*</span><br><span class="line">$ echo $VARa    - 4</span><br><span class="line"></span><br><span class="line">$ echo "$&#123;VAR&#125;a"</span><br><span class="line">tmp<span class="comment">/*a</span><br><span class="line">$ echo $&#123;VAR&#125;a</span><br><span class="line">tmp/a</span></span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u4F7F_u7528_u53CD_u659C_u6760_u7BA1_u7406_u957F_u8F93_u5165"><a href="#u4F7F_u7528_u53CD_u659C_u6760_u7BA1_u7406_u957F_u8F93_u5165" class="headerlink" title="使用反斜杠管理长输入"></a>使用反斜杠管理长输入</h3><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd tmp<span class="regexp">/a/</span>b<span class="regexp">/c || \</span><br><span class="line">mkdir -p tmp/</span>a<span class="regexp">/b/</span>c \</span><br><span class="line">tar xvf -C tmp<span class="regexp">/a/</span>b<span class="regexp">/c ~/</span>archive.tar</span><br></pre></td></tr></table></figure>
+<h3 id="u5728_u5217_u8868_u4E2D_u5BF9_u547D_u4EE4_u5206_u7EC4"><a href="#u5728_u5217_u8868_u4E2D_u5BF9_u547D_u4EE4_u5206_u7EC4" class="headerlink" title="在列表中对命令分组"></a>在列表中对命令分组</h3><h4 id="u5728_Subshell__u4E2D_u8FD0_u884C_u547D_u4EE4_u5217_u8868"><a href="#u5728_Subshell__u4E2D_u8FD0_u884C_u547D_u4EE4_u5217_u8868" class="headerlink" title="在 Subshell 中运行命令列表"></a>在 Subshell 中运行命令列表</h4><p>用小括号<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ( <span class="keyword">cd</span> tmp/a/b/c/ || <span class="keyword">mkdir</span> -p tmp/a/b/c &amp;&amp; \</span><br><span class="line">&gt; <span class="keyword">VAR</span>=<span class="variable">$PWD</span>; <span class="keyword">cd</span> ~; tar xvf -C <span class="variable">$VAR</span> archive.tar ) \</span><br><span class="line">&gt; | mailx admin -S <span class="string">"Archive contents"</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="u5728_u5F53_u524D_Shell__u4E2D_u8FD0_u884C_u547D_u4EE4_u5217_u8868"><a href="#u5728_u5F53_u524D_Shell__u4E2D_u8FD0_u884C_u547D_u4EE4_u5217_u8868" class="headerlink" title="在当前 Shell 中运行命令列表"></a>在当前 Shell 中运行命令列表</h4><p>用大括号，并且括号与实际命令之间包括空格，并且列表中的最后一个命令以分号结尾<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>&#123; cp <span class="variable">$&#123;</span>VAR&#125;a . &amp;&amp; chown -R guest.guest a &amp;&amp; \</span><br><span class="line">&gt; tar cvf newarchive.tar a; &#125; | mailx admin -S <span class="string">"New archive"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u4E86_u89E3_u4F55_u65F6_grep__u5E94_u8BE5_u6267_u884C_u8BA1_u6570"><a href="#u4E86_u89E3_u4F55_u65F6_grep__u5E94_u8BE5_u6267_u884C_u8BA1_u6570" class="headerlink" title="了解何时 grep 应该执行计数"></a>了解何时 grep 应该执行计数</h3><p>避免通过管道将grep发送到wc -l来对输出进行计数。grep 的 -c 选项提供了对与特定模式匹配的行的计数，并且一般要比通过管道发送到 wc 更快<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>grep -c <span class="keyword">and</span> tmp/a/longfile.txt</span><br></pre></td></tr></table></figure></p>
+<h3 id="u5339_u914D_u8F93_u51FA_u4E2D_u7684_u67D0_u4E9B_u5B57_u6BB5_uFF0C_u800C_u4E0D_u53EA_u662F_u5BF9_u884C_u8FDB_u884C_u5339_u914D"><a href="#u5339_u914D_u8F93_u51FA_u4E2D_u7684_u67D0_u4E9B_u5B57_u6BB5_uFF0C_u800C_u4E0D_u53EA_u662F_u5BF9_u884C_u8FDB_u884C_u5339_u914D" class="headerlink" title="匹配输出中的某些字段，而不只是对行进行匹配"></a>匹配输出中的某些字段，而不只是对行进行匹配</h3><p>用awk<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">ls</span> -<span class="keyword">l</span> | awk '<span class="variable">$6</span>==<span class="string">"Dec"</span>'</span><br></pre></td></tr></table></figure></p>
+<h3 id="u505C_u6B62_u5BF9cat_u4F7F_u7528_u7BA1_u9053"><a href="#u505C_u6B62_u5BF9cat_u4F7F_u7528_u7BA1_u9053" class="headerlink" title="停止对cat使用管道"></a>停止对cat使用管道</h3><p>grep 的一个常见的基本用法错误是通过管道将 cat 的输出发送到 grep 以搜索单个文件的内容。这绝对是不必要的，纯粹是浪费时间，因为诸如 grep 这样的工具接受文件名作为参数。您根本不需要在这种情况下使用 cat。<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>grep <span class="keyword">and</span> tmp/a/longfile.txt</span><br></pre></td></tr></table></figure></p>
+<p>时间测量<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">~ $ time cat tmp/a/longfile.txt | grep <span class="keyword">and</span></span><br><span class="line"><span class="number">2811</span></span><br><span class="line"></span><br><span class="line">real    <span class="number">0m</span>0.<span class="number">015s</span></span><br><span class="line"><span class="keyword">user</span>    <span class="title">0m0</span>.<span class="number">003s</span></span><br><span class="line">sys     <span class="number">0m</span>0.<span class="number">013s</span></span><br><span class="line">~ $ time grep <span class="keyword">and</span> tmp/a/longfile.txt</span><br><span class="line"><span class="number">2811</span></span><br><span class="line"></span><br><span class="line">real    <span class="number">0m</span>0.<span class="number">010s</span></span><br><span class="line"><span class="keyword">user</span>    <span class="title">0m0</span>.<span class="number">006s</span></span><br><span class="line">sys     <span class="number">0m</span>0.<span class="number">004s</span></span><br><span class="line">~ $</span><br></pre></td></tr></table></figure></p>
+<h3 id="u4F7F_u7528_u6587_u4EF6_u540D_u5B8C_u6210"><a href="#u4F7F_u7528_u6587_u4EF6_u540D_u5B8C_u6210" class="headerlink" title="使用文件名完成"></a>使用文件名完成</h3><p>在bash shell里面是Tab键。</p>
+<p>查看shell：<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">$</span> echo <span class="symbol">$</span><span class="number">0</span></span><br><span class="line"><span class="symbol">$</span> ps -p <span class="symbol">$</span><span class="symbol">$</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u4F7F_u7528_u5386_u53F2_u6269_u5C55"><a href="#u4F7F_u7528_u5386_u53F2_u6269_u5C55" class="headerlink" title="使用历史扩展"></a>使用历史扩展</h3><p>使用!$获得前一个命令使用的文件名<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">grep</span> pickles this-<span class="keyword">is</span>-<span class="keyword">a</span>-long-lunch-<span class="keyword">menu</span>-<span class="keyword">file</span>.txt</span><br><span class="line">pastrami <span class="keyword">on</span> rye with pickles <span class="built_in">and</span> onions</span><br><span class="line">$ <span class="keyword">vi</span> !$</span><br></pre></td></tr></table></figure></p>
+<h3 id="u91CD_u7528_u4EE5_u524D_u7684_u53C2_u6570"><a href="#u91CD_u7528_u4EE5_u524D_u7684_u53C2_u6570" class="headerlink" title="重用以前的参数"></a>重用以前的参数</h3><p>!:1 操作符返回某个命令使用的第一个文件名.<br>在第一个命令中，将一个文件重新命名为更有意义的名称，但为了保持原始文件名可用，创建了一个符号链接。重新命名文件 kxp12.c 以提高可读性，然后使用 link 命令来创建到原始文件名的符号链接，以防在其他位置使用该文件名。!$ 操作符返回 file_system_access.c 文件名，而 !:1 操作符返回 kxp12.c 文件名，该文件名是上个命令的第一个文件名。<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv kxp12<span class="selector-class">.c</span> file_system_access<span class="selector-class">.c</span></span><br><span class="line">$ ln –s !$ !:<span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u4F7F_u7528_pushd__u548C_popd__u7BA1_u7406_u76EE_u5F55_u5BFC_u822A"><a href="#u4F7F_u7528_pushd__u548C_popd__u7BA1_u7406_u76EE_u5F55_u5BFC_u822A" class="headerlink" title="使用 pushd 和 popd 管理目录导航"></a>使用 pushd 和 popd 管理目录导航</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">pushd</span> .</span><br><span class="line">~ ~</span><br><span class="line">$ <span class="built_in">pushd</span> /etc</span><br><span class="line">/etc ~ ~</span><br><span class="line">$ <span class="built_in">pushd</span> /var</span><br><span class="line">/var /etc ~ ~</span><br><span class="line">$ <span class="built_in">pushd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line">/usr/<span class="built_in">local</span>/bin /var /etc ~ ~</span><br><span class="line">$ <span class="built_in">dirs</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin /var /etc ~ ~</span><br><span class="line">$ <span class="built_in">popd</span></span><br><span class="line">/var /etc ~ ~</span><br><span class="line">$ <span class="built_in">popd</span></span><br><span class="line">/etc ~ ~</span><br><span class="line">$ <span class="built_in">popd</span></span><br><span class="line">~ ~</span><br><span class="line">$ <span class="built_in">popd</span></span><br></pre></td></tr></table></figure>
+<h3 id="u67E5_u627E_u5927_u578B_u6587_u4EF6"><a href="#u67E5_u627E_u5927_u578B_u6587_u4EF6" class="headerlink" title="查找大型文件"></a>查找大型文件</h3><figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -<span class="keyword">size</span> + <span class="number">10000</span>K -xdev -<span class="keyword">exec</span> <span class="keyword">ls</span> lh &#123;&#125;\;</span><br></pre></td></tr></table></figure>
+<h3 id="u4E0D_u4F7F_u7528_u7F16_u8F91_u5668_u521B_u5EFA_u4E34_u65F6_u6587_u4EF6"><a href="#u4E0D_u4F7F_u7528_u7F16_u8F91_u5668_u521B_u5EFA_u4E34_u65F6_u6587_u4EF6" class="headerlink" title="不使用编辑器创建临时文件"></a>不使用编辑器创建临时文件</h3><p>创建临时文件<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cat &gt; my_tmp_file.txt</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">my</span> tmp <span class="built_in">file</span></span><br><span class="line">^D</span><br><span class="line">$ cat my_tmp_file.txt</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">my</span> tmp <span class="built_in">file</span></span><br></pre></td></tr></table></figure></p>
+<p>向已有文件附加内容<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat &gt;&gt; my_temp_file.txt</span><br><span class="line">More <span class="built_in">text</span></span><br><span class="line">^D</span><br><span class="line">$ cat my_temp_file.txt</span><br><span class="line">This <span class="keyword">is</span> <span class="keyword">my</span> temp <span class="built_in">file</span> <span class="built_in">text</span></span><br><span class="line">More <span class="built_in">text</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u4F7F_u7528_curl__u547D_u4EE4_u884C_u5B9E_u7528_u5DE5_u5177"><a href="#u4F7F_u7528_curl__u547D_u4EE4_u884C_u5B9E_u7528_u5DE5_u5177" class="headerlink" title="使用 curl 命令行实用工具"></a>使用 curl 命令行实用工具</h3><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>curl –s <span class="symbol">http:</span>/<span class="regexp">/www.srh.noaa.gov/data</span><span class="regexp">/ALY/</span>RWRALY | grep BUFFALO</span><br><span class="line"><span class="variable">$ </span>curl -o archive.tar <span class="symbol">http:</span>/<span class="regexp">/www.somesite.com/archive</span>.tar</span><br></pre></td></tr></table></figure>
+<h3 id="u6709_u6548_u5229_u7528_u6B63_u5219_u8868_u8FBE_u5F0F"><a href="#u6709_u6548_u5229_u7528_u6B63_u5219_u8868_u8FBE_u5F0F" class="headerlink" title="有效利用正则表达式"></a>有效利用正则表达式</h3><p><a href="http://www.ibm.com/developerworks/cn/aix/library/au-speakingunix9/" target="_blank" rel="external">对话Unix-正则表达式</a></p>
+<h3 id="u786E_u5B9A_u5F53_u524D_u7528_u6237"><a href="#u786E_u5B9A_u5F53_u524D_u7528_u6237" class="headerlink" title="确定当前用户"></a>确定当前用户</h3><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>whoami</span><br><span class="line">paranoidq</span><br></pre></td></tr></table></figure>
+<p>在脚本中使用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ $(whoami) = <span class="string">"root"</span> ]</span><br><span class="line"><span class="keyword">then</span> </span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"you cannot run this script as root"</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="u4F7F_u7528_awk__u5904_u7406_u6570_u636E"><a href="#u4F7F_u7528_awk__u5904_u7406_u6570_u636E" class="headerlink" title="使用 awk 处理数据"></a>使用 awk 处理数据</h3><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ cat <span class="keyword">text</span></span><br><span class="line">testing <span class="keyword">the</span> awk <span class="keyword">command</span></span><br><span class="line">$ awk <span class="string">'&#123; i = length($0); print i &#125;'</span> <span class="keyword">text</span></span><br><span class="line"><span class="number">23</span></span><br><span class="line">$ awk <span class="string">'&#123; i = index($0,”ing”); print i&#125;'</span> <span class="keyword">text</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line">$ awk <span class="string">'BEGIN &#123; i = 1 &#125; &#123; n = split($0,a," "); while (i &lt;= n) &#123;print a[i]; i++;&#125; &#125;'</span> <span class="keyword">text</span></span><br><span class="line">testing </span><br><span class="line"><span class="keyword">the</span></span><br><span class="line">awk</span><br><span class="line"><span class="keyword">command</span></span><br></pre></td></tr></table></figure>
+<p>统计功能<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$cat</span> sales</span><br><span class="line"><span class="keyword">Gene</span>,12,23,7</span><br><span class="line">Dawn,10,25,15</span><br><span class="line">Renee,15,13,18</span><br><span class="line">David,8,21,17</span><br><span class="line">$ awk -F, '&#123;<span class="keyword">print</span> <span class="variable">$1</span>,<span class="variable">$2</span>+<span class="variable">$3</span>+<span class="variable">$4&#125;</span>' sales</span><br><span class="line"><span class="keyword">Gene</span> 42</span><br><span class="line">Dawn 50</span><br><span class="line">Renee 46</span><br><span class="line">David 46</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://www.ibm.com/developerworks/cn/views/aix/tutorials.jsp?cv_doc_id=172390" target="_blank" rel="external">AWK语言基础</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+            <a href="/tags/资料/" rel="tag">#资料</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/28/java-classloader/" rel="next" title="Java的类加载器">
+                <i class="fa fa-chevron-left"></i> Java的类加载器
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/23/python-split/" rel="prev" title="Python split函数的坑">
+                Python split函数的坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/28/linux-command-tips/"
+           data-title="Linux命令行Tips" data-url="http://paranoidq.github.io/2016/01/28/linux-command-tips/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Paranoid Qian" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Paranoid Qian</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">So we beat on, boats against the current, borne back ceaselessly into the past.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/tags/碎片/">
+              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/paranoidq" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2094289700/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.hollischuang.com/" target="_blank">HollisChuang</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u539F_u6587_u94FE_u63A5"><span class="nav-number">1.</span> <span class="nav-text">原文链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5728_u5355_u4E2A_u547D_u4EE4_u4E2D_u521B_u5EFA_u76EE_u5F55_u6811"><span class="nav-number">2.</span> <span class="nav-text">在单个命令中创建目录树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u66F4_u6539_u8DEF_u5F84_uFF0C_u800C_u4E0D_u8981_u79FB_u52A8_u5B58_u6863"><span class="nav-number">3.</span> <span class="nav-text">更改路径，而不要移动存档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5C06_u547D_u4EE4_u4E0E_u63A7_u5236_u64CD_u4F5C_u7B26_u7EC4_u5408_u4F7F_u7528"><span class="nav-number">4.</span> <span class="nav-text">将命令与控制操作符组合使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u4EC5_u5F53_u53E6_u4E00_u4E2A_u547D_u4EE4_u8FD4_u56DE_u96F6_u9000_u51FA_u72B6_u6001_u65F6_u624D_u8FD0_u884C_u67D0_u4E2A_u547D_u4EE4"><span class="nav-number">4.1.</span> <span class="nav-text">仅当另一个命令返回零退出状态时才运行某个命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u4EC5_u5F53_u53E6_u4E00_u4E2A_u547D_u4EE4_u8FD4_u56DE_u975E_u96F6_u9000_u51FA_u72B6_u6001_u65F6_u624D_u8FD0_u884C_u67D0_u4E2A_u547D_u4EE4"><span class="nav-number">4.2.</span> <span class="nav-text">仅当另一个命令返回非零退出状态时才运行某个命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u7ED3_u5408_u8D77_u6765"><span class="nav-number">4.3.</span> <span class="nav-text">结合起来</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u8C28_u614E_u4F7F_u7528_u53D8_u91CF"><span class="nav-number">5.</span> <span class="nav-text">谨慎使用变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F7F_u7528_u53CD_u659C_u6760_u7BA1_u7406_u957F_u8F93_u5165"><span class="nav-number">6.</span> <span class="nav-text">使用反斜杠管理长输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5728_u5217_u8868_u4E2D_u5BF9_u547D_u4EE4_u5206_u7EC4"><span class="nav-number">7.</span> <span class="nav-text">在列表中对命令分组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u5728_Subshell__u4E2D_u8FD0_u884C_u547D_u4EE4_u5217_u8868"><span class="nav-number">7.1.</span> <span class="nav-text">在 Subshell 中运行命令列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u5728_u5F53_u524D_Shell__u4E2D_u8FD0_u884C_u547D_u4EE4_u5217_u8868"><span class="nav-number">7.2.</span> <span class="nav-text">在当前 Shell 中运行命令列表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E86_u89E3_u4F55_u65F6_grep__u5E94_u8BE5_u6267_u884C_u8BA1_u6570"><span class="nav-number">8.</span> <span class="nav-text">了解何时 grep 应该执行计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5339_u914D_u8F93_u51FA_u4E2D_u7684_u67D0_u4E9B_u5B57_u6BB5_uFF0C_u800C_u4E0D_u53EA_u662F_u5BF9_u884C_u8FDB_u884C_u5339_u914D"><span class="nav-number">9.</span> <span class="nav-text">匹配输出中的某些字段，而不只是对行进行匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u505C_u6B62_u5BF9cat_u4F7F_u7528_u7BA1_u9053"><span class="nav-number">10.</span> <span class="nav-text">停止对cat使用管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F7F_u7528_u6587_u4EF6_u540D_u5B8C_u6210"><span class="nav-number">11.</span> <span class="nav-text">使用文件名完成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F7F_u7528_u5386_u53F2_u6269_u5C55"><span class="nav-number">12.</span> <span class="nav-text">使用历史扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u91CD_u7528_u4EE5_u524D_u7684_u53C2_u6570"><span class="nav-number">13.</span> <span class="nav-text">重用以前的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F7F_u7528_pushd__u548C_popd__u7BA1_u7406_u76EE_u5F55_u5BFC_u822A"><span class="nav-number">14.</span> <span class="nav-text">使用 pushd 和 popd 管理目录导航</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u67E5_u627E_u5927_u578B_u6587_u4EF6"><span class="nav-number">15.</span> <span class="nav-text">查找大型文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E0D_u4F7F_u7528_u7F16_u8F91_u5668_u521B_u5EFA_u4E34_u65F6_u6587_u4EF6"><span class="nav-number">16.</span> <span class="nav-text">不使用编辑器创建临时文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F7F_u7528_curl__u547D_u4EE4_u884C_u5B9E_u7528_u5DE5_u5177"><span class="nav-number">17.</span> <span class="nav-text">使用 curl 命令行实用工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6709_u6548_u5229_u7528_u6B63_u5219_u8868_u8FBE_u5F0F"><span class="nav-number">18.</span> <span class="nav-text">有效利用正则表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u786E_u5B9A_u5F53_u524D_u7528_u6237"><span class="nav-number">19.</span> <span class="nav-text">确定当前用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F7F_u7528_awk__u5904_u7406_u6570_u636E"><span class="nav-number">20.</span> <span class="nav-text">使用 awk 处理数据</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paranoid Qian</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"paranoidq"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>
