@@ -974,7 +974,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #3433ff;
+  background: #81249c;
 }
 .sidebar-nav {
   margin: 0 0 20px;
@@ -1256,6 +1256,10 @@ body {
   border-bottom: none;
   line-height: 1.2;
   vertical-align: top;
+  width: 100%;
+}
+.posts-expand .post-title-link:hover {
+  color: #2479cc;
 }
 .posts-expand .post-title-link::before {
   content: "";
@@ -1273,7 +1277,6 @@ body {
 }
 .posts-expand .post-title-link:hover::before {
   visibility: visible;
-  transform: scaleX(1);
 }
 .posts-expand .post-title-link .fa {
   font-size: 16px;

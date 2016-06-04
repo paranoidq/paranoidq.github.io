@@ -261,6 +261,115 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/27/ResourceBundle-source-code-inside/" itemprop="url">
+                  java.util.ResourceBundle 源码分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/ResourceBundle-source-code-inside/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/ResourceBundle-source-code-inside/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            ResourceBundle简介顾名思义，ResourceBundle主要就是管理Java程序的一些配置资源的工具类。但是这个管理与一般管理不同的地方在于:
+
+locale-independent, 即ResourceBundle封装了本地化的读取方法，并且根据Locale参数读对应的本地化配置，从而能够使程序自动在不同地区载入不同的配置文件(name_CN.properties, name_US
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/ResourceBundle-source-code-inside/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/27/python-super-considered-super/" itemprop="url">
                   Python super详解（译 + 进一步理解）
                 </a>
@@ -373,8 +482,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/SSH-Principles/" itemprop="url">
-                  SSH Principles（总结和笔记）
+                <a class="post-title-link" href="/2016/05/27/linux-server-command/" itemprop="url">
+                  Linux Server Commands
                 </a>
               
             
@@ -410,8 +519,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/SSH-Principles/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/SSH-Principles/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/linux-server-command/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-command/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -431,112 +540,10 @@
 
       
         
-          <h3 id="u524D_u63D0"><a href="#u524D_u63D0" class="headerlink" title="前提"></a>前提</h3><p>服务器需要开启远程服务<br><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora的检测方法</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># 开启 in fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># 开启 in ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure></p>
+          <h3 id="ssh_u8FDC_u7A0B_u767B_u5F55"><a href="#ssh_u8FDC_u7A0B_u767B_u5F55" class="headerlink" title="ssh远程登录"></a>ssh远程登录</h3><p>服务器需要开启远程服务</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/SSH-Principles/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/python-cookbook-records/" itemprop="url">
-                  Python Cookbook Useful Cases
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/python-cookbook-records/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/python-cookbook-records/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>如题， Python Cookbook中有用的cases。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/python-cookbook-records/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/linux-server-command/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -688,8 +695,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/how-to-be-more-productive/" itemprop="url">
-                  How to be more productive(转)
+                <a class="post-title-link" href="/2016/05/27/front-end-trend/" itemprop="url">
+                  近几年前端技术盘点以及2016年技术发展方向(好文，转)
                 </a>
               
             
@@ -709,8 +716,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/效率/" itemprop="url" rel="index">
-                    <span itemprop="name">效率</span>
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
                   </a>
                 </span>
 
@@ -725,8 +732,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/how-to-be-more-productive/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/how-to-be-more-productive/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/front-end-trend/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/front-end-trend/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -748,14 +755,12 @@
         
           <span itemprop="articleBody">
             
-            
-帮助自己完成一件事的秘密不是说服自己必须完成它，而是说服自己这件事确实非常有意思。如果一件事没有意思的话，你需要做的就是让它变得有意思.
+            http://www.barretlee.com/blog/2015/12/10/after-framework-we-gonna-to-hug-data/
 
-肯定有人跟你说过这样的话“你有看电视的那么长时间，都可以用来写一本书了”，不可否认写书肯定比看电视更好的利用了时间，但是这个结论的成立需要一个假设:”时间是可互换的”，也就是说看电视的时间可以轻松的用来写书。但是很遗憾，事实并非如此。不同的时间有不同的质量等
-            ...
+            
           </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/how-to-be-more-productive/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/front-end-trend/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -798,8 +803,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/middleware-expalined-simply/" itemprop="url">
-                  什么是中间件？
+                <a class="post-title-link" href="/2016/05/27/python-cookbook-records/" itemprop="url">
+                  Python Cookbook Useful Cases
                 </a>
               
             
@@ -819,8 +824,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/架构/" itemprop="url" rel="index">
-                    <span itemprop="name">架构</span>
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
                   </a>
                 </span>
 
@@ -835,8 +840,111 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/middleware-expalined-simply/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/middleware-expalined-simply/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/python-cookbook-records/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/python-cookbook-records/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>如题， Python Cookbook中有用的cases。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/python-cookbook-records/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/Big-data-ecosystem/" itemprop="url">
+                  大数据生态圈技术总结（持续补充）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/Big-data-ecosystem/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Big-data-ecosystem/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -858,14 +966,55 @@
         
           <span itemprop="articleBody">
             
-            之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。
-定义维基百科定义：
+            分布式文件系统
+磁盘
 
-提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的
+HDFS
+S3
+Ceph
+NFS
+Gluster FS
+
+
+内存
+
+Tachyon
+Spark
+
+
+
+分布式数据库
+磁盘
+
+Cassandra
+HBase
+MongoDB
+
+
+内存 
+
+Redis
+Memcached
+
+
+
+分布式计算
+批处理
+
+Hadoop MapReduce
+Spark(支持迭代)
+Flink(支持迭代)
+
+
+流式计算
+
+Storm
+Samza
+Spar
             ...
           </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/middleware-expalined-simply/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Big-data-ecosystem/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1023,8 +1172,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/front-end-trend/" itemprop="url">
-                  近几年前端技术盘点以及2016年技术发展方向(好文，转)
+                <a class="post-title-link" href="/2016/05/27/middleware-expalined-simply/" itemprop="url">
+                  什么是中间件？
                 </a>
               
             
@@ -1044,8 +1193,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -1060,8 +1209,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/front-end-trend/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/front-end-trend/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/middleware-expalined-simply/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/middleware-expalined-simply/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1083,12 +1232,14 @@
         
           <span itemprop="articleBody">
             
-            http://www.barretlee.com/blog/2015/12/10/after-framework-we-gonna-to-hug-data/
+            之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。
+定义维基百科定义：
 
-            
+提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的
+            ...
           </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/front-end-trend/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/middleware-expalined-simply/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1212,110 +1363,6 @@
   </article>
 
 
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/linux-server-command/" itemprop="url">
-                  Linux Server Commands
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/linux-server-command/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-command/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="ssh_u8FDC_u7A0B_u767B_u5F55"><a href="#ssh_u8FDC_u7A0B_u767B_u5F55" class="headerlink" title="ssh远程登录"></a>ssh远程登录</h3><p>服务器需要开启远程服务</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/linux-server-command/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
     
 
   </section>
@@ -1363,7 +1410,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">57</span>
+              <span class="site-state-item-count">58</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1377,7 +1424,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">55</span>
+              <span class="site-state-item-count">56</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
