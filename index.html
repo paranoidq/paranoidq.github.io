@@ -261,6 +261,324 @@
             
               
                 
+                <a class="post-title-link" href="/2016/07/04/java-inner-class-final-problem/" itemprop="url">
+                  关于Java局部类不能访问外围的非final局部变量的探索
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-07-04T21:04:47+08:00" content="2016-07-04">
+              2016-07-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/04/java-inner-class-final-problem/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/04/java-inner-class-final-problem/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="u5B9E_u9A8C"><a href="#u5B9E_u9A8C" class="headerlink" title="实验"></a>实验</h3><p>关于java中的内部类，有很多坑，其中条就是：</p>
+<blockquote>
+<p>对于定义在函数中的内部类而言，在内部类中可以访问外部函数的局部变量，但这些局部变量必须被申明为final。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/04/java-inner-class-final-problem/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/08/java-dynamic-proxy-implementations/" itemprop="url">
+                  Java动态代理与CgLib对比
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-06-08T15:48:27+08:00" content="2016-06-08">
+              2016-06-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/08/java-dynamic-proxy-implementations/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/08/java-dynamic-proxy-implementations/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="u9759_u6001_u4EE3_u7406_u7684_u95EE_u9898"><a href="#u9759_u6001_u4EE3_u7406_u7684_u95EE_u9898" class="headerlink" title="静态代理的问题"></a>静态代理的问题</h3><p><img src="http://images.techhive.com/images/idge/imported/article/jvw/2000/11/jw-1110-proxy-100157716-orig.gif" alt="proxy pattern"></p>
+<ol>
+<li>紧耦合：代理类必须实现被代理对象的接口</li>
+<li>硬编码：项目中大量充斥着类似**proxy这样的类</li>
+<li>无法动态添加方法的拦截，会导致代码侵入</li>
+</ol>
+<p>如何解决问题？实际上也就是解决依赖的问题，代理类的创建不依赖于硬编码，想什么时候创建就什么时候创建，本质上也就是动态构建类和实例吧。JDK动态代理就是利用了Java的反射机制动态构建代理类和实例的。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/06/08/java-dynamic-proxy-implementations/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/07/nodejs-express-install/" itemprop="url">
+                  node.js安装express框架时出现command not found问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-06-07T20:23:45+08:00" content="2016-06-07">
+              2016-06-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/nodejs/" itemprop="url" rel="index">
+                    <span itemprop="name">nodejs</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/07/nodejs-express-install/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/07/nodejs-express-install/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>在安装nodejs的web框架express时遇到的问题及解决方案。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/06/07/nodejs-express-install/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/06/04/pyenv神器/" itemprop="url">
                   pyenv神器
                 </a>
@@ -324,212 +642,6 @@
 <h3 id="u914D_u7F6E"><a href="#u914D_u7F6E" class="headerlink" title="配置"></a>配置</h3><p>将一下shell加入.bash_profile或.zshrc<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">set</span> up <span class="comment">pyenv</span></span><br><span class="line">export <span class="comment">PYENV_ROOT=</span>/usr/<span class="comment">local</span>/var/<span class="comment">pyenv</span></span><br><span class="line">if <span class="comment">which pyenv &gt;</span> /dev/<span class="comment">null</span>; <span class="keyword">then</span> eval <span class="string">"$(pyenv init -)"</span>; fi</span><br></pre></td></tr></table></figure></p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/06/04/pyenv神器/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/nginx-vs-tomcat/" itemprop="url">
-                  nginx与tomcat有什么区别
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/中间件/" itemprop="url" rel="index">
-                    <span itemprop="name">中间件</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/nginx-vs-tomcat/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/nginx-vs-tomcat/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/nginx-vs-tomcat/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/Mac-java-config/" itemprop="url">
-                  Mac中如何查找Java的路径
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/Mac-java-config/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Mac-java-config/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u65B9_u6CD51_uFF1A"><a href="#u65B9_u6CD51_uFF1A" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/jav<span class="built_in">a_home</span></span><br></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Mac-java-config/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -675,8 +787,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/java-implementing-softhashmap/" itemprop="url">
-                  SoftReference及其缓存应用
+                <a class="post-title-link" href="/2016/05/27/Mac-java-config/" itemprop="url">
+                  Mac中如何查找Java的路径
                 </a>
               
             
@@ -712,8 +824,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/java-implementing-softhashmap/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/java-implementing-softhashmap/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Mac-java-config/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Mac-java-config/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -733,16 +845,112 @@
 
       
         
-          <span itemprop="articleBody">
-            
-            参考原文http://www.javaspecialists.eu/archive/Issue015.html
-SoftReferenceStrong Reference首先解释强引用，是Java默认的引用形式，即一个对象被一个变量直接引用的情况，如：1Object o = new Object();
-这种情况下，对象是不会被GC清除的，除非变量的引用解除（例如超出作用域之后，变量被清空）。
-We
-            ...
-          </span>
+          <h3 id="u65B9_u6CD51_uFF1A"><a href="#u65B9_u6CD51_uFF1A" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/jav<span class="built_in">a_home</span></span><br></pre></td></tr></table></figure></p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/java-implementing-softhashmap/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Mac-java-config/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/Python-decorator-explained/" itemprop="url">
+                  Python decorator(译)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/Python-decorator-explained/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-decorator-explained/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61"><a href="#Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61" class="headerlink" title="Python函数就是对象"></a>Python函数就是对象</h3><p>首先要理解python中函数就是object。一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shout</span><span class="params">(word=<span class="string">"yes"</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> word.capitalize()+<span class="string">"!"</span></span><br><span class="line"><span class="keyword">print</span> shout()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为function是对象，因此可以被赋值给变量。</span></span><br><span class="line"><span class="comment"># 注意这里没有用双括号，所以不是调用函数</span></span><br><span class="line">scream = shout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用变量srceam调用函数</span></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除原来的函数名，同样可以利用scream调用函数</span></span><br><span class="line"><span class="keyword">del</span> shout</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">print</span> shout()</span><br><span class="line"><span class="keyword">except</span> NameError, e:</span><br><span class="line">    <span class="keyword">print</span> e</span><br><span class="line">    <span class="comment">#outputs: "name 'shout' is not defined"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs: 'Yes!'</span></span><br></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/Python-decorator-explained/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -894,8 +1102,8 @@ We
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/vim-commands/" itemprop="url">
-                  Vim Commands
+                <a class="post-title-link" href="/2016/05/27/Big-data-ecosystem/" itemprop="url">
+                  大数据生态圈技术总结（持续补充）
                 </a>
               
             
@@ -915,8 +1123,8 @@ We
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
                   </a>
                 </span>
 
@@ -931,8 +1139,8 @@ We
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/vim-commands/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/vim-commands/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Big-data-ecosystem/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Big-data-ecosystem/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -952,16 +1160,57 @@ We
 
       
         
-          <h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
-<li>文首：<code>gg</code> / <code>:0</code></li>
-<li>文末：<code>shift + g</code> / <code>:$</code></li>
-<li>行首：<code>0</code></li>
-<li>行末：<code>$</code></li>
-<li>到第一个不是空字符的位置：<code>^</code></li>
-<li>到最后一个不是空字符的位置：<code>g_</code></li>
-</ul>
+          <span itemprop="articleBody">
+            
+            分布式文件系统
+磁盘
+
+HDFS
+S3
+Ceph
+NFS
+Gluster FS
+
+
+内存
+
+Tachyon
+Spark
+
+
+
+分布式数据库
+磁盘
+
+Cassandra
+HBase
+MongoDB
+
+
+内存 
+
+Redis
+Memcached
+
+
+
+分布式计算
+批处理
+
+Hadoop MapReduce
+Spark(支持迭代)
+Flink(支持迭代)
+
+
+流式计算
+
+Storm
+Samza
+Spar
+            ...
+          </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/vim-commands/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Big-data-ecosystem/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1004,8 +1253,8 @@ We
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/Python-parameters-explained/" itemprop="url">
-                  Python parameters
+                <a class="post-title-link" href="/2016/05/27/python-cookbook-records/" itemprop="url">
+                  Python Cookbook Useful Cases
                 </a>
               
             
@@ -1041,8 +1290,8 @@ We
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-parameters-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-parameters-explained/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/python-cookbook-records/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/python-cookbook-records/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1062,223 +1311,9 @@ We
 
       
         
-          <h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
-<ol>
-<li>固定参数(位置参数)</li>
-<li>默认参数</li>
-<li>可变参数</li>
-<li>关键字参数</li>
-</ol>
-<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
-<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
+          <p>如题， Python Cookbook中有用的cases。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-parameters-explained/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/SSH-Principles/" itemprop="url">
-                  SSH Principles（总结和笔记）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/SSH-Principles/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/SSH-Principles/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u524D_u63D0"><a href="#u524D_u63D0" class="headerlink" title="前提"></a>前提</h3><p>服务器需要开启远程服务<br><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora的检测方法</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># 开启 in fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># 开启 in ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/SSH-Principles/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/Python-decorator-explained/" itemprop="url">
-                  Python decorator(译)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-decorator-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-decorator-explained/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61"><a href="#Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61" class="headerlink" title="Python函数就是对象"></a>Python函数就是对象</h3><p>首先要理解python中函数就是object。一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shout</span><span class="params">(word=<span class="string">"yes"</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> word.capitalize()+<span class="string">"!"</span></span><br><span class="line"><span class="keyword">print</span> shout()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为function是对象，因此可以被赋值给变量。</span></span><br><span class="line"><span class="comment"># 注意这里没有用双括号，所以不是调用函数</span></span><br><span class="line">scream = shout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用变量srceam调用函数</span></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除原来的函数名，同样可以利用scream调用函数</span></span><br><span class="line"><span class="keyword">del</span> shout</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">print</span> shout()</span><br><span class="line"><span class="keyword">except</span> NameError, e:</span><br><span class="line">    <span class="keyword">print</span> e</span><br><span class="line">    <span class="comment">#outputs: "name 'shout' is not defined"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs: 'Yes!'</span></span><br></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-decorator-explained/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/python-cookbook-records/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1346,21 +1381,21 @@ We
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-count">60</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-count">20</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">56</span>
+              <span class="site-state-item-count">60</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
