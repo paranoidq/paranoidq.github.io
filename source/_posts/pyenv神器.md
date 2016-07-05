@@ -54,4 +54,8 @@ pyenv local system  // 直接使用系统自带版本
 2. 一般而言，系统库放/System/Library，而应用程序依赖的放/Library，所以，苹果自带的python放在前者，而用户自己装的python（比如官方网站下载的）会自动装在后者。（homebrew安装的就在后者）
 
 
+### 参考
+[https://github.com/yyuu/pyenv](https://github.com/yyuu/pyenv)
+[http://v2in.com/pyenv-installation-and-usage.html](http://v2in.com/pyenv-installation-and-usage.html)
+
 

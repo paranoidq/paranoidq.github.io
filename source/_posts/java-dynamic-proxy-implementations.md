@@ -1,6 +1,6 @@
-title: Java动态代理的几种实现方式
-date: 2016-01-18 15:48:27
-tags: [java, 动态代理]
+title: Java动态代理与CgLib对比
+date: 2016-06-08 15:48:27
+tags: [java, proxy, cglib]
 categories: 
 - java
 ---
@@ -9,6 +9,7 @@ categories:
 ![proxy pattern](http://images.techhive.com/images/idge/imported/article/jvw/2000/11/jw-1110-proxy-100157716-orig.gif)
 1. 紧耦合：代理类必须实现被代理对象的接口
 2. 硬编码：项目中大量充斥着类似\**proxy这样的类
+3. 无法动态添加方法的拦截，会导致代码侵入
 
 如何解决问题？实际上也就是解决依赖的问题，代理类的创建不依赖于硬编码，想什么时候创建就什么时候创建，本质上也就是动态构建类和实例吧。JDK动态代理就是利用了Java的反射机制动态构建代理类和实例的。
 
@@ -97,16 +98,20 @@ public class JdkProxy implements InvocationHandler {
 }
 
 ```
-JDK动态代理类的字节码是由Java在运行时通过反射动态生成的。
 
-![dynamic proxy in java](http://www.techavalanche.com/wp-content/themes/Levels/images/upload/2011/08/Proxy_Diagram.jpg)
+#### 总结几点：
+1. 只能代理接口，不能代理类（原因在与newProxyInstane参数中需要被代理类的接口数组）。如果将newProxyInstance返回的Object转为RealSubject，则报异常：`java.lang.ClassCastException: com.sun.proxy.$Proxy0 cannot be cast to me.util.proxy.jdkproxy.RealSubject`
+2. `java.lang.Object`的方法`hashCode()`、`equals()`和`toString()`也会被代理类拦截。（原因在代码最后的`toString(proxy)`也触发了代理类的输出）
+3. 代理实例本身会被传递给invoke，作为第一个参数，即proxy。可以通过这个获取代理实例及其类型信息（代码中，我们获得了代理实例实际上有doSomething()这个方法，因为代理实例也继承了接口Subject！**所以说为什么要传入classloader，因为实际上是Java在用bytecode生成一个实现了Subject接口的动态代理类啊！这不就是隐式地在用反射构建一个类么？**）
+
+
+JDK动态代理类的字节码是由Java在运行时通过反射动态生成的。
 
 上面的例子基本已经显示了JDK代理的重要特性，下面整理说明一些重点：（主要参考Oracle JavaDoc）
  
-1. 非interface的方法不会被代理，因为代理实例通过newProxyInstance创建的时候，只能给定Interface，子类的特性它一概不知。
-2. 但是，java.lang.Object中的`hashCode`, `equals`, `toString` 方法会被代理到invoke，然后包装起来执行
+
 3. invoke()的返回值会传递给代理实例，从而返回给客户端，因此客户端的代理实例声明的返回值类型要注意匹配。
-4. 代理实例本身会被传递给invoke，作为第一个参数，即proxy。可以通过这个获取代理实例及其类型信息（代码中，我们获得了代理实例实际上有doSomething()这个方法，因为代理实例也继承了接口Subject！**所以说为什么要传入classloader啊，因为实际上是Java在用bytecode生成一个实现了Subject接口的动态代理类啊！这不就是隐式地在用反射构建一个类么？**） 
+4.  
 5. invoke代理的函数的参数列表以数组形式给出，对基本类型做了默认的boxing。另外，注意，在invoke内部可以任意修改这个参数数组，这里Java没有约束。（当然，一般来说修改函数的参数是很危险的，尤其还是这种经过代理的调用，会让调用方完全不知情！）
 
 ### CGLib动态代理
