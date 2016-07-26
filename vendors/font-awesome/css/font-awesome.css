@@ -159,7 +159,7 @@
   display: inline-block;
   width: 2em;
   height: 2em;
-  line-height: 2em;
+  line-height: 0.5;
   vertical-align: middle;
 }
 .fa-stack-1x,

@@ -1,6 +1,7 @@
 /* normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
-  font-family: Consolas, sans-serif; /* 1 */
+  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif; /* 1 */
+  -webkit-font-smoothing: antialiased;
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -185,7 +186,7 @@ th {
 }
 body {
   position: relative;
-  font-family: Consolas, "Microsoft YaHei";
+  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
   font-size: 15px;
   line-height: 2;
   color: #555;
@@ -216,7 +217,7 @@ h6 {
   padding: 0;
   font-weight: bold;
   line-height: 1;
-  font-family: Consolas, "Microsoft YaHei";
+  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
 }
 h1 {
   font-size: 24px;
@@ -472,12 +473,13 @@ pre,
 pre,
 code {
   font-family: Consolas, Monaco, Menlo, monospace;
+  font-size: 0.9em;
 }
 code {
   word-break: break-all;
   background: #eee;
   text-shadow: 0 1px #fff;
-  padding: 0 0.3em;
+  padding: 0 0.5em;
 }
 pre code {
   background: none;
@@ -556,7 +558,7 @@ pre code {
 .gist .gist-file .gist-meta {
   background: #f7f7f7;
   color: #8e908c;
-  font: 13px Consolas, "Microsoft YaHei";
+  font: 13px "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
   text-shadow: 0 0;
   padding: 0;
   margin-top: 1em;
@@ -712,7 +714,7 @@ body {
   color: #222;
   background: #222;
   border-bottom: none;
-  font-family: Consolas, "Microsoft YaHei";
+  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
 }
 .brand:hover {
   color: #222;
@@ -974,7 +976,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff5083;
+  background: #6695ff;
 }
 .sidebar-nav {
   margin: 0 0 20px;
@@ -1473,7 +1475,7 @@ body {
   margin-left: 60px;
   font-size: 16px;
   font-weight: normal;
-  font-family: Consolas, "Microsoft YaHei";
+  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
   line-height: inherit;
 }
 .posts-collapse .post-title::after {
