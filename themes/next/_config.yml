@@ -77,7 +77,7 @@ scheme: Mist
 #  - remove  Totally remove sidebar including sidebar toggle icon.
 # sidebar: post
 #sidebar: always
-sidebar: post
+sidebar: always
 #sidebar: remove
 
 
