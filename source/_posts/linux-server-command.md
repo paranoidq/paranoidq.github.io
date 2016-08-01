@@ -39,7 +39,7 @@ $ ssh-keygen -t rsa
 $ scp /Users/paranoidq/.ssh/id_rsa.pub paranoidq@192.168.235.131:/home/paranoidq/.ssh/authorized_keys 
 ```
 
-### 查看Linux服务器状况
+### 查看Linux服务器状态参数
 
 #### CPU
 
@@ -297,7 +297,7 @@ lsof -i :22
 
 
 
-### 查看服务器进程
+### 服务器性能调优常用工具
 
 #### ps
 
