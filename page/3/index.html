@@ -240,8 +240,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/middleware-expalined-simply/" itemprop="url">
-                  什么是中间件？
+                <a class="post-title-link" href="/2016/05/27/nginx-vs-tomcat/" itemprop="url">
+                  nginx与tomcat有什么区别
                 </a>
               
             
@@ -261,8 +261,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/架构/" itemprop="url" rel="index">
-                    <span itemprop="name">架构</span>
+                  <a href="/categories/中间件/" itemprop="url" rel="index">
+                    <span itemprop="name">中间件</span>
                   </a>
                 </span>
 
@@ -277,8 +277,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/middleware-expalined-simply/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/middleware-expalined-simply/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/nginx-vs-tomcat/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/nginx-vs-tomcat/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -298,16 +298,216 @@
 
       
         
-          <span itemprop="articleBody">
-            
-            之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。
-定义维基百科定义：
-
-提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的
-            ...
-          </span>
+          <h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/middleware-expalined-simply/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/nginx-vs-tomcat/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/linux-server-command/" itemprop="url">
+                  Linux Server Commands
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/linux-server-command/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-command/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="ssh_u8FDC_u7A0B_u767B_u5F55"><a href="#ssh_u8FDC_u7A0B_u767B_u5F55" class="headerlink" title="ssh远程登录"></a>ssh远程登录</h3><p>服务器需要开启远程服务</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/linux-server-command/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/linux-server-monitoring-tools/" itemprop="url">
+                  20个工具监控Linux服务性的性能(转)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/linux-server-monitoring-tools/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-monitoring-tools/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>对于每个系统管理员或网络管理员来说，每天要监控和调试 Linux 系统性能问题都是非常困难的工作。我已经有5年 Linux 管理员的工作经历，知道如何监控系统使其保持正常运行。为此，我们编写了对于 Linux/Unix 系统管理员非常有用的并且最常用的20个命令行系统监视工具。这些命令可以在所有版本的 Linux 下使用去监控和查找系统性能的实际原因。这些监控命令足够你选择适合你的监控场景。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/linux-server-monitoring-tools/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -465,157 +665,6 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/Big-data-ecosystem/" itemprop="url">
-                  大数据生态圈技术总结（持续补充）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/大数据/" itemprop="url" rel="index">
-                    <span itemprop="name">大数据</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/Big-data-ecosystem/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Big-data-ecosystem/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            分布式文件系统
-磁盘
-
-HDFS
-S3
-Ceph
-NFS
-Gluster FS
-
-
-内存
-
-Tachyon
-Spark
-
-
-
-分布式数据库
-磁盘
-
-Cassandra
-HBase
-MongoDB
-
-
-内存 
-
-Redis
-Memcached
-
-
-
-分布式计算
-批处理
-
-Hadoop MapReduce
-Spark(支持迭代)
-Flink(支持迭代)
-
-
-流式计算
-
-Storm
-Samza
-Spar
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Big-data-ecosystem/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2016/05/27/how-to-be-more-productive/" itemprop="url">
                   How to be more productive(转)
                 </a>
@@ -726,8 +775,8 @@ Spar
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/linux-server-monitoring-tools/" itemprop="url">
-                  20个工具监控Linux服务性的性能(转)
+                <a class="post-title-link" href="/2016/05/27/middleware-expalined-simply/" itemprop="url">
+                  什么是中间件？
                 </a>
               
             
@@ -747,8 +796,8 @@ Spar
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -763,8 +812,8 @@ Spar
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/linux-server-monitoring-tools/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-monitoring-tools/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/middleware-expalined-simply/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/middleware-expalined-simply/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -784,9 +833,16 @@ Spar
 
       
         
-          <p>对于每个系统管理员或网络管理员来说，每天要监控和调试 Linux 系统性能问题都是非常困难的工作。我已经有5年 Linux 管理员的工作经历，知道如何监控系统使其保持正常运行。为此，我们编写了对于 Linux/Unix 系统管理员非常有用的并且最常用的20个命令行系统监视工具。这些命令可以在所有版本的 Linux 下使用去监控和查找系统性能的实际原因。这些监控命令足够你选择适合你的监控场景。</p>
+          <span itemprop="articleBody">
+            
+            之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。
+定义维基百科定义：
+
+提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的
+            ...
+          </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/linux-server-monitoring-tools/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/middleware-expalined-simply/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -829,8 +885,8 @@ Spar
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/linux-server-command/" itemprop="url">
-                  Linux Server Commands
+                <a class="post-title-link" href="/2016/05/27/Python-parameters-explained/" itemprop="url">
+                  Python parameters
                 </a>
               
             
@@ -850,8 +906,8 @@ Spar
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
                   </a>
                 </span>
 
@@ -866,8 +922,8 @@ Spar
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/linux-server-command/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-command/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Python-parameters-explained/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-parameters-explained/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -887,10 +943,126 @@ Spar
 
       
         
-          <h3 id="ssh_u8FDC_u7A0B_u767B_u5F55"><a href="#ssh_u8FDC_u7A0B_u767B_u5F55" class="headerlink" title="ssh远程登录"></a>ssh远程登录</h3><p>服务器需要开启远程服务</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure>
+          <h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
+<ol>
+<li>固定参数(位置参数)</li>
+<li>默认参数</li>
+<li>可变参数</li>
+<li>关键字参数</li>
+</ol>
+<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
+<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/linux-server-command/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Python-parameters-explained/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/ResourceBundle-source-code-inside/" itemprop="url">
+                  java.util.ResourceBundle 源码分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/ResourceBundle-source-code-inside/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/ResourceBundle-source-code-inside/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            ResourceBundle简介顾名思义，ResourceBundle主要就是管理Java程序的一些配置资源的工具类。但是这个管理与一般管理不同的地方在于:
+
+locale-independent, 即ResourceBundle封装了本地化的读取方法，并且根据Locale参数读对应的本地化配置，从而能够使程序自动在不同地区载入不同的配置文件(name_CN.properties, name_US
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/ResourceBundle-source-code-inside/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1117,225 +1289,6 @@ Spar
   </article>
 
 
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/19/hexo-hey/" itemprop="url">
-                  Hexo博客管理神器：hexo hey
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-19T13:48:04+08:00" content="2016-05-19">
-              2016-05-19
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/hexo/" itemprop="url" rel="index">
-                    <span itemprop="name">hexo</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/19/hexo-hey/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/19/hexo-hey/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。</p>
-</blockquote>
-<h3 id="u5B89_u88C5"><a href="#u5B89_u88C5" class="headerlink" title="安装"></a>安装</h3><ol>
-<li><p>install hexo-hey</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> hexo-hey <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>add admin user to <code>_config.yaml</code></p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Admin</span><br><span class="line"><span class="attribute">admin</span>:</span><br><span class="line">    <span class="attribute">name</span>: hexo</span><br><span class="line">    <span class="attribute">password</span>: hey</span><br><span class="line">    <span class="attribute">secret</span>: hey hexo</span><br><span class="line">    <span class="attribute">expire</span>: <span class="number">60</span>*<span class="number">1</span></span><br><span class="line">    # <span class="attribute">cors</span>: <span class="attribute">http</span>:<span class="comment">//localhost:3000</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>hexo serve<br>然后访问 <a href="http://localhost:4000/admin">http://localhost:4000/admin</a></p>
-</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/19/hexo-hey/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/19/netstat/" itemprop="url">
-                  Linux netstat解析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-19T11:04:40+08:00" content="2016-05-19">
-              2016-05-19
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/19/netstat/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/19/netstat/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u5E38_u89C1_u53C2_u6570"><a href="#u5E38_u89C1_u53C2_u6570" class="headerlink" title="常见参数"></a>常见参数</h3><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby">a 显示所有选项，默认不显示LISTEN相关</span><br><span class="line"></span>-<span class="ruby">t 显示TCP相关</span><br><span class="line"></span>-<span class="ruby">u 显示UDP相关</span><br><span class="line"></span>-<span class="ruby">n 不显示别名</span><br><span class="line"></span>-<span class="ruby">l 仅列出LISTEN状态的服务</span><br><span class="line"></span></span><br><span class="line">-<span class="ruby">p 显示相关的程序名 （需要root权限才能显示http、ftp等服务）</span><br><span class="line"></span>-<span class="ruby">r 显示路由表</span><br><span class="line"></span>-<span class="ruby">e 显示扩展信息，如uid等</span><br><span class="line"></span>-<span class="ruby">s 按协议进行统计</span><br><span class="line"></span>-<span class="ruby">c 每隔固定时间，执行该命令</span></span><br></pre></td></tr></table></figure>
-<p>LISTEN和LISTENING的状态只有用-a或者-l才能看到</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/19/netstat/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
     
 
   </section>
@@ -1383,7 +1336,7 @@ Spar
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">61</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1397,7 +1350,7 @@ Spar
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

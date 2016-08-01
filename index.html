@@ -240,6 +240,224 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/01/base64-newline-trap/" itemprop="url">
+                  BASE64换行符的坑
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-08-01T21:29:38+08:00" content="2016-08-01">
+              2016-08-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/01/base64-newline-trap/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/01/base64-newline-trap/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="u95EE_u9898_u63CF_u8FF0"><a href="#u95EE_u9898_u63CF_u8FF0" class="headerlink" title="问题描述"></a>问题描述</h3><p>client发报文给server，server端接收到http post发来的报文之后做base64解码，然后通过消息中间件传给核心系统进行处理。然后发现，client端发过来的报文会多出很多<code>/r/n</code>这样的字符，导致核心系统base64解码后也多出了<code>/r/n</code>，而核心系统之前没有考虑到这些问题，从而报错。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/08/01/base64-newline-trap/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/01/linux-server-optimization-tools/" itemprop="url">
+                  Linux服务器性能调优常用工具及实例
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-08-01T00:08:17+08:00" content="2016-08-01">
+              2016-08-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/01/linux-server-optimization-tools/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/01/linux-server-optimization-tools/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            查看进程是否存在: psps工具标识进程的5种状态码: 
+
+D 不可中断 uninterruptible sleep (usually IO) 
+R 运行 runnable (on run queue) 
+S 中断 sleeping 
+T 停止 traced or stopped 
+Z 僵死 a defunct (”zombie”) process 
+
+显示所有进程信息12345678910111
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/08/01/linux-server-optimization-tools/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/07/25/个人已经破产/" itemprop="url">
                   个人已经破产，靠还没倒闭的行业活着（转载）
                 </a>
@@ -1068,227 +1286,6 @@
   </article>
 
 
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/vim-commands/" itemprop="url">
-                  Vim Commands
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/vim-commands/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/vim-commands/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
-<li>文首：<code>gg</code> / <code>:0</code></li>
-<li>文末：<code>shift + g</code> / <code>:$</code></li>
-<li>行首：<code>0</code></li>
-<li>行末：<code>$</code></li>
-<li>到第一个不是空字符的位置：<code>^</code></li>
-<li>到最后一个不是空字符的位置：<code>g_</code></li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/vim-commands/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/Python-parameters-explained/" itemprop="url">
-                  Python parameters
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-parameters-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-parameters-explained/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
-<ol>
-<li>固定参数(位置参数)</li>
-<li>默认参数</li>
-<li>可变参数</li>
-<li>关键字参数</li>
-</ol>
-<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
-<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-parameters-explained/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
     
 
   </section>
@@ -1336,7 +1333,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">61</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1350,7 +1347,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
