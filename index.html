@@ -240,6 +240,109 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/02/linux-server-optimization-tools/" itemprop="url">
+                  Linux服务器性能调优常用工具及实例
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-08-02T00:37:17+08:00" content="2016-08-02">
+              2016-08-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/02/linux-server-optimization-tools/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/02/linux-server-optimization-tools/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="u67E5_u770B_u8FDB_u7A0B_u60C5_u51B5_3A_ps"><a href="#u67E5_u770B_u8FDB_u7A0B_u60C5_u51B5_3A_ps" class="headerlink" title="查看进程情况: ps"></a>查看进程情况: ps</h3><h4 id="u663E_u793A_u6240_u6709_u8FDB_u7A0B_u4FE1_u606F"><a href="#u663E_u793A_u6240_u6709_u8FDB_u7A0B_u4FE1_u606F" class="headerlink" title="显示所有进程信息"></a>显示所有进程信息</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ ps -A</span><br><span class="line">PID TTY      TIME   CMD</span><br><span class="line"><span class="number">1</span> ?        00:<span class="number">00</span>:<span class="number">00</span> init</span><br><span class="line"><span class="number">2</span> ?        00:<span class="number">00</span>:<span class="number">01</span> migration/<span class="number">0</span></span><br><span class="line"><span class="number">3</span> ?        00:<span class="number">00</span>:<span class="number">00</span> ksoftirqd/<span class="number">0</span></span><br><span class="line"><span class="number">4</span> ?        00:<span class="number">00</span>:<span class="number">01</span> migration/<span class="number">1</span></span><br><span class="line"><span class="number">5</span> ?        00:<span class="number">00</span>:<span class="number">00</span> ksoftirqd/<span class="number">1</span></span><br><span class="line"><span class="number">6</span> ?        00:<span class="number">29</span>:<span class="number">57</span> events/<span class="number">0</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/08/02/linux-server-optimization-tools/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/01/base64-newline-trap/" itemprop="url">
                   BASE64换行符的坑
                 </a>
@@ -301,121 +404,6 @@
           <h3 id="u95EE_u9898_u63CF_u8FF0"><a href="#u95EE_u9898_u63CF_u8FF0" class="headerlink" title="问题描述"></a>问题描述</h3><p>client发报文给server，server端接收到http post发来的报文之后做base64解码，然后通过消息中间件传给核心系统进行处理。然后发现，client端发过来的报文会多出很多<code>/r/n</code>这样的字符，导致核心系统base64解码后也多出了<code>/r/n</code>，而核心系统之前没有考虑到这些问题，从而报错。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/08/01/base64-newline-trap/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/01/linux-server-optimization-tools/" itemprop="url">
-                  Linux服务器性能调优常用工具及实例
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-08-01T00:08:17+08:00" content="2016-08-01">
-              2016-08-01
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/01/linux-server-optimization-tools/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/01/linux-server-optimization-tools/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            查看进程是否存在: psps工具标识进程的5种状态码: 
-
-D 不可中断 uninterruptible sleep (usually IO) 
-R 运行 runnable (on run queue) 
-S 中断 sleeping 
-T 停止 traced or stopped 
-Z 僵死 a defunct (”zombie”) process 
-
-显示所有进程信息12345678910111
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/01/linux-server-optimization-tools/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1200,8 +1188,8 @@ Z 僵死 a defunct (”zombie”) process
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/front-end-trend/" itemprop="url">
-                  近几年前端技术盘点以及2016年技术发展方向(好文，转)
+                <a class="post-title-link" href="/2016/05/27/Git-branch-management/" itemprop="url">
+                  Git 分支管理与实践（hexo博客源文件管理）
                 </a>
               
             
@@ -1221,8 +1209,8 @@ Z 僵死 a defunct (”zombie”) process
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index">
-                    <span itemprop="name">前端</span>
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
                   </a>
                 </span>
 
@@ -1237,8 +1225,8 @@ Z 僵死 a defunct (”zombie”) process
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/front-end-trend/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/front-end-trend/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Git-branch-management/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Git-branch-management/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1260,12 +1248,13 @@ Z 僵死 a defunct (”zombie”) process
         
           <span itemprop="articleBody">
             
-            http://www.barretlee.com/blog/2015/12/10/after-framework-we-gonna-to-hug-data/
-
-            
+            查看查看本地分支git branch
+查看包括远程分支git branch -a
+查看本地分支和远程分支的push情况git log &lt;local-branch&gt; ^origin/&lt;remote-branch&gt;   # 可以查看本地有远程没有的提交。git log &lt;remote-branch&gt; ^&lt;local-branch&gt;       # 可以查
+            ...
           </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/front-end-trend/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Git-branch-management/#more" rel="contents">
               more>>
             </a>
           </div>
