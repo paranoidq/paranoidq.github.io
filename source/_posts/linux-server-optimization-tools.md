@@ -1,42 +1,30 @@
 title: Linux服务器性能调优常用工具及实例
-date: 2016-08-01 00:08:17
+date: 2016-08-02 00:37:17
 tags: [linux, server]
 categories: linux
 ---
 
-### 查看进程是否存在: ps
-
-ps工具标识进程的5种状态码: 
-- D 不可中断 uninterruptible sleep (usually IO) 
-- R 运行 runnable (on run queue) 
-- S 中断 sleeping 
-- T 停止 traced or stopped 
-- Z 僵死 a defunct (”zombie”) process 
+### 查看进程情况: ps
 
 #### 显示所有进程信息
 ```
-[root@localhost test6]# ps -A
-PID TTY          TIME CMD
+$ ps -A
+PID TTY      TIME   CMD
 1 ?        00:00:00 init
 2 ?        00:00:01 migration/0
 3 ?        00:00:00 ksoftirqd/0
 4 ?        00:00:01 migration/1
 5 ?        00:00:00 ksoftirqd/1
 6 ?        00:29:57 events/0
-7 ?        00:00:00 events/1
-8 ?        00:00:00 khelper
-49 ?        00:00:00 kthread
-54 ?        00:00:00 kblockd/0
-55 ?        00:00:00 kblockd/1
-56 ?        00:00:00 kacpid
-217 ?        00:00:00 cqueue/0
 ...
 ```
 
+<!--more-->
+
 #### 显示指定用户
 ```
-[root@localhost test6]# ps -u root
-PID TTY          TIME CMD
+$ ps -u root
+PID TTY      TIME   CMD
 1 ?        00:00:00 init
 2 ?        00:00:01 migration/0
 3 ?        00:00:00 ksoftirqd/0
@@ -44,16 +32,11 @@ PID TTY          TIME CMD
 5 ?        00:00:00 ksoftirqd/1
 6 ?        00:29:57 events/0
 7 ?        00:00:00 events/1
-8 ?        00:00:00 khelper
-49 ?        00:00:00 kthread
-54 ?        00:00:00 kblockd/0
-55 ?        00:00:00 kblockd/1
-56 ?        00:00:00 kacpid
 ...
 ```
 #### ps 与grep 组合使用，查找特定进程 (常用)
 ```
-[root@localhost test6]# ps -ef|grep ssh
+$ ps -ef|grep ssh
 root      2720     1  0 Nov02 ?        00:00:00 /usr/sbin/sshd
 root     17394  2720  0 14:58 ?        00:00:00 sshd: root@pts/0
 root     17465 17398  0 15:57 pts/0    00:00:00 grep ssh
@@ -61,20 +44,13 @@ root     17465 17398  0 15:57 pts/0    00:00:00 grep ssh
 
 #### 列出目前所有的正在内存中的程序 (常用）
 ```
-[root@localhost test6]# ps aux
+$ ps aux
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 root         1  0.0  0.0  10368   676 ?        Ss   Nov02   0:00 init [3]
 root         2  0.0  0.0      0     0 ?        S<   Nov02   0:01 [migration/0]
 root         3  0.0  0.0      0     0 ?        SN   Nov02   0:00 [ksoftirqd/0]
 root         4  0.0  0.0      0     0 ?        S<   Nov02   0:01 [migration/1]
 root         5  0.0  0.0      0     0 ?        SN   Nov02   0:00 [ksoftirqd/1]
-root         6  0.0  0.0      0     0 ?        S<   Nov02  29:57 [events/0]
-root         7  0.0  0.0      0     0 ?        S<   Nov02   0:00 [events/1]
-root         8  0.0  0.0      0     0 ?        S<   Nov02   0:00 [khelper]
-root        49  0.0  0.0      0     0 ?        S<   Nov02   0:00 [kthread]
-root        54  0.0  0.0      0     0 ?        S<   Nov02   0:00 [kblockd/0]
-root        55  0.0  0.0      0     0 ?        S<   Nov02   0:00 [kblockd/1]
-root        56  0.0  0.0      0     0 ?        S<   Nov02   0:00 [kacpid]
 ```
 输出含义：
 ```
@@ -126,12 +102,120 @@ l      //多线程，克隆线程（使用 CLONE_THREAD, 类似 NPTL pthreads）
 +      //位于后台的进程组；
 ```
 
-#### 进程与端口号
-分两种情况：
-- 已知进程ID，想查看进程占用哪个端口号
-- 已知端口号，想查看端口被哪个线程占用
+### 查看端口情况 netstat
 
-#### 情况1
+#### 列出所有连接
+```
+$ netstat -a
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 enlightened:domain      *:*                     LISTEN     
+tcp        0      0 localhost:ipp           *:*                     LISTEN     
+tcp        0      0 enlightened.local:54750 li240-5.members.li:http ESTABLISHED
+tcp        0      0 enlightened.local:49980 del01s07-in-f14.1:https ESTABLISHED
+tcp6       0      0 ip6-localhost:ipp       [::]:*                  LISTEN 
+...
+```
 
-#### 情况2
+#### 列出tcp/udp连接 `-u`和`-t`
+```
+$ netstat -at
+$ netstat -au
+```
+
+#### 禁用反向域名解析，加快查询速度 `-n`
+没有必要知道主机名，就使用 -n 选项禁用域名解析功能
+```
+$ netstat -ant
+```
+
+#### 只列出监听中的端口 `-l`
+```
+$ netstat -tnl
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 127.0.1.1:53            0.0.0.0:*               LISTEN     
+tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN     
+tcp6       0      0 ::1:631                 :::*                    LISTEN
+```
+不要使用`-a`，否则linux会列出所有端口，而不只是监听（LISTEN）端口
+
+#### 只列出active端口
+```
+$ netstat -atnp | grep ESTA
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+tcp        0      0 192.168.1.2:49156       173.255.230.5:80        ESTABLISHED 1691/chrome     
+tcp        0      0 192.168.1.2:33324       173.194.36.117:443      ESTABLISHED 1691/chrome
+```
+active 状态的套接字连接用 "ESTABLISHED" 字段表示
+
+#### 列出进程名，进程号和用户ID `-p`
+```
+~$ sudo netstat -nlpt
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.1.1:53            0.0.0.0:*               LISTEN      1144/dnsmasq    
+tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      661/cupsd       
+tcp6       0      0 ::1:631                 :::*                    LISTEN      661/cupsd
+```
+必须要root权限才能显示！如果没有root需要查看端口对应的进程，请参考`lsof`
+`-ep`选项可以同时查看进程名和用户名
+
+#### 实战
+
+1. 查看服务是否运行
+```
+$ sudo netstat -aple | grep ntp
+udp        0      0 enlightened.local:ntp   *:*     root       17430       1789/ntpd       
+udp        0      0 localhost:ntp           *:*     root       17429       1789/ntpd       
+udp        0      0 *:ntp                   *:*     root       17422       1789/ntpd       
+udp6       0      0 fe80::216:36ff:fef8:ntp [::]    root       17432       1789/ntpd 
+```
+<!--more-->
+
+2. 查看端口号的占用情况
+```
+$ netstat -an | grep 12000
+```
+
+3. 结合`watch`监控active状态的连接
+```
+$ watch -d -n0 "netstat -atnp | grep ESTA"
+```
+
+
+#### 附：watch命令
+watch可以帮助使用者监测一个命令的运行结果，避免重复手动运行。watch命令会周期执行
+参数：
+
+- -n 时间间隔，缺省值为2s
+- -d 高亮显示变化区域
+- -t 关闭watch命令在顶部的时间间隔
+
+实例：
+```
+每隔一秒高亮显示http链接数的变化情况
+$ watch -n 1 -d 'pstree|grep http'
+
+10秒一次输出系统的平均负载
+$ watch -n 10 'cat /proc/loadavg'
+```
+
+
+
+
+
+
+### 查看使用CPU\MEM最多的进程
+
+
+
+
+
+
+### 参考文献
+[ps](http://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/ps.html)
+[netstat](https://linux.cn/article-2434-1.html)
+[watch](http://www.cnblogs.com/peida/archive/2012/12/31/2840241.html)
 
