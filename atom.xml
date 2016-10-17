@@ -4,7 +4,7 @@
   <subtitle><![CDATA[佳思忽来，书能下酒；侠情一往，云可赠人。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://paranoidq.github.io/"/>
-  <updated>2016-10-11T13:26:29.000Z</updated>
+  <updated>2016-10-17T02:21:56.000Z</updated>
   <id>http://paranoidq.github.io/</id>
   
   <author>
@@ -13,6 +13,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[NoHttpResponseException问题分析]]></title>
+    <link href="http://paranoidq.github.io/2016/10/17/NoHttpResponseException-problem-analysis/"/>
+    <id>http://paranoidq.github.io/2016/10/17/NoHttpResponseException-problem-analysis/</id>
+    <published>2016-10-17T02:11:30.000Z</published>
+    <updated>2016-10-17T02:21:56.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="u573A_u666F"><a href="#u573A_u666F" class="headerlink" title="场景"></a>场景</h3><p>在性能测试的时候，使用apache httpclient连续发送报文到server进行压测。压测的配置如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">总数：10000</span><br><span class="line">并发：400</span><br><span class="line">每个发送线程的QPS限制：20</span><br></pre></td></tr></table></figure></p>
+<p>出现的问题是： 大概1000左右的报文会出现 <code>NoHttpResponseException [server ip] failed to respond</code>。调低并发度到300一下时，不会出现这样的异常。<br><a id="more"></a></p>
+<h3 id="u539F_u56E0_u5206_u6790"><a href="#u539F_u56E0_u5206_u6790" class="headerlink" title="原因分析"></a>原因分析</h3><p>查阅相关资料，官方对于<code>NoHttpResponseException</code>解释是：</p>
+<blockquote>
+<p>In some circumstances, usually when under heavy load, the web server may be able to receive requests but unable to process them. A lack of sufficient resources like worker threads is a good example. This may cause the server to drop the connection to the client without giving any response. HttpClient throws NoHttpResponseException when it encounters such a condition. In most cases it is safe to retry a method that failed with NoHttpResponseException.</p>
+</blockquote>
+<p>大致意思跟我之前构想的一样，在某些情况下，通常在重负载下时，Web服务器可能能够接收请求，但无法处理它们。缺乏足够的资源，比如工作线程，这可能会导致服务器断开客户端连接，并且没有给予任何回应。当它遇到这样的条件HttpClient会抛出NoHttpResponseException。此异常是由于服务器端过载而拒绝接受请求（不再响应）所致。<br>但是细想，为什么服务端会drop掉连接呢？首先贴一则查阅到的stackoverflow上的分析：</p>
+<blockquote>
+<p>Most likely persistent connections that are kept alive by the connection manager become stale. That is, the target server shuts down the connection on its end without HttpClient being able to react to that event, while the connection is being idle, thus rendering the connection half-closed or ‘stale’. Usually this is not a problem. HttpClient employs several techniques to verify connection validity upon its lease from the pool. Even if the stale connection check is disabled and a stale connection is used to transmit a request message the request execution usually fails in the write operation with SocketException and gets automatically retried. However under some circumstances the write operation can terminate without an exception and the subsequent read operation returns -1 (end of stream). In this case HttpClient has no other choice but to assume the request succeeded but the server failed to respond most likely due to an unexpected error on the server side.</p>
+</blockquote>
+<p>大致含义：httpclient的连接一般由一个poolConnectionManager管理，而往往会有keep-alive的设置，即保持这个连接多久。但是当server端主动关闭连接的时候，由于<strong>Connection可能处于idle状态，因此pool没有通知到HttpClient对应的connection，从而造成了connection处于半关闭的状态</strong>。<br>因此在这种状态下，之后connection从pool中被唤醒或取出，然后发送报文在某些情况下write会在没有报异常的情况下结束，然后httpclient尝试从connection中read应答时返回了-1（注意，不是没有返回，否则应该是WaitTimeoutException）。httpclient认为server返回了应答，但实际上没有，因此抛出了NoHttpResponseException异常。</p>
+<p>进一步思考：为什么server会主动关闭Connection呢？如果是处理能力有限，那么应该更加利用connection才对，而不应该主动drop。我的思考如下：</p>
+<blockquote>
+<p>1.假设server的连接限制是10，那么显然，如果现在只有5个请求来了，那么会创建5个connection。<br>2.如果现在来了20个请求，那么显然server是处理不过来的</p>
+</blockquote>
+<h3 id="u89E3_u51B3_u65B9_u6848"><a href="#u89E3_u51B3_u65B9_u6848" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="1-__u589E_u52A0_u670D_u52A1_u5668_u5904_u7406_u80FD_u529B"><a href="#1-__u589E_u52A0_u670D_u52A1_u5668_u5904_u7406_u80FD_u529B" class="headerlink" title="1. 增加服务器处理能力"></a>1. 增加服务器处理能力</h4><p>这种方法在我们的项目中有效，我们通过修改JBoss服务器的两个参数来达到增强服务器处理能力的效果：</p>
+<ul>
+<li>maxThreads 最大线程数</li>
+<li>acceptCount 最大等待线程数</li>
+</ul>
+<p>Jboss的线程模型：（引用自<a href="http://blog.csdn.net/lengyuhong/article/details/6319069" target="_blank" rel="external">http://blog.csdn.net/lengyuhong/article/details/6319069
+</a>）<br><img src="/img/jboss-thread-model.gif" alt="jboss-thread-model"></p>
+<h4 id="2-_retry"><a href="#2-_retry" class="headerlink" title="2. retry"></a>2. retry</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">httpClientBuilder.setRetryHandler(<span class="keyword">new</span> StandardHttpRequestRetryHandler(<span class="number">3</span>, <span class="literal">true</span>));</span><br></pre></td></tr></table></figure>
+<h4 id="3-__u9650_u5236keepAlive_u7684_u65F6_u95F4"><a href="#3-__u9650_u5236keepAlive_u7684_u65F6_u95F4" class="headerlink" title="3. 限制keepAlive的时间"></a>3. 限制keepAlive的时间</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">ConnectionKeepAliveStrategy connectionKeepAliveStrategy = new ConnectionKeepAliveStrategy() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public long getKeepAliveDuration(HttpResponse httpResponse, HttpContext httpContext) &#123;</span><br><span class="line">            return <span class="number">20</span> * <span class="number">1000</span><span class="comment">; // tomcat默认keepAliveTimeout为20s</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="comment">;</span></span><br><span class="line">PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(<span class="number">20</span>, TimeUnit.SECONDS)<span class="comment">;</span></span><br><span class="line">connManager.setMaxTotal(<span class="number">200</span>)<span class="comment">;</span></span><br><span class="line">connManager.setDefaultMaxPerRoute(<span class="number">200</span>)<span class="comment">;</span></span><br><span class="line">RequestConfig requestConfig = RequestConfig.custom()</span><br><span class="line">    .setConnectTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .setSocketTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .setConnectionRequestTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .<span class="keyword">build();</span><br><span class="line"></span>HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setConnectionManager(connManager)<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setDefaultRequestConfig(requestConfig)<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler())<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setKeepAliveStrategy(connectionKeepAliveStrategy)<span class="comment">;</span></span><br><span class="line">HttpClient httpClient = httpClientBuilder.<span class="keyword">build();</span><br><span class="line"></span>ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient)<span class="comment">;</span></span><br><span class="line">restTemplate = new RestTemplate(requestFactory)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>主要是增加keepalive的策略，但这又带来一个问题，所有的连接只有20秒，无法使用长连接的性能优势</p>
+<h4 id="4-_closeIdleConnections"><a href="#4-_closeIdleConnections" class="headerlink" title="4. closeIdleConnections"></a>4. closeIdleConnections</h4><p>PoolingHttpClientConnectionManager.closeIdleConnections 方法<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">closeIdleConnections</span><span class="params">(<span class="keyword">final</span> <span class="keyword">long</span> idleTimeout, <span class="keyword">final</span> TimeUnit tunit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.log.isDebugEnabled()) &#123;</span><br><span class="line">        <span class="keyword">this</span>.log.debug(<span class="string">"Closing connections idle longer than "</span> + idleTimeout + <span class="string">" "</span> + tunit);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.pool.closeIdle(idleTimeout, tunit);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>三种方案暂且列出，准备实践一下效果，后续再更新到博客中来。相比而言，retry的方案比较sb，但是估计很好用；keepAlive限制需要考虑场景，某些需要长连接的场景下可能不是很合适，并且把统一把连接过期关掉，显然会带来不小的性能损失。最后一种方案，应该是keepAlive的折中优化，本质上是如果connection一直被pool拿出来使用，那我就不关闭你；如果connection一直idle，那么过了一段时间我就主动关闭你了。这样就避免了keepAlive统一限制的问题，同时如果一个connection被pool拿出来用了，那么显然他不可能被server关闭；而idle connection被关闭了，所以不会出现上述server端drop connection而pool又无法通知idle connection的问题。</p>
+<h3 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<li><a href="https://my.oschina.net/sannychan/blog/485677" target="_blank" rel="external">https://my.oschina.net/sannychan/blog/485677</a></li>
+<li><a href="http://stackoverflow.com/questions/10558791/apache-httpclient-interim-error-nohttpresponseexception" target="_blank" rel="external">http://stackoverflow.com/questions/10558791/apache-httpclient-interim-error-nohttpresponseexception</a></li>
+<li><a href="http://stackoverflow.com/questions/10570672/get-nohttpresponseexception-for-load-testing/10680629#10680629" target="_blank" rel="external">http://stackoverflow.com/questions/10570672/get-nohttpresponseexception-for-load-testing/10680629#10680629</a></li>
+<li><a href="https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/" target="_blank" rel="external">https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/</a></li>
+<li><a href="http://luan.iteye.com/blog/1820054" target="_blank" rel="external">http://luan.iteye.com/blog/1820054</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="u573A_u666F"><a href="#u573A_u666F" class="headerlink" title="场景"></a>场景</h3><p>在性能测试的时候，使用apache httpclient连续发送报文到server进行压测。压测的配置如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">总数：10000</span><br><span class="line">并发：400</span><br><span class="line">每个发送线程的QPS限制：20</span><br></pre></td></tr></table></figure></p>
+<p>出现的问题是： 大概1000左右的报文会出现 <code>NoHttpResponseException [server ip] failed to respond</code>。调低并发度到300一下时，不会出现这样的异常。<br>]]>
+    
+    </summary>
+    
+      <category term="httpclient" scheme="http://paranoidq.github.io/tags/httpclient/"/>
+    
+      <category term="tcp" scheme="http://paranoidq.github.io/tags/tcp/"/>
+    
+      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[(翻译) Using HttpClient properly to avoid CLOSE_WAIT TCP connections]]></title>
@@ -37,53 +92,6 @@
     <![CDATA[<p>原文链接：<a href="https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/">https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/</a></p>
 <p>在我帮助我的客户debug一个TCP connection关于CLOSE_WAIT状态的问题时，我发现我们错误的使用了HttpClient。在这个问题上，如果你试图google <a href="http://www.google.com/search?q=HttpClient+CLOSE_WAIT">HttpClient CLOSE_WAIT</a>，你会发现很多人跟我们一样存在疑惑。但是关于这个问题，很多的解答不够直观，甚至<a href="http://hc.apache.org/httpclient-legacy/tutorial.html">官方文档</a>都是错误的。所以我在这篇文章中进行了分析。</p>
 <p>Apache HttpClient的基本用法如下：<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HttpClient httpClient = <span class="keyword">new</span> HttpClient();</span><br><span class="line">HttpMethod <span class="function"><span class="keyword">method</span> = <span class="title">new</span> <span class="title">GetMethod</span><span class="params">(uri)</span>;</span></span><br><span class="line"><span class="keyword">try</span> <span class="comment">&#123;</span><br><span class="line">    int statusCode = httpClient.executeMethod(method);</span><br><span class="line">    byte[] responseBody = method.getResponseBody();</span><br><span class="line">    // ...</span><br><span class="line">    return stuff;</span><br><span class="line">&#125;</span> <span class="keyword">finally</span> <span class="comment">&#123;</span><br><span class="line">    method.releaseConnection();</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-      <category term="httpclient" scheme="http://paranoidq.github.io/tags/httpclient/"/>
-    
-      <category term="tcp" scheme="http://paranoidq.github.io/tags/tcp/"/>
-    
-      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[NoHttpResponseException问题分析]]></title>
-    <link href="http://paranoidq.github.io/2016/10/11/NoHttpResponseException-problem-analysis/"/>
-    <id>http://paranoidq.github.io/2016/10/11/NoHttpResponseException-problem-analysis/</id>
-    <published>2016-10-11T11:45:30.000Z</published>
-    <updated>2016-10-11T12:45:37.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u573A_u666F"><a href="#u573A_u666F" class="headerlink" title="场景"></a>场景</h3><p>在性能测试的时候，使用apache httpclient连续发送报文到server进行压测。压测的配置如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">总数：10000</span><br><span class="line">并发：400</span><br><span class="line">每个发送线程的QPS限制：20</span><br></pre></td></tr></table></figure></p>
-<p>出现的问题是： 大概1000左右的报文会出现 <code>NoHttpResponseException [server ip] failed to respond</code>。调低并发度到300一下时，不会出现这样的异常。<br><a id="more"></a></p>
-<h3 id="u539F_u56E0_u5206_u6790"><a href="#u539F_u56E0_u5206_u6790" class="headerlink" title="原因分析"></a>原因分析</h3><p>查阅相关资料，官方对于<code>NoHttpResponseException</code>解释是：</p>
-<blockquote>
-<p>In some circumstances, usually when under heavy load, the web server may be able to receive requests but unable to process them. A lack of sufficient resources like worker threads is a good example. This may cause the server to drop the connection to the client without giving any response. HttpClient throws NoHttpResponseException when it encounters such a condition. In most cases it is safe to retry a method that failed with NoHttpResponseException.</p>
-</blockquote>
-<p>大致意思跟我之前构想的一样，在并发量比较大的情况下，server的处理线程有限，于是drop掉了来自客户端的Connection，并且没有给任何应答。但是细想，为什么服务端会drop掉连接呢？首先贴一则查阅到的stackoverflow上的分析：</p>
-<blockquote>
-<p>Most likely persistent connections that are kept alive by the connection manager become stale. That is, the target server shuts down the connection on its end without HttpClient being able to react to that event, while the connection is being idle, thus rendering the connection half-closed or ‘stale’. Usually this is not a problem. HttpClient employs several techniques to verify connection validity upon its lease from the pool. Even if the stale connection check is disabled and a stale connection is used to transmit a request message the request execution usually fails in the write operation with SocketException and gets automatically retried. However under some circumstances the write operation can terminate without an exception and the subsequent read operation returns -1 (end of stream). In this case HttpClient has no other choice but to assume the request succeeded but the server failed to respond most likely due to an unexpected error on the server side.</p>
-</blockquote>
-<p>大致含义：httpclient的连接一般由一个poolConnectionManager管理，而往往会有keep-alive的设置，即保持这个连接多久。但是当server端主动关闭连接的时候，由于<strong>Connection可能处于idle状态，因此pool没有通知到HttpClient对应的connection，从而造成了connection处于半关闭的状态</strong>。<br>因此在这种状态下，之后connection从pool中被唤醒或取出，然后发送报文在某些情况下write会在没有报异常的情况下结束，然后httpclient尝试从connection中read应答时返回了-1（注意，不是没有返回，否则应该是WaitTimeoutException）。httpclient认为server返回了应答，但实际上没有，因此抛出了NoHttpResponseException异常。</p>
-<p>进一步思考：为什么server会主动关闭Connection呢？如果是处理能力有限，那么应该更加利用connection才对，而不应该主动drop。我的思考如下：</p>
-<blockquote>
-<p>1.假设server的连接限制是10，那么显然，如果现在只有5个请求来了，那么会创建5个connection。<br>2.如果现在来了20个请求，那么显然server是处理不过来的</p>
-</blockquote>
-<h3 id="u89E3_u51B3_u65B9_u6848"><a href="#u89E3_u51B3_u65B9_u6848" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="1-_retry"><a href="#1-_retry" class="headerlink" title="1. retry"></a>1. retry</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">httpClientBuilder.setRetryHandler(<span class="keyword">new</span> StandardHttpRequestRetryHandler(<span class="number">3</span>, <span class="literal">true</span>));</span><br></pre></td></tr></table></figure>
-<h4 id="2-__u9650_u5236keepAlive_u7684_u65F6_u95F4"><a href="#2-__u9650_u5236keepAlive_u7684_u65F6_u95F4" class="headerlink" title="2. 限制keepAlive的时间"></a>2. 限制keepAlive的时间</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">ConnectionKeepAliveStrategy connectionKeepAliveStrategy = new ConnectionKeepAliveStrategy() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public long getKeepAliveDuration(HttpResponse httpResponse, HttpContext httpContext) &#123;</span><br><span class="line">            return <span class="number">20</span> * <span class="number">1000</span><span class="comment">; // tomcat默认keepAliveTimeout为20s</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="comment">;</span></span><br><span class="line">PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(<span class="number">20</span>, TimeUnit.SECONDS)<span class="comment">;</span></span><br><span class="line">connManager.setMaxTotal(<span class="number">200</span>)<span class="comment">;</span></span><br><span class="line">connManager.setDefaultMaxPerRoute(<span class="number">200</span>)<span class="comment">;</span></span><br><span class="line">RequestConfig requestConfig = RequestConfig.custom()</span><br><span class="line">    .setConnectTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .setSocketTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .setConnectionRequestTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .<span class="keyword">build();</span><br><span class="line"></span>HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setConnectionManager(connManager)<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setDefaultRequestConfig(requestConfig)<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler())<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setKeepAliveStrategy(connectionKeepAliveStrategy)<span class="comment">;</span></span><br><span class="line">HttpClient httpClient = httpClientBuilder.<span class="keyword">build();</span><br><span class="line"></span>ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient)<span class="comment">;</span></span><br><span class="line">restTemplate = new RestTemplate(requestFactory)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
-<p>主要是增加keepalive的策略，但这又带来一个问题，所有的连接只有20秒，无法使用长连接的性能优势</p>
-<h4 id="3-_closeIdleConnections"><a href="#3-_closeIdleConnections" class="headerlink" title="3. closeIdleConnections"></a>3. closeIdleConnections</h4><p>PoolingHttpClientConnectionManager.closeIdleConnections 方法<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">closeIdleConnections</span><span class="params">(<span class="keyword">final</span> <span class="keyword">long</span> idleTimeout, <span class="keyword">final</span> TimeUnit tunit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.log.isDebugEnabled()) &#123;</span><br><span class="line">        <span class="keyword">this</span>.log.debug(<span class="string">"Closing connections idle longer than "</span> + idleTimeout + <span class="string">" "</span> + tunit);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.pool.closeIdle(idleTimeout, tunit);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>三种方案暂且列出，准备实践一下效果，后续再更新到博客中来。相比而言，retry的方案比较sb，但是估计很好用；keepAlive限制需要考虑场景，某些需要长连接的场景下可能不是很合适，并且把统一把连接过期关掉，显然会带来不小的性能损失。最后一种方案，应该是keepAlive的折中优化，本质上是如果connection一直被pool拿出来使用，那我就不关闭你；如果connection一直idle，那么过了一段时间我就主动关闭你了。这样就避免了keepAlive统一限制的问题，同时如果一个connection被pool拿出来用了，那么显然他不可能被server关闭；而idle connection被关闭了，所以不会出现上述server端drop connection而pool又无法通知idle connection的问题。</p>
-<h3 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
-<li><a href="https://my.oschina.net/sannychan/blog/485677" target="_blank" rel="external">https://my.oschina.net/sannychan/blog/485677</a></li>
-<li><a href="http://stackoverflow.com/questions/10558791/apache-httpclient-interim-error-nohttpresponseexception" target="_blank" rel="external">http://stackoverflow.com/questions/10558791/apache-httpclient-interim-error-nohttpresponseexception</a></li>
-<li><a href="http://stackoverflow.com/questions/10570672/get-nohttpresponseexception-for-load-testing/10680629#10680629" target="_blank" rel="external">http://stackoverflow.com/questions/10570672/get-nohttpresponseexception-for-load-testing/10680629#10680629</a></li>
-<li><a href="https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/" target="_blank" rel="external">https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/</a></li>
-</ol>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="u573A_u666F"><a href="#u573A_u666F" class="headerlink" title="场景"></a>场景</h3><p>在性能测试的时候，使用apache httpclient连续发送报文到server进行压测。压测的配置如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">总数：10000</span><br><span class="line">并发：400</span><br><span class="line">每个发送线程的QPS限制：20</span><br></pre></td></tr></table></figure></p>
-<p>出现的问题是： 大概1000左右的报文会出现 <code>NoHttpResponseException [server ip] failed to respond</code>。调低并发度到300一下时，不会出现这样的异常。<br>]]>
     
     </summary>
     
@@ -545,174 +553,52 @@
   </entry>
   
   <entry>
-    <title><![CDATA[nginx与tomcat有什么区别]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/nginx-vs-tomcat/"/>
-    <id>http://paranoidq.github.io/2016/05/27/nginx-vs-tomcat/</id>
+    <title><![CDATA[java.util.ResourceBundle 源码分析]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/ResourceBundle-source-code-inside/"/>
+    <id>http://paranoidq.github.io/2016/05/27/ResourceBundle-source-code-inside/</id>
     <published>2016-05-27T15:45:36.000Z</published>
     <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
-<a id="more"></a>
-<p>Http Server的核心是Http协议层面的传输和访问控制，包括代理、负载均衡等。客户端通过Http协议访问Http Server上的文件资源(HTML文件、图片等)，然后Http Server如实将文件通过Http协议传输给客户端。当然，通过<code>CGI</code>技术也可以对Http Server传输的内容进行一些处理。<br>大多数时候，Nginx主要作为Tomcat前端的负载均衡器和代理，负责请求的转发和静态内容的直接返回。因为其高效的IO机制[2]，能够显著提高系统的吞吐率。</p>
-<p>Web App Server，应用执行的容器。它首先需要支持开发语言的 Runtime（对于 Tomcat 来说，就是 Java），保证应用能够在应用服务器上正常运行。其次，需要支持应用相关的规范，例如类库、安全方面的特性。对于 Tomcat 来说，就是需要提供 JSP/Sevlet 运行需要的标准类库、Interface 等。为了方便，<br>应用服务器往往也会集成 HTTP Server 的功能，但是不如专业的 HTTP Server 那么强大，所以应用服务器往往是运行在 HTTP Server 的背后，执行应用，将动态的内容转化为静态的内容之后，通过 HTTP Server 分发到客户端。<br>Tomcat和Jetty，WebLogic同属一类。</p>
-<p><hr></p>
-<blockquote>
-<p>“tomcat用在java后台程序上，java后台程序难道不能用apache和nginx吗？”</p>
-</blockquote>
-<p>—— 不能。apache和nginx不是servlet容器。什么是servlet容器呢？即实现HttpServletRequest、HttpServletResponse、HttpSession等等接口，解析http请求，通过类加载器加载对应的servlet实现类并调用，也就是说servlet容器必须由java或者基于jvm的语言实现。<br><strong>本质上，Servlet是J2EE规范的一部分，规定了容器和Web App必须遵循的接口规范。容器必须按照接口解析Java类，然后处理请求；同样Web App也只有按照规范来编写实现类，才能被容器所加载解析，从而完成特定的功能。</strong></p>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><ol>
-<li><a href="https://www.zhihu.com/question/32212996" target="_blank" rel="external">https://www.zhihu.com/question/32212996</a></li>
-<li><a href="http://90112526.blog.51cto.com/6013499/1059700" target="_blank" rel="external">http://90112526.blog.51cto.com/6013499/1059700</a></li>
+    <content type="html"><![CDATA[<h3 id="ResourceBundle_u7B80_u4ECB"><a href="#ResourceBundle_u7B80_u4ECB" class="headerlink" title="ResourceBundle简介"></a>ResourceBundle简介</h3><p>顾名思义，ResourceBundle主要就是管理Java程序的一些配置资源的工具类。但是这个管理与一般管理不同的地方在于:</p>
+<ul>
+<li><p>locale-independent, 即ResourceBundle封装了本地化的读取方法，并且根据Locale参数读对应的本地化配置，从而能够使程序自动在不同地区载入不同的配置文件(<code>name_CN.properties</code>, <code>name_US.properties</code>等)。JavaDoc说法:</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. <span class="keyword">be </span>easily localized, <span class="keyword">or </span>translated, into <span class="keyword">different </span>languages</span><br><span class="line"><span class="number">2</span>. handle <span class="keyword">multiple </span>locales <span class="built_in">at</span> once</span><br><span class="line"><span class="number">3</span>. <span class="keyword">be </span>easily modified later to support even more locales</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在没有指定Locale的情况下，自动载入默认配置<code>name.properties</code></p>
+</li>
+<li>带有缓存功能</li>
+<li>线程安全</li>
+</ul>
+<h3 id="ResourceBundle_u4F7F_u7528"><a href="#ResourceBundle_u4F7F_u7528" class="headerlink" title="ResourceBundle使用"></a>ResourceBundle使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResourceBundleUtil</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">ResourceBundleUtil</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ResourceBundle <span class="title">newResourceBundle</span><span class="params">(String resourcePath)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> ResourceBundle.getBundle(resourcePath, Locale.ENGLISH);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ResourceBundle <span class="title">newResourceBundle</span><span class="params">(String resourcePath, Locale locale)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ResourceBundle.getBundle(resourcePath, locale);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ResourceBundle rb = ResourceBundleUtil.newResourceBundle(<span class="string">"with_classpath"</span>);</span><br><span class="line">        String value1 = rb.getString(<span class="string">"key1"</span>);</span><br><span class="line">        System.out.println(value1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 注意，如果不在clsspath的root目录下，需要指定全名</span></span><br><span class="line">        ResourceBundle rb2 = ResourceBundleUtil.newResourceBundle(<span class="string">"i18n.within_folder"</span>);</span><br><span class="line">        value1 = rb2.getString(<span class="string">"key1"</span>);</span><br><span class="line">        System.out.println(value1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自定义ResourceBundle例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyResources</span> <span class="keyword">extends</span> <span class="title">ResourceBundle</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">handleGetObject</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (key.equals(<span class="string">"okKey"</span>)) <span class="keyword">return</span> <span class="string">"Ok"</span>;</span><br><span class="line">        <span class="keyword">if</span> (key.equals(<span class="string">"cancelKey"</span>)) <span class="keyword">return</span> <span class="string">"Cancel"</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// keySet() is inherted from super class</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Enumeration&lt;String&gt; <span class="title">getKeys</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Collections.enumeration(keySet());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Overrides handleKeySet() so that the getKeys() implementation</span></span><br><span class="line">    <span class="comment">// can rely on the keySet() value.</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Set&lt;String&gt; <span class="title">handleKeySet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> HashSet&lt;String&gt;(Arrays.asList(<span class="string">"okKey"</span>, <span class="string">"cancelKey"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="ResourceBundle_u7C7B_u7ED3_u6784"><a href="#ResourceBundle_u7C7B_u7ED3_u6784" class="headerlink" title="ResourceBundle类结构"></a>ResourceBundle类结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ResourceBundle</span><br><span class="line">    |__ ListResourceBundle</span><br><span class="line">    |__ PropertyResourceBundle</span><br></pre></td></tr></table></figure>
+<h3 id="ResourceBundle_u6E90_u7801_u7279_u6027"><a href="#ResourceBundle_u6E90_u7801_u7279_u6027" class="headerlink" title="ResourceBundle源码特性"></a>ResourceBundle源码特性</h3><h4 id="u5DE5_u5382_u65B9_u6CD5"><a href="#u5DE5_u5382_u65B9_u6CD5" class="headerlink" title="工厂方法"></a>工厂方法</h4><p>通过工厂方法<code>getBundle()</code>返回ResourceBundle的子类对象，处理不同的配置资源加载过程。</p>
+<h4 id="u5B9E_u73B0_u7C7B"><a href="#u5B9E_u73B0_u7C7B" class="headerlink" title="实现类"></a>实现类</h4><p>ResourceBundle本身是abstract，实际使用的是两个实现类。<br>ListResourceBundle将配置资源看做key/value组成的列表，而PropertyResourceBundle使用properties来维护配置资源。</p>
+<p>可以自己实现ResourceBundle，需要实现两个方法：<code>handleGetObject()</code> 和 <code>getKeys()</code>。另外需要注意的是，自己实现的ResourceBundle类要保证线程安全性，因为可能被多个线程同时使用。（ResourceBundle的非abstract方法和两个已知实现类的方法都是线程安全的）</p>
+<h4 id="u7EBF_u7A0B_u5B89_u5168_u6027"><a href="#u7EBF_u7A0B_u5B89_u5168_u6027" class="headerlink" title="线程安全性"></a>线程安全性</h4><p>ResourceBundle的非abstract方法和两个已知实现类的方法都是线程安全的。<br>另外，自己实现的ResourceBundle类的<code>handleGetObject()</code>和<code>getKeys()</code>要保证线程安全性，因为可能被多个线程同时使用。</p>
+<h4 id="u8D44_u6E90_u52A0_u8F7D_u8FC7_u7A0B_u7684_u63A7_u5236_uFF1AResourceBundle-Control"><a href="#u8D44_u6E90_u52A0_u8F7D_u8FC7_u7A0B_u7684_u63A7_u5236_uFF1AResourceBundle-Control" class="headerlink" title="资源加载过程的控制：ResourceBundle.Control"></a>资源加载过程的控制：ResourceBundle.Control</h4><p>可以控制资源的搜索顺序、bundle的格式或缓存方式等。两种方式控制ResourceBundle加载配置资源的过程：</p>
+<ol>
+<li>在<code>getBundle()</code>的参数中指定Control实例</li>
+<li>通过指定<code>ResourceBundleControlProvider</code>的实现类。这个实现类会在ResouceBundle类被加载的时候就检测到，如果实现类针对某一个base name提供了Control对象，那么加载这个base name时的默认行为就会被改变。如果有多个providers针对同一个base name，那么选择第一个provider。</li>
 </ol>
+<p>相关方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ResourceBundle.getBundle(String, Locale, ClassLoader, Control);</span><br></pre></td></tr></table></figure>
+<h4 id="Cache_management"><a href="#Cache_management" class="headerlink" title="Cache management"></a>Cache management</h4><p><code>getBundle()</code>返回的ResourceBundle会被默认缓存起来，从而下次请求同样的配置名时，会返回缓存过的ResourceBundle实例。<br>使用者可以选择不缓存、控制缓存时间（通过<code>time-to-live</code>变量），也可以清空cache。<br>相关方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ResourceBundle.clearCache();</span><br><span class="line">ResourceBundle.Control.getTimeToLive();</span><br><span class="line">ResourceBundle.Control.needsReload();</span><br></pre></td></tr></table></figure>
+<h3 id="ResourceBundle_u6E90_u7801_u5206_u6790"><a href="#ResourceBundle_u6E90_u7801_u5206_u6790" class="headerlink" title="ResourceBundle源码分析"></a>ResourceBundle源码分析</h3><h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p>java.util.ResourceBundle源码(JDK1.8)<br><a href="http://blog.csdn.net/haiyan0106/article/details/2257725" target="_blank" rel="external">http://blog.csdn.net/haiyan0106/article/details/2257725</a><br><a href="http://san-yun.iteye.com/blog/1683558" target="_blank" rel="external">Java WeakReference与SoftReference</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>]]>
-    
+    <![CDATA[<h3 id="ResourceBundle_u7B80_u4ECB"><a href="#ResourceBundle_u7B80_u4ECB" class="headerlink" title="ResourceBundle简介"></a>ResourceBundle简介</]]>
     </summary>
     
-      <category term="碎片" scheme="http://paranoidq.github.io/tags/%E7%A2%8E%E7%89%87/"/>
+      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
     
-      <category term="server" scheme="http://paranoidq.github.io/tags/server/"/>
+      <category term="resourcebundle" scheme="http://paranoidq.github.io/tags/resourcebundle/"/>
     
-      <category term="nginx" scheme="http://paranoidq.github.io/tags/nginx/"/>
+      <category term="jdk" scheme="http://paranoidq.github.io/tags/jdk/"/>
     
-      <category term="tomcat" scheme="http://paranoidq.github.io/tags/tomcat/"/>
+      <category term="todo" scheme="http://paranoidq.github.io/tags/todo/"/>
     
-      <category term="中间件" scheme="http://paranoidq.github.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Python parameters]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/Python-parameters-explained/"/>
-    <id>http://paranoidq.github.io/2016/05/27/Python-parameters-explained/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
-<ol>
-<li>固定参数(位置参数)</li>
-<li>默认参数</li>
-<li>可变参数</li>
-<li>关键字参数</li>
-</ol>
-<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
-<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
-<a id="more"></a>
-<h3 id="u4F4D_u7F6E_u53C2_u6570_positional_parameter_28_u56FA_u5B9A_u53C2_u6570_29"><a href="#u4F4D_u7F6E_u53C2_u6570_positional_parameter_28_u56FA_u5B9A_u53C2_u6570_29" class="headerlink" title="位置参数 positional parameter(固定参数)"></a>位置参数 positional parameter(固定参数)</h3><ol>
-<li><p>函数定义时：其中的x,n 都是固定<strong>形参</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, n)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数调用时：如果不指定名字，则传入的两个<strong>实参</strong>按照位置顺序依次赋给<strong>形参</strong>x和n</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="string">'abc'</span>, <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>由于是位置参数，所以参数名在调用的时候是没有意义的，只有参数的顺序才有意义。因为形参会根据顺序依次匹配实参。</p>
-<h3 id="u9ED8_u8BA4_u53C2_u6570_default_parameter"><a href="#u9ED8_u8BA4_u53C2_u6570_default_parameter" class="headerlink" title="默认参数 default parameter"></a>默认参数 default parameter</h3><p>如果不传递n的话，上面的调用会报错：缺少位置<strong>实参</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="string">'abc'</span>)</span><br><span class="line"><span class="comment"># output: TypeError: func() missing 1 required positional argument: 'n'</span></span><br></pre></td></tr></table></figure></p>
-<p>这时候就可以靠默认参数来帮助我们省事，不用每次都给默认形参传递实参了</p>
-<ol>
-<li><p>函数定义时：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, n=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-<p>注意点：</p>
-<ul>
-<li>默认参数定义<strong>必须</strong>在所有的位置参数之后，并且默认参数的后面不能再有位置参数</li>
-<li>默认参数的必须指向不变的对象，否则会掉坑<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">add_end</span><span class="params">(L=[])</span>:</span></span><br><span class="line">    L.append(<span class="string">'END'</span>)</span><br><span class="line">    <span class="keyword">return</span> L</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>add_end()</span><br><span class="line">[<span class="string">'END'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>add_end()</span><br><span class="line">[<span class="string">'END'</span>, <span class="string">'END'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Python函数在定义的时候，默认参数L的值就被计算出来了，即[]，因为默认参数L也是一个变量，</span></span><br><span class="line"><span class="comment"># 它指向对象[]，每次调用该函数，如果改变了L的内容，则下次调用时，默认参数的内容就变了，不再是函数定义时的[]了。</span></span><br><span class="line"><span class="comment"># 所以，定义默认参数要牢记一点：默认参数必须指向不变对象！</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确的做法：通过None这个不变的默认参数来做</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_end</span><span class="params">(L=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> L <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        L = []</span><br><span class="line">    L.append(<span class="string">'END'</span>)</span><br><span class="line">    <span class="keyword">return</span> L</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>函数调用时：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可以不提供默认参数的实参，也可以提供</span></span><br><span class="line">func(<span class="string">'abc'</span>)  </span><br><span class="line">func(<span class="string">'abc'</span>, <span class="number">10</span>)</span><br><span class="line"><span class="comment"># 对于多个默认参数的情况，如果按顺序提供，可以不指定默认形参的名字；</span></span><br><span class="line"><span class="comment"># 否则需指定名字</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func2</span><span class="params">(x, n=<span class="number">1</span>, m=<span class="number">2</span>)</span>:</span></span><br><span class="line">   <span class="keyword">pass</span></span><br><span class="line">func2(<span class="string">'abc'</span>, m=<span class="number">23</span>, n=<span class="number">24</span>)</span><br></pre></td></tr></table></figure>
-<p>注意：不按顺序提供实参的情况仅仅适用于默认参数部分。也就是无论如何，必须先按顺序提供位置参数，之后提供的默认实参才有不按顺序一说。下面的调用是错误的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func(n=<span class="number">10</span>, <span class="string">'acb'</span>)</span><br><span class="line"><span class="comment"># output: SyntaxError: non-keyword arg after keyword arg</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="u53EF_u53D8_u53C2_u6570"><a href="#u53EF_u53D8_u53C2_u6570" class="headerlink" title="可变参数"></a>可变参数</h3><p>在定义函数的时候，传入的位置参数个数不确定的时候使用</p>
-<p>不用可变参数怎么做？转化为list或tuple：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(numbers)</span>:</span></span><br><span class="line">    sum = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> numbers:</span><br><span class="line">        sum = sum + n * n</span><br><span class="line">    <span class="keyword">return</span> sum</span><br><span class="line">calc([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">calc((<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure></p>
-<p>利用可变参数就可以直接传入，不需要显示转化了<code>calc(1, 2, 3)</code></p>
-<ol>
-<li><p>函数定义<br>使用*表达式即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(*numbers)</span>:</span></span><br><span class="line">    <span class="comment"># the same with above</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数调用：可以传入任意个数的实参，包括0个</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">calc(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于对已有的列表进行操作</span></span><br><span class="line">nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">calc(*nums)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>注意：函数调用的时候，实参做了拷贝，原有的实参不变！</p>
-<p>可变参数可以同时定义在位置参数后面：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, *args)</span>:</span></span><br><span class="line">    print(x)</span><br><span class="line">    print(args)</span><br><span class="line">func(<span class="string">'abc'</span>)</span><br><span class="line"><span class="comment"># output: 'abc' ()</span></span><br><span class="line">func(<span class="string">'abc'</span>, <span class="string">'efg'</span>) <span class="comment"># （2）</span></span><br><span class="line"><span class="comment"># output: 'abc' ('efg')</span></span><br><span class="line">func(<span class="string">'abc'</span>, *<span class="string">'efg'</span>) <span class="comment"># （3）</span></span><br><span class="line"><span class="comment"># output: 'abc', ('e', 'f', 'g')</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func2</span><span class="params">(x=<span class="string">'123'</span>, *args)</span>:</span></span><br><span class="line">    print(x)</span><br><span class="line">    print(args)</span><br><span class="line">func(<span class="string">'abc'</span>)</span><br><span class="line"><span class="comment"># output: 'abc' ()</span></span><br><span class="line">func(<span class="string">'abc'</span>, <span class="string">'efg'</span>) <span class="comment"># （4）</span></span><br><span class="line"><span class="comment"># output: 'abc' ('efg')</span></span><br><span class="line">func(<span class="string">'abc'</span>, *<span class="string">'efg'</span>) <span class="comment"># （5）</span></span><br><span class="line"><span class="comment"># output: 'c', ('f', 'g')</span></span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>优先匹配位置参数, 无论有没有默认值。有默认值覆盖默认值，没有默认值赋值。剩下来的部分才给可变参数！</li>
-<li>注意(2)和(3)调用方式的不同</li>
-<li>注意(4)和(5)结果的不同</li>
-</ul>
-<h3 id="u5173_u952E_u5B57_u53C2_u6570_uFF08keyword_parameter_uFF09"><a href="#u5173_u952E_u5B57_u53C2_u6570_uFF08keyword_parameter_uFF09" class="headerlink" title="关键字参数（keyword parameter）"></a>关键字参数（keyword parameter）</h3><p>可变参数允许你传入0个或任意个参数，这些可变参数在函数调用时自动组装为一个tuple。而关键字参数允许你传入0个或任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict。</p>
-<ol>
-<li><p>函数定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></span><br><span class="line">   print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数调用：<br>可以只传入位置参数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person(<span class="string">'Michael'</span>, <span class="number">30</span>)</span><br></pre></td></tr></table></figure>
-<p>也可以传入任意个数任意名字的关键字实参</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">person(<span class="string">'Bob'</span>, <span class="number">35</span>, city=<span class="string">'Beijing'</span>)</span><br><span class="line">person(<span class="string">'Adam'</span>, <span class="number">45</span>, gender=<span class="string">'M'</span>, job=<span class="string">'Engineer'</span>)</span><br></pre></td></tr></table></figure>
-<p>传入dict的方式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</span><br><span class="line">person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=extra[<span class="string">'city'</span>], job=extra[<span class="string">'job'</span>])</span><br><span class="line">person(<span class="string">'Jack'</span>, <span class="number">24</span>, **extra)</span><br></pre></td></tr></table></figure>
-<p>注意：注意kw获得的dict是extra的一份拷贝，对kw的改动不会影响到函数外的extra</p>
-</li>
-</ol>
-<h3 id="u547D_u540D_u5173_u952E_u5B57_u53C2_u6570"><a href="#u547D_u540D_u5173_u952E_u5B57_u53C2_u6570" class="headerlink" title="命名关键字参数"></a>命名关键字参数</h3><p>如果要限制关键字参数的名字，就可以用命名关键字参数，例如，只接收city和job作为关键字参数</p>
-<ol>
-<li><p>函数定义：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, *, city, job)</span>:</span></span><br><span class="line">    print(name, age, city, job)</span><br></pre></td></tr></table></figure>
-<p>定义时可以有缺省值：由于指定名字，所以带缺省值的parameter不关心顺序</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, *, city=<span class="string">'beijing'</span>, job)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>函数调用：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=<span class="string">'Beijing'</span>, job=<span class="string">'Engineer'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 必须传入参数名(除非使用定义了的缺省值，连值也不传)，否则会报TypeError</span></span><br><span class="line">person(<span class="string">'Jack'</span>, <span class="number">24</span>, <span class="string">'Beijing'</span>, <span class="string">'Engineer'</span>)</span><br><span class="line">TypeError: person() takes <span class="number">2</span> positional arguments but <span class="number">4</span> were given</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="u53C2_u6570_u7684_u7EC4_u5408"><a href="#u53C2_u6570_u7684_u7EC4_u5408" class="headerlink" title="参数的组合"></a>参数的组合</h3><p>必须是如下顺序：<br><strong>必选参数、默认参数、可变参数/命名关键字参数和关键字参数</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span><span class="params">(a, b, c=<span class="number">0</span>, *args, **kw)</span>:</span></span><br><span class="line">    print(<span class="string">'a ='</span>, a, <span class="string">'b ='</span>, b, <span class="string">'c ='</span>, c, <span class="string">'args ='</span>, args, <span class="string">'kw ='</span>, kw)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">(a, b, c=<span class="number">0</span>, *, d, **kw)</span>:</span></span><br><span class="line">    print(<span class="string">'a ='</span>, a, <span class="string">'b ='</span>, b, <span class="string">'c ='</span>, c, <span class="string">'d ='</span>, d, <span class="string">'kw ='</span>, kw)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">0</span> args = () kw = &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>, c=<span class="number">3</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">3</span> args = () kw = &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'a'</span>, <span class="string">'b'</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">3</span> args = (<span class="string">'a'</span>, <span class="string">'b'</span>) kw = &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, x=<span class="number">99</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">3</span> args = (<span class="string">'a'</span>, <span class="string">'b'</span>) kw = &#123;<span class="string">'x'</span>: <span class="number">99</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f2(<span class="number">1</span>, <span class="number">2</span>, d=<span class="number">99</span>, ext=<span class="keyword">None</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">0</span> d = <span class="number">99</span> kw = &#123;<span class="string">'ext'</span>: <span class="keyword">None</span>&#125;</span><br></pre></td></tr></table></figure>
-<p>另外，对于任意函数，都可以通过类似func(<em>args, *</em>kw)的形式调用它，无论它的参数是如何定义的</p>
-<p>反之，接受任何参数的函数，可以定义为func(<em>args, *</em>kw)这种形式。这种定义并不好，实际上，没有通用的规则在一个接受任何参数的函数内部做处理。但是对于decorator等一些应用，接受任何参数的设定就非常有用，因为decorator不关心包装的函数参数是什么，它确实可能需要一个这样的机制来传参。</p>
-<h3 id="u6CE8_u610F_u70B9_uFF1A"><a href="#u6CE8_u610F_u70B9_uFF1A" class="headerlink" title="注意点："></a>注意点：</h3><ol>
-<li><p>关键字参数会覆盖位置参数的默认值</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a=<span class="string">'a'</span>, b=<span class="string">'b'</span>, c=<span class="string">'c'</span>, **kwargs)</span>:</span></span><br><span class="line">    print(<span class="string">'a:%s, b:%s, c:%s'</span> % (a, b, c))</span><br><span class="line">func(**&#123;<span class="string">'a'</span>: <span class="string">'z'</span>, <span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>&#125;)  <span class="comment"># 关键字参数会覆盖前面的默认值</span></span><br><span class="line"><span class="comment"># output: a:z, b:d, c:r</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>关键字参数与默认参数不同</p>
-<ul>
-<li>在定义的适合，默认参数本质上还是给了默认值的位置参数，必须定义在关键字参数的前面；而关键字参数应该最后定义，并且需要<code>**</code>表达式</li>
-<li>在调用时候，默认参数部分会优先匹配，匹配之后剩下来的才给关键字参数。所以在函数调用的时候谈论关键字参数实际上没有意义，它只是函数定义时的一个为了扩展用的占位符而已<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a=<span class="string">'a'</span>, b=<span class="string">'b'</span>, c=<span class="string">'c'</span>, **kwargs)</span>:</span></span><br><span class="line">    print(a, b, c)</span><br><span class="line">    print(kwargs)</span><br><span class="line"></span><br><span class="line">func()</span><br><span class="line"><span class="comment"># output: a b c &#123;&#125;</span></span><br><span class="line">func(**&#123;<span class="string">'a'</span>: <span class="string">'z'</span>, <span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>&#125;)</span><br><span class="line"><span class="comment"># output: z d r &#123;&#125; # 注意，全部先匹配了默认参数</span></span><br><span class="line">func(**&#123;<span class="string">'a'</span>: <span class="string">'z'</span>, <span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>, <span class="string">'d'</span>:<span class="string">'z'</span>&#125;)</span><br><span class="line"><span class="comment"># output: z d r &#123;'d': 'z'&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用kwargs为没有提供默认值的位置参数提供值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a, b=<span class="string">'b'</span>, c=<span class="string">'c'</span>, **kwargs)</span>:</span></span><br><span class="line">    print(a, b, c)</span><br><span class="line">    print(kwargs)</span><br><span class="line">func(**&#123;<span class="string">'a'</span>: <span class="string">'z'</span>, <span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>&#125;)</span><br><span class="line"><span class="comment"># output: z d r &#123;&#125;</span></span><br><span class="line"><span class="comment"># 如果kwargs里面没有为a提供值，那么就会报TypeError了</span></span><br><span class="line">func(**&#123;<span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>&#125;)</span><br><span class="line"><span class="comment"># output: TypeError: func() missing 1 required positional argument: 'a'</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
-<h3 id="Best_Practices_3A"><a href="#Best_Practices_3A" class="headerlink" title="Best Practices:"></a>Best Practices:</h3><ol>
-<li><p><a href="https://www.python.org/dev/peps/pep-3102/" target="_blank" rel="external">PEP-3102</a>: 定义了keyworkd-only 参数（本质就是命名关键字参数），避免模糊不清地被位置参数匹配。（”keyword-only” arguments: arguments that can only be supplied by keyword and which will never be automatically filled in by a positional argument）</p>
-<p>有时候使用者希望函数可以接受可变参数，同时接受一些以keword形式传递的实参。如果不允许在可变参数后面定义named-keyword参数的话，唯一的解决办法是同时定义<code>*args</code>和<code>**kwargs</code>，然后手动抽取其中的一些entry。<br>Why? 看实参传递的顺序，non-keyword实参 &gt; keyword实参。所以如果定义在可变参数前，可能会被位置参数匹配掉(也就是不是真正意义上的keyword参数，而可能被解释器认为是带默认值的位置参数)。</p>
-<p>PEP3102允许在可变参数后面定义regular parameter,作为keyword-only arguments。永远不会被位置参数匹配，必须指定名字。</p>
-<p>定义方式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同时有可变参数存在， 可变参数会suck up所有的non-keyword实参</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sortwords</span><span class="params">(*wordlist, case_sensitive=False)</span>:</span></span><br><span class="line"><span class="comment"># 没有可变参数存在, * means不允许任何可变参数存在</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sortwords2</span><span class="params">(*, case_sensitive)</span>:</span></span><br></pre></td></tr></table></figure>
-<p>显然，case_sensitive只能以keyword的方式赋值，不会被位置参数匹配。</p>
-</li>
-</ol>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><ol>
-<li><a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431752945034eb82ac80a3e64b9bb4929b16eeed1eb9000" target="_blank" rel="external">廖雪峰的Python教程</a></li>
-<li><a href="https://www.python.org/dev/peps/pep-3102/" target="_blank" rel="external">PEP3102</a> </li>
-</ol>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
-<ol>
-<li>固定参数(位置参数)</li>
-<li>默认参数</li>
-<li>可变参数</li>
-<li>关键字参数</li>
-</ol>
-<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
-<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>]]>
-    
-    </summary>
-    
-      <category term="python" scheme="http://paranoidq.github.io/tags/python/"/>
-    
-      <category term="python" scheme="http://paranoidq.github.io/categories/python/"/>
+      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
     
   </entry>
   
@@ -860,20 +746,173 @@
   </entry>
   
   <entry>
-    <title><![CDATA[近几年前端技术盘点以及2016年技术发展方向(好文，转)]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/front-end-trend/"/>
-    <id>http://paranoidq.github.io/2016/05/27/front-end-trend/</id>
+    <title><![CDATA[Python super详解（译 + 进一步理解）]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/python-super-considered-super/"/>
+    <id>http://paranoidq.github.io/2016/05/27/python-super-considered-super/</id>
     <published>2016-05-27T15:45:36.000Z</published>
     <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<p><a href="http://www.barretlee.com/blog/2015/12/10/after-framework-we-gonna-to-hug-data/" target="_blank" rel="external">http://www.barretlee.com/blog/2015/12/10/after-framework-we-gonna-to-hug-data/</a></p>
+    <content type="html"><![CDATA[<h2 id="u7FFB_u8BD1_uFF1APython_u2019s_super_28_29_considered_super_21"><a href="#u7FFB_u8BD1_uFF1APython_u2019s_super_28_29_considered_super_21" class="headerlink" title="翻译：Python’s super() considered super!"></a>翻译：Python’s super() considered super!</h2><h3 id="u57FA_u7840"><a href="#u57FA_u7840" class="headerlink" title="基础"></a>基础</h3><p>如果你没有惊讶于Python内置的super()，那么很可能你并没有真正知道它能做什么以及它如何有效的使用。本文章就主要在已有的python super()解释的基础上做出进一步的深入，主要包括：</p>
+<ul>
+<li>提供了实际的使用cases</li>
+<li>给出了理论模型，演示它如何工作</li>
+<li>展示如何使super()发挥它的作用</li>
+<li>使用super()的建议</li>
+<li>真实的例子</li>
+</ul>
+<p>本文的例子同时适用于python2和python3版本</p>
+<p>首先，一个例子：子类继承内置的类，并且扩展了内置类的方法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogoingDict</span><span class="params">(dict)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">        logging.info(<span class="string">'Setting to %r'</span> % (key, value))</span><br><span class="line">        super().__setitem__(key, value)</span><br></pre></td></tr></table></figure></p>
+<p>上面的例子中，LoggingDict完成了dict的同样的工作——update元素，只不过扩展了功能，在update元素之前先打log了，然后通过super()将实际update的工作<strong>代理</strong>给了dict对象</p>
+<p>如果没有super()，我们可以这样做：<code>dict.__setitem__(self, key, value)</code>，但是问题在于：这种硬编码的方式不利于程序的扩展性。利用super()实际上是一种`<strong>间接引用</strong>（computed indirect reference）。</p>
+<p>间接引用的好处之一：<strong>隔离</strong>。不用在是函数内部制定代理类的具体名字。如果要修改base class为另一个类，那么<code>super()</code>会自动切换给代理类，而硬编码的方式则要修改具体实现。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogoingDict</span><span class="params">(SomeOtherMapping)</span>:</span>        <span class="comment"># new base class</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">        logging.info(<span class="string">'Setting to %r'</span> % (key, value))</span><br><span class="line">        super().__setitem__(key, value)     <span class="comment"># no change needed</span></span><br></pre></td></tr></table></figure></p>
+<p>间接引用的另一个好处：<strong>动态</strong>。可以在运行时自由指定间接引用指向的类。引用指向的具体计算方式依赖两点：</p>
+<ol>
+<li>调用super的class</li>
+<li>实例的基类的继承树</li>
+</ol>
+<p>第一点往往与源码有关，在例子中，super()的调用者是<code>LoggingDict.__setitem__()</code>，这是固定的。<br>第二点则是关键的动态性所在（我们可以创建具有复杂继承关系的子类）。一个logging ordered dictionary，不改变我们已有的类：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoggingOD</span><span class="params">(LoggingDict, collections.OrderedDict)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<p>新类的继承树：<code>LoggingOD, LoggingDict, OrderedDict, dict, object</code>。注意：OrderedDict在dict的前面，因此，调用super()的<code>LoggingDict.__setitem__()</code>现在就把具体的upate任务代理给了OrderedDict，而不是上一个例子中的dict。</p>
+<p>仔细考虑一下：在这个例子中，我们并没有改变LoggingDict的源码，而是新增了一个子类，这个新增子类的唯一逻辑就是组合了两个已有的类，并且控制他们的继承顺序。而super()则自动根据新类定义的继承顺序发挥了它的动态性能力！</p>
+<h3 id="u57FA_u7C7B_u7684_u67E5_u627E_u987A_u5E8F"><a href="#u57FA_u7C7B_u7684_u67E5_u627E_u987A_u5E8F" class="headerlink" title="基类的查找顺序"></a>基类的查找顺序</h3><p>实际上，这里我称为检索顺序或继承树的说法，正式的叫法应该是：<strong>方法解析顺序(Method Resolution Order, MRO)</strong>。想要知道一个类的MRO可以用<code>__mro__</code>属性：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; pprint(LoggingOD.__mro__)</span><br><span class="line">(&lt;class '__main__.LoggingOD'&gt;,</span><br><span class="line"> &lt;class '__main__.LoggingDict'&gt;,</span><br><span class="line"> &lt;class 'collections.OrderedDict'&gt;,</span><br><span class="line"> &lt;class 'dict'&gt;,</span><br><span class="line"> &lt;class 'object'&gt;)</span><br></pre></td></tr></table></figure></p>
+<p>如果想按照我们想的MRO创建子类，那么首先需要了解MRO的计算机制：</p>
+<blockquote>
+<p>MRO的序列包括：本类，基类以及基类的基类们，直到object为止。一个类始终出现在它的基类前面，如果有多个同级基类，那么这些基类的顺序依照声明的顺序排列。</p>
+</blockquote>
+<p>上述例子遵从MRO的规范：</p>
+<ul>
+<li>LoggingOD在它的基类LogginDict和OrderedDict前面</li>
+<li>LoggingDict在OrderedDict前面，因为<code>LoggingOD.__bases__</code>的声明顺序是(LoggingDict, OrderedDict)</li>
+<li>LogginDict在它的基类dict前面</li>
+<li>OrderedDict在它的基类dict前面</li>
+<li>dict在它的基类object前面</li>
+</ul>
+<p>解析约束的过程被称作<code>线性化(linearizatoin)</code>。有很多论文研究这方面的内容，但是我们只需要知道两点即可：</p>
+<ul>
+<li>基类永远出现在派生类后面</li>
+<li>如果有多个基类，基类的相对顺序保持不变。</li>
+</ul>
+<h3 id="u5B9E_u8DF5_u5EFA_u8BAE"><a href="#u5B9E_u8DF5_u5EFA_u8BAE" class="headerlink" title="实践建议"></a>实践建议</h3><p>super()的作用是将本类方法的调用代理给继承树中的某一个基类实例去完成。这里给出三个注意点：</p>
+<ul>
+<li>保证通过super()调用的基类方法必须存在</li>
+<li>调用者和被调用者需要有匹配的函数签名</li>
+<li>调用super()的方法，每次出现都同样必须使用super()</li>
+</ul>
+<p>1): 我们先看这一点：调用者的参数与被调用方法的参数一致。<br>这跟普通的方法调用不同，普通的方法调用在的时候被调用的方法是已知的，但是有了super()，在本类编码的时候被super()调用的方法是未知的。想象一下，我们可以之后定义一个subclass，从而在正在编写的class的MRO中引入新的类，改变MRO的顺序，从而可能改变super()实际调用的类！</p>
+<p>我们的方法是：利用位置参数指定固定的签名。例如，在<code>__setitem__()</code>中，就保持了固定的两个位置参数：key和value。这种方法在LoggingDict也有体现，即<code>__setitem__()</code>与dict有同样的函数签名。</p>
+<p>更灵活的方法：让继承树中的所有方法都接受这样的参数:<code>关键字参数 + 可变关键字参数</code>，并且每一层取走自己想要的参数，并通过<code>**kwargs</code>向上一层forward余下的参数，最终在调用链的最后一层使得可变关键字参数为空(<code>object.__init__()</code>不需要任何参数)。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">classs Shape:</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, shapename, **kwargs)</span>:</span></span><br><span class="line">        self.shapename = shapename</span><br><span class="line">        super().__init__(**kwargs)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ColoredShape</span><span class="params">(Shape)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, color, **kwargs)</span>:</span></span><br><span class="line">        self.color = color</span><br><span class="line">        super().__init(**kwargs)</span><br><span class="line"></span><br><span class="line">cs = ColoredShape(color=<span class="string">'red'</span>, shapename=<span class="string">'circule'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>2): 如何确定目标函数存在？<br>上面的例子就是最简单的case，即object有我们调用的方法，因此无论什么样的继承树都会有我们的目标方法，不会出现AttributeError。</p>
+<p>那么对于object不存在的方法，我们的处理方法是：编写一个root类包含我们的目标方法，并且在object前面被调用。这个root类的职责就是’吞掉’方法的调用，不让super()继续向上层类传递（因为上层类没有我们的目标方法了，再传递就会最终出现AttributeError）。</p>
+<p>Root的draw方法还可以利用防御性编程的策略，即用assert来确保调用链的上层没有draw方法了。这是为了避免子类可能错误的继承了一个没有声明Root为基类的类。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Root：</span><br><span class="line">    def draw(self):</span><br><span class="line">        # the delegatioin chain stops here</span><br><span class="line">        assert not hasattr(super(), 'draw')</span><br><span class="line"></span><br><span class="line">class Shape(Root):</span><br><span class="line">    def __init__(self, shapename, **kwargs):</span><br><span class="line">        self.shapename = shapename</span><br><span class="line">        super().__init__(**kwargs)</span><br><span class="line">    def draw(self):</span><br><span class="line">        print('Drawing. Setting shape to: ', self.shapename)</span><br><span class="line">        super().draw()</span><br><span class="line"></span><br><span class="line">class ColoredShape(Shape):</span><br><span class="line">    def __init__(self, color, **kwargs):</span><br><span class="line">        self.color = color</span><br><span class="line">        super().__init__(**kwargs)</span><br><span class="line">    def draw(self):</span><br><span class="line">        print('Drawing. Setting color to: ', self.color)</span><br><span class="line">        super().draw()</span><br><span class="line"></span><br><span class="line">cs = ColoredShape(color='blue', shapename='square')</span><br><span class="line">cs.draw()</span><br></pre></td></tr></table></figure></p>
+<p>如果一个子类希望在MRO中引入其他类，那么这些其他类也必须继承自Root，从而确保draw方法不会到达object，而无法被Root.draw阻止下来。这个约定必须写在文档中，就像pyhon中所有的自定义异常都必须继承自BaseException一样。</p>
+<p>3): 调用链的每层函数的调用都加上super()方法即可，这是约定。</p>
+<h3 id="u5982_u4F55_u5F15_u5165_u2019_u5F02_u7C7B_u2019_uFF08non-cooperative_class_uFF09"><a href="#u5982_u4F55_u5F15_u5165_u2019_u5F02_u7C7B_u2019_uFF08non-cooperative_class_uFF09" class="headerlink" title="如何引入’异类’（non-cooperative class）"></a>如何引入’异类’（non-cooperative class）</h3><p>有时候，我们也要想引入一些第三方的类，这些类并没有针对super设计或者没有遵循Root的约定。解决方法是：利用适配器包装一下。<br>例如下面的Moveable类并没有super()调用，并且它的<code>__init__()</code>方法函数签名与object不一致，并且它没有继承Root。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Moveable</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'Drawing at position: '</span>, self.x, self.y)</span><br></pre></td></tr></table></figure></p>
+<p>如果你希望把这个类引入ColoredShape的层次中，你需要做一个adapter：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MoveableAdapter</span><span class="params">(Root)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x, y, **kwargs)</span>:</span></span><br><span class="line">        self.moveable = Moveable(x, y)</span><br><span class="line">        super().__init__(**kwargs)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.moveable.draw()</span><br><span class="line">        super().draw()</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MovableColoredShape</span><span class="params">(ColoredShape, MoveableAdapter)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">MovableColoredShape(color=<span class="string">'red'</span>, shapename=<span class="string">'triangle'</span>,</span><br><span class="line">                    x=<span class="number">10</span>, y=<span class="number">20</span>).draw()</span><br></pre></td></tr></table></figure></p>
+<h3 id="u539F_u6587"><a href="#u539F_u6587" class="headerlink" title="原文"></a>原文</h3><p><a href="https://rhettinger.wordpress.com/2011/05/26/super-considered-super/" target="_blank" rel="external">Python’s super() considered super!</a></p>
+<h2 id="u8FDB_u4E00_u6B65_u7406_u89E3"><a href="#u8FDB_u4E00_u6B65_u7406_u89E3" class="headerlink" title="进一步理解"></a>进一步理解</h2><h3 id="super_u7684_u672C_u8D28"><a href="#super_u7684_u672C_u8D28" class="headerlink" title="super的本质"></a>super的本质</h3><p>主要来自于<a href="http://zhihu.com/question/20040039/answer/57883315" target="_blank" rel="external">知乎-laike9m的回答</a>，少量删改。</p>
+<p>不要一说到 super 就想到基类！super 指的是 MRO 中的下一个类！<br>super干的事情其实是这个：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">super</span><span class="params">(cls, inst)</span>:</span></span><br><span class="line">    mro = inst.__class__.mro()</span><br><span class="line">    <span class="keyword">return</span> mro[mro.index(cls) + <span class="number">1</span>]</span><br></pre></td></tr></table></figure></p>
+<p>两个参数分别作了两件事情:</p>
+<ol>
+<li>inst负责生成MRO的list</li>
+<li>通过cls定位当前的MRO中的index,并返回mro[index+1]</li>
+</ol>
+<p>一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Root</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'this is root'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(Root)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'enter B'</span>)</span><br><span class="line">        <span class="comment"># print(self)  # &lt;__main__.D object at 0x...&gt;</span></span><br><span class="line">        super().__init__()  <span class="comment"># python3中不用写成super(B, self).__init__()</span></span><br><span class="line">        print(<span class="string">'leave B'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(Root)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'enter C'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'leave c'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(B, C)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">d = D()</span><br><span class="line">print(D.__mro__)</span><br><span class="line">print(B.__mro__)</span><br><span class="line">print(C.__mro__)</span><br></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">enter b</span><br><span class="line">enter c</span><br><span class="line">this is root</span><br><span class="line">leave c</span><br><span class="line">leave b</span><br><span class="line">(<span class="name">&lt;class</span> '__main__.D'&gt;, &lt;class '__main__.B'&gt;, &lt;class '__main__.C'&gt;, &lt;class '__main__.Root'&gt;, &lt;class 'object'&gt;)</span><br><span class="line">(<span class="name">&lt;class</span> '__main__.C'&gt;, &lt;class '__main__.Root'&gt;, &lt;class 'object'&gt;)</span><br><span class="line">(<span class="name">&lt;class</span> '__main__.B'&gt;, &lt;class '__main__.Root'&gt;, &lt;class 'object'&gt;)</span><br></pre></td></tr></table></figure></p>
+<p>因此，实际上super()调用的时MRO中的下一个类的对应方法，所以不难理解enter b之后是enter c而不是thi is root。因为C是B的下一个，至于为什么C是下一个，那就要看上文翻译中讲的MRO规范了。</p>
+<p>需要注意的是，这里的MRO是self生成的，指的是self这个instance对应的类的MRO，self不同，MRO也不同。例如d的MRO就是第一行MRO，而如果instance是B，则MRO就是第二行了。而在上面的例子中，self一直是d。super().func是把实例的MRO中相对于当前类的下一个类的func执行，这个实例并非一定是当前类的，并且如果下一个类的func不再以super的方式调用，则调用终止（但是不建议，除非到了object或者Root）。</p>
+<p>注意super继承只能用于新式类，用于经典类时就会报错。</p>
+<ul>
+<li>新式类：必须有继承的类，如果没什么想继承的，那就继承objcet</li>
+<li>经典类：没有基类，如果此时调用super就会出现错误：“super() argument 1 must be type, not classobj”</li>
+</ul>
+<h3 id="super_u7528_u5728_u4F55_u5904_uFF1F"><a href="#super_u7528_u5728_u4F55_u5904_uFF1F" class="headerlink" title="super用在何处？"></a>super用在何处？</h3><p>主要来自于<a href="http://zhihu.com/question/20040039/answer/13772641" target="_blank" rel="external">知乎-松鼠奥利奥的的回答</a>，少量删改。</p>
+<p>super主要用于解决多继承的问题，直接用类名调用基类的方法在单继承的时候没问题，但是如果使用多继承，则会涉及到查找顺序（MRO）、重复调用（钻石继承）等问题。</p>
+<p>如果没有复杂的继承结构，super作用不大。而复杂的继承结构本身就是不良设计。对于多重继承的用法，现在比较推崇 Mixin 的方式，也就是</p>
+<ul>
+<li>普通类多重继承只能有一个普通父类和若干个 Mixin 类（保持主干单一）</li>
+<li>Mixin 类不能继承普通类（避免钻石继承）</li>
+<li>Mixin 类应该单一职责（参考 Java 的 interface 设计，Mixin 和此极其相似，只不过附带实现而已）<br>如果按照上述标准，只使用 Mixin形式的多继承，那么不会有钻石继承带来的重复方法调用，也不会有复杂的查找顺序 —— 此时 super 是可以有无的了，用不用全看个人喜好，只是记得千万别和类名调用的方式混用就好。</li>
+</ul>
+<p>Python的多继承类是通过mro的方式来保证各个基类的函数被逐一调用，而且保证每个基类函数只调用一次（如果每个类都使用super）</p>
+<h3 id="u6E90_u7801_u7EA7_u522B_u7684_u89E3_u91CA"><a href="#u6E90_u7801_u7EA7_u522B_u7684_u89E3_u91CA" class="headerlink" title="源码级别的解释"></a>源码级别的解释</h3><p><a href="http://blog.csdn.net/johnsonguo/article/details/585193" target="_blank" rel="external">http://blog.csdn.net/johnsonguo/article/details/585193</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p><a href="http://www.barretlee.com/blog/2015/12/10/after-framework-we-gonna-to-hug-data/" target="_blank" rel="external">http://www.barret]]>
+    <![CDATA[<h2 id="u7FFB_u8BD1_uFF1APython_u2019s_super_28_29_considered_super_21"><a href="#u7FFB_u8BD1_uFF1APython_u2019s_super_28_29_considered_supe]]>
     </summary>
     
-      <category term="前端" scheme="http://paranoidq.github.io/tags/%E5%89%8D%E7%AB%AF/"/>
+      <category term="python" scheme="http://paranoidq.github.io/tags/python/"/>
     
-      <category term="前端" scheme="http://paranoidq.github.io/categories/%E5%89%8D%E7%AB%AF/"/>
+      <category term="super" scheme="http://paranoidq.github.io/tags/super/"/>
+    
+      <category term="python" scheme="http://paranoidq.github.io/categories/python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[nginx与tomcat有什么区别]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/nginx-vs-tomcat/"/>
+    <id>http://paranoidq.github.io/2016/05/27/nginx-vs-tomcat/</id>
+    <published>2016-05-27T15:45:36.000Z</published>
+    <updated>2016-05-27T15:45:36.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
+<a id="more"></a>
+<p>Http Server的核心是Http协议层面的传输和访问控制，包括代理、负载均衡等。客户端通过Http协议访问Http Server上的文件资源(HTML文件、图片等)，然后Http Server如实将文件通过Http协议传输给客户端。当然，通过<code>CGI</code>技术也可以对Http Server传输的内容进行一些处理。<br>大多数时候，Nginx主要作为Tomcat前端的负载均衡器和代理，负责请求的转发和静态内容的直接返回。因为其高效的IO机制[2]，能够显著提高系统的吞吐率。</p>
+<p>Web App Server，应用执行的容器。它首先需要支持开发语言的 Runtime（对于 Tomcat 来说，就是 Java），保证应用能够在应用服务器上正常运行。其次，需要支持应用相关的规范，例如类库、安全方面的特性。对于 Tomcat 来说，就是需要提供 JSP/Sevlet 运行需要的标准类库、Interface 等。为了方便，<br>应用服务器往往也会集成 HTTP Server 的功能，但是不如专业的 HTTP Server 那么强大，所以应用服务器往往是运行在 HTTP Server 的背后，执行应用，将动态的内容转化为静态的内容之后，通过 HTTP Server 分发到客户端。<br>Tomcat和Jetty，WebLogic同属一类。</p>
+<p><hr></p>
+<blockquote>
+<p>“tomcat用在java后台程序上，java后台程序难道不能用apache和nginx吗？”</p>
+</blockquote>
+<p>—— 不能。apache和nginx不是servlet容器。什么是servlet容器呢？即实现HttpServletRequest、HttpServletResponse、HttpSession等等接口，解析http请求，通过类加载器加载对应的servlet实现类并调用，也就是说servlet容器必须由java或者基于jvm的语言实现。<br><strong>本质上，Servlet是J2EE规范的一部分，规定了容器和Web App必须遵循的接口规范。容器必须按照接口解析Java类，然后处理请求；同样Web App也只有按照规范来编写实现类，才能被容器所加载解析，从而完成特定的功能。</strong></p>
+<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="https://www.zhihu.com/question/32212996" target="_blank" rel="external">https://www.zhihu.com/question/32212996</a></li>
+<li><a href="http://90112526.blog.51cto.com/6013499/1059700" target="_blank" rel="external">http://90112526.blog.51cto.com/6013499/1059700</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>]]>
+    
+    </summary>
+    
+      <category term="碎片" scheme="http://paranoidq.github.io/tags/%E7%A2%8E%E7%89%87/"/>
+    
+      <category term="server" scheme="http://paranoidq.github.io/tags/server/"/>
+    
+      <category term="nginx" scheme="http://paranoidq.github.io/tags/nginx/"/>
+    
+      <category term="tomcat" scheme="http://paranoidq.github.io/tags/tomcat/"/>
+    
+      <category term="中间件" scheme="http://paranoidq.github.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Mac中如何查找Java的路径]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/Mac-java-config/"/>
+    <id>http://paranoidq.github.io/2016/05/27/Mac-java-config/</id>
+    <published>2016-05-27T15:45:36.000Z</published>
+    <updated>2016-05-27T15:45:36.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="u65B9_u6CD51_uFF1A"><a href="#u65B9_u6CD51_uFF1A" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/jav<span class="built_in">a_home</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="u65B9_u6CD52_uFF1A"><a href="#u65B9_u6CD52_uFF1A" class="headerlink" title="方法2："></a>方法2：</h3><p>step-wise的方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> java</span><br></pre></td></tr></table></figure>
+<p>如果输出的时/usr/bin/java, 证明是链接，需要找到链接的source<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls <span class="_">-l</span> `<span class="built_in">which</span> java`</span><br></pre></td></tr></table></figure></p>
+<p>输出为实际的java安装路径: <code>rwxr-xr-x  1 root  wheel  74 11 25 13:36 /usr/bin/java -&gt; /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java</code></p>
+<p>如果/usr/bin/java指向的仍然是一个symbolic link, 那么继续执行以下命令，直到找到source为止 </p>
+<p>[注]</p>
+<p>ls -l ` which java`</p>
+<p>单引号把Linux命令视为字符集合。反引号会强迫执行Linux命令。和<code>$()</code>一样。在执行一条命令时，会先将其中或者是<code>$()</code> 中的语句当作命令执行一遍，再将结果加入到外层命令中执行</p>
+<h3 id="u53C2_u8003_uFF1A"><a href="#u53C2_u8003_uFF1A" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://stackoverflow.com/questions/18144660/what-is-path-of-jdk-on-mac" target="_blank" rel="external">http://stackoverflow.com/questions/18144660/what-is-path-of-jdk-on-mac</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="u65B9_u6CD51_uFF1A"><a href="#u65B9_u6CD51_uFF1A" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/jav<span class="built_in">a_home</span></span><br></pre></td></tr></table></figure></p>]]>
+    
+    </summary>
+    
+      <category term="mac" scheme="http://paranoidq.github.io/tags/mac/"/>
+    
+      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
+    
+      <category term="碎片" scheme="http://paranoidq.github.io/tags/%E7%A2%8E%E7%89%87/"/>
+    
+      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
     
   </entry>
   
@@ -943,168 +982,26 @@
   </entry>
   
   <entry>
-    <title><![CDATA[Git 分支管理与实践（hexo博客源文件管理）]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/Git-branch-management/"/>
-    <id>http://paranoidq.github.io/2016/05/27/Git-branch-management/</id>
+    <title><![CDATA[Vim 插件NERDTree命令]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/NERDTree-commands/"/>
+    <id>http://paranoidq.github.io/2016/05/27/NERDTree-commands/</id>
     <published>2016-05-27T15:45:36.000Z</published>
     <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u67E5_u770B"><a href="#u67E5_u770B" class="headerlink" title="查看"></a>查看</h3><p>查看本地分支<br><code>git branch</code></p>
-<p>查看包括远程分支<br><code>git branch -a</code></p>
-<p>查看本地分支和远程分支的push情况<br><code>git log &lt;local-branch&gt; ^origin/&lt;remote-branch&gt;</code>   # 可以查看本地有远程没有的提交。<br><code>git log &lt;remote-branch&gt; ^&lt;local-branch&gt;</code>       # 可以查看远程有本地没有的提交。</p>
-<h3 id="u521B_u5EFA"><a href="#u521B_u5EFA" class="headerlink" title="创建"></a>创建</h3><p>创建本地分支<br><code>git checkout -b dev</code></p>
-<h3 id="u5173_u8054"><a href="#u5173_u8054" class="headerlink" title="关联"></a>关联</h3><p>目的：避免每次都需要制定push的具体分支，可以关联后在本地分支下直接push即可</p>
-<p>两种方案：</p>
-<ol>
-<li>在本地branch第一次push的时候就指定：<br> <code>git push -u origin &lt;remote-branch&gt;</code></li>
-<li>以后指定：<br><code>git branch --set-upstream &lt;local-branch&gt; origin/&lt;remote-branch&gt;</code><br>或<br><code>git push --set-upstream origin &lt;remote-branch&gt;</code><br>你的repo下的git/config会多出类似这样的配置：<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[branch "src"]</span></span><br><span class="line"><span class="attr">remote</span> = origin</span><br><span class="line"><span class="attr">merge</span> = refs/heads/src</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="u63A8_u9001"><a href="#u63A8_u9001" class="headerlink" title="推送"></a>推送</h3><p><code>git push origin &lt;local-branch&gt;</code>  # 推送本地分支到对应的远程分支</p>
-<p><code>git push</code> # 如果指定了远程关联，可以直接push</p>
-<p>两种配置： (注意，这个配置是写在~/.gitconfig中的，对所有的repo生效)<br><code>git config --global push.default simple</code>(更好, 只push当前分支到你使用git pull拉取的远程代码)<br><code>git config --global push.default matching</code> （如果没有指定具体分支，会push所有名字对应的分支）</p>
-<h3 id="u5220_u9664"><a href="#u5220_u9664" class="headerlink" title="删除"></a>删除</h3><p>删除本地分支<br><code>git branch -d dev (用-D强行删除)</code></p>
-<p>删除远程分支<br><code>git push origin --delete dev</code></p>
-<h3 id="u5B9E_u4F8B_uFF1A__u7BA1_u7406hexo_u7684src_u5206_u652F"><a href="#u5B9E_u4F8B_uFF1A__u7BA1_u7406hexo_u7684src_u5206_u652F" class="headerlink" title="实例： 管理hexo的src分支"></a>实例： 管理hexo的src分支</h3><p>说明：hexo的deployer本身在部署的时候只会生成static文件，并上传到github的master分支，而hexo的一些source和_config.yaml等配置文件则只在本地。因此需要将这些文件也管理到git中去，方便备份和多终端同步。</p>
-<p>基本思路是在本地利用src分支，然后上传源文件到src分支，并push到远程的src分支，即可管理。</p>
-<p>master分支由于是hexo的页面展示部分，所以其实是不能与origin/master保持同步的，也千万不能push，否则结果就是源文件覆盖了hexo-deployer push到master分支的静态文件，从而访问的时候404了。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>cd &lt;repo&gt;</span><br><span class="line"><span class="variable">$ </span>git init (optional)</span><br><span class="line"><span class="variable">$ </span>git checkout -b src</span><br><span class="line"><span class="variable">$ </span>git add .</span><br><span class="line"><span class="variable">$ </span>git commit -m <span class="string">"first commit for src branch"</span></span><br><span class="line"><span class="variable">$ </span>git remote add origin git<span class="variable">@github</span>.<span class="symbol">com:</span>&lt;username&gt;<span class="symbol">:&lt;username&gt;</span>.github.io.git (optional)</span><br><span class="line"><span class="variable">$ </span>git push origin src</span><br></pre></td></tr></table></figure>
-<ol>
-<li>optional部分，可能由于之前开始建立repo的时候已经做过了，所以不一定要在分支的过程中做了</li>
-<li>checkout的时候，需要保证master分支全部commit。（这里其实我做的不够完善，一开始应该是整个本地的网站不要init，让master分支全部被hexo-deployer接管。然后在创建分支的时候，才init。这样可以保证本地只有一个src的分支需要我手动管理。</li>
-<li>如果你手贱之前已经建立了master分支，那么有两个办法：<ul>
-<li>忽略与origin/master不同步的本地master分支</li>
-<li>删除本地的master分支 <code>git branch -D master</code></li>
-</ul>
-</li>
-</ol>
-<p><strong>另外一台电脑上如何使用：</strong><br>安装node环境和hexo-cli环境<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ brew update </span><br><span class="line">$ brew install <span class="keyword">node</span></span><br><span class="line"><span class="title">$</span> npm install hexo-cli -g</span><br></pre></td></tr></table></figure></p>
-<p>不要执行hexo init了，而是clone远程的src仓库<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone -<span class="selector-tag">b</span> src git@github<span class="selector-class">.com</span>:&lt;username&gt;:&lt;username&gt;<span class="selector-class">.github</span><span class="selector-class">.io</span><span class="selector-class">.git</span></span><br><span class="line">$ npm install <span class="comment">//根据package.json来下载依赖包</span></span><br></pre></td></tr></table></figure></p>
-<p>然后就可以继续写博客了，整个过程，手动管理的只有src，master分支本地需要，由hexo-deployer负责push。</p>
-<p>参考文献[1]中还提到了用git submodule解决第三方主题的同步问题，很不错。<br>参考文献[3]中修改hexo-deployer源码，添加了自动在deploy的时候提交src的功能，很nice。</p>
-<p>具体方法：<br>修改<code>node_modules\hexo-deployer-git\lib\deployer.js</code>插件的代码，添加gitBaseDir函数。 注意gitBaseDir函数必须写在module块中，否则会出现错误。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">git</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">var</span> len = <span class="built_in">arguments</span>.length;</span><br><span class="line">   <span class="keyword">var</span> args = <span class="keyword">new</span> <span class="built_in">Array</span>(len);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">     args[i] = <span class="built_in">arguments</span>[i];</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> spawn(<span class="string">'git'</span>, args, &#123;</span><br><span class="line">     cwd: deployDir,</span><br><span class="line">     verbose: verbose</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gitBaseDir</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> len = <span class="built_in">arguments</span>.length;</span><br><span class="line">   <span class="keyword">var</span> args = <span class="keyword">new</span> <span class="built_in">Array</span>(len);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">     args[i] = <span class="built_in">arguments</span>[i];</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> spawn(<span class="string">'git'</span>, args, &#123;</span><br><span class="line">     cwd: baseDir,</span><br><span class="line">     verbose: verbose</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在push函数中添加提交到src的功能<br><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">push</span><span class="params">(repo)</span>&#123;</span></span><br><span class="line">   <span class="keyword">return</span> git(<span class="string">'add'</span>, <span class="string">'-A'</span>).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">     <span class="keyword">return</span> git(<span class="string">'commit'</span>, <span class="string">'-m'</span>, message).<span class="keyword">catch</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">       <span class="comment">// Do nothing. It's OK if nothing to commit.</span></span><br><span class="line">     &#125;);</span><br><span class="line">    &#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">     <span class="keyword">return</span> git(<span class="string">'push'</span>, <span class="string">'-u'</span>, repo.url, <span class="string">'master:'</span> + repo.branch, <span class="string">'--force'</span>);</span><br><span class="line">    &#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">     <span class="keyword">return</span> gitBaseDir(<span class="string">'checkout'</span>,<span class="string">'source'</span>);</span><br><span class="line">    &#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">        <span class="keyword">return</span> gitBaseDir(<span class="string">'add'</span>,<span class="string">'-A'</span>).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">            <span class="keyword">return</span> gitBaseDir(<span class="string">'commit'</span>,<span class="string">'-m'</span>,message).<span class="keyword">catch</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">    &#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">        <span class="keyword">return</span> gitBaseDir(<span class="string">'push'</span>,<span class="string">'-u'</span>,repo.url,<span class="string">'source:source'</span>,<span class="string">'--force'</span>)</span><br><span class="line">    &#125;);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="u53C2_u8003_uFF1A"><a href="#u53C2_u8003_uFF1A" class="headerlink" title="参考："></a>参考：</h3><ol>
-<li><a href="http://devtian.me/2015/03/17/blog-sync-solution/" target="_blank" rel="external">如何管理hexo的源文件</a></li>
-<li><a href="https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4-Master-%E5%88%86%E6%94%AF?locale=zh-CN" target="_blank" rel="external">为何以及如何删除master分支</a></li>
-<li><a href="http://boenyang.github.io/2015/09/09/hello-world/" target="_blank" rel="external">自动化hexo的源文件提交-修改hexo-deployer源码部分</a></li>
-</ol>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="u67E5_u770B"><a href="#u67E5_u770B" class="headerlink" title="查看"></a>查看</h3><p>查看本地分支<br><code>git branch</code></p>
-<p>查看包括远程分支<br]]>
-    </summary>
-    
-      <category term="git" scheme="http://paranoidq.github.io/tags/git/"/>
-    
-      <category term="git" scheme="http://paranoidq.github.io/categories/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Vim Commands]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/vim-commands/"/>
-    <id>http://paranoidq.github.io/2016/05/27/vim-commands/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
-<li>文首：<code>gg</code> / <code>:0</code></li>
-<li>文末：<code>shift + g</code> / <code>:$</code></li>
-<li>行首：<code>0</code></li>
-<li>行末：<code>$</code></li>
-<li>到第一个不是空字符的位置：<code>^</code></li>
-<li>到最后一个不是空字符的位置：<code>g_</code></li>
-</ul>
+    <content type="html"><![CDATA[<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">h</span>    光标 focus 左侧树形目录</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">l</span>    光标 focus 右侧文件显示窗口</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">w</span>    光标自动在左右侧窗口切换 #！！！</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">r</span>    移动当前窗口的布局位置</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>按单词移动：</p>
-<ul>
-<li>到下一个单词的开头：<code>w</code></li>
-<li>到下一个单词的结尾：<code>e</code></li>
-</ul>
-<p>按匹配的单词移动：</p>
-<ul>
-<li>匹配光标所在的单词，移动到下一个：<code>*</code></li>
-<li>匹配光标所在的单词，移动到上一个: <code>#</code></li>
-</ul>
-<p>按页移动：</p>
-<ul>
-<li>向下一页：<code>ctrl + F</code></li>
-<li>向上一页：<code>ctrl + B</code></li>
-<li>向下半页：<code>ctrl + D</code></li>
-<li>向上半页：<code>ctrl + U</code></li>
-</ul>
-<h4 id="u63D2_u5165"><a href="#u63D2_u5165" class="headerlink" title="插入"></a>插入</h4><p>切换到插入模式的几种方式:</p>
-<ul>
-<li>在光标之前插入：<code>i</code></li>
-<li>在行开始前插入：<code>I</code></li>
-<li>在光标后面插入：<code>a</code></li>
-<li>在行结束后插入：<code>A</code></li>
-</ul>
-<p>插入行：</p>
-<ul>
-<li>在当前位置下面插入一行，并进入编辑状态：<code>o</code></li>
-<li>在当前位置上面插入一行，并进入编辑状态：<code>O</code></li>
-</ul>
-<h3 id="u6587_u672C_u64CD_u4F5C"><a href="#u6587_u672C_u64CD_u4F5C" class="headerlink" title="文本操作"></a>文本操作</h3><h4 id="u57FA_u672C_u884C_u64CD_u4F5C"><a href="#u57FA_u672C_u884C_u64CD_u4F5C" class="headerlink" title="基本行操作"></a>基本行操作</h4><p>复制</p>
-<ul>
-<li>复制一行：<code>yy</code></li>
-<li>复制光标到行尾的部分：<code>y$</code></li>
-<li>复制多行(1)：<code>Nyy</code> + ‘p’ (粘贴)</li>
-<li>复制多行(2)：<code>6, 9 co 12</code> (复制6行和9行中间的部分到12行后面)</li>
-</ul>
-<p>复制大量的行：</p>
-<ol>
-<li>光标移到起始行，输入ma</li>
-<li>光标移到结束行，输入mb</li>
-<li>光标移到粘贴行，输入mc</li>
-<li>然后 :’a,’b co ‘c 把 co 改成 m 就成剪切了</li>
-</ol>
-<p>粘贴</p>
-<ul>
-<li>粘贴：<code>p</code></li>
-</ul>
-<p>删除</p>
-<ul>
-<li>删除光标后一个字符：<code>x</code></li>
-<li>删除光标到行尾的部分：<code>d$</code></li>
-<li>删除单行：<code>dd</code> / <code>1d</code></li>
-<li>删除多行(1)：<code>1, Nd</code> / <code>Ndd</code>(删除包含光标所在行的下面N行)</li>
-<li>删除多行(2)：<code>:1, 4 de</code></li>
-</ul>
-<p>替换</p>
-<ul>
-<li>替换从光标位置到后一个单词结尾的字符：<code>cw</code></li>
-</ul>
-<h4 id="u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C"><a href="#u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C" class="headerlink" title="任意区间的文本操作"></a>任意区间的文本操作</h4><p>首先进入visual模式，直接按v键进入visual模式，然后<code>v+ j/k/h/l</code>进行文本选择</p>
-<ul>
-<li>剪切：<code>d</code></li>
-<li>复制：<code>y</code></li>
-<li>粘贴：<code>p</code></li>
-</ul>
-<h4 id="u884C_u5757_u64CD_u4F5C"><a href="#u884C_u5757_u64CD_u4F5C" class="headerlink" title="行块操作"></a>行块操作</h4><h3 id="u64A4_u9500_u64CD_u4F5C"><a href="#u64A4_u9500_u64CD_u4F5C" class="headerlink" title="撤销操作"></a>撤销操作</h3><ul>
-<li>撤销上一个命令： <code>u</code></li>
-<li>反撤销：<code>ctrl + r</code> </li>
-</ul>
-<h3 id="u641C_u7D22_u64CD_u4F5C"><a href="#u641C_u7D22_u64CD_u4F5C" class="headerlink" title="搜索操作"></a>搜索操作</h3><ul>
-<li>搜索：<code>/pattern</code></li>
-<li>下一个：<code>n</code></li>
-<li>上一个：<code>N</code></li>
-</ul>
+<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">o       在已有窗口中打开文件、目录或书签，并跳到该窗口</span><br><span class="line">go      在已有窗口 中打开文件、目录或书签，但不跳到该窗口</span><br><span class="line">t       在新 Tab 中打开选中文件/书签，并跳到新 Tab</span><br><span class="line">T       在新 Tab 中打开选中文件/书签，但不跳到新 Tab</span><br><span class="line">i       split 一个新窗口打开选中文件，并跳到该窗口</span><br><span class="line">gi      split 一个新窗口打开选中文件，但不跳到该窗口</span><br><span class="line"><span class="keyword">s</span>       vsplit 一个新窗口打开选中文件，并跳到该窗口</span><br><span class="line">gs      vsplit 一个新 窗口打开选中文件，但不跳到该窗口</span><br><span class="line">!       执行当前文件</span><br><span class="line">O       递归打开选中 结点下的所有目录</span><br><span class="line"><span class="keyword">x</span>       合拢选中结点的父目录</span><br><span class="line"><span class="keyword">X</span>       递归 合拢选中结点下的所有目录</span><br><span class="line">e       Edit the current dif</span><br><span class="line"></span><br><span class="line"># 双击    相当于 NERDTree-o (Mac下无效...)</span><br><span class="line"># 中键    对文件相当于 NERDTree-i，对目录相当于 NERDTree-e</span><br><span class="line"></span><br><span class="line"><span class="keyword">D</span>       删除当前书签</span><br><span class="line"></span><br><span class="line">P       跳到根结点</span><br><span class="line">p       跳到父结点</span><br><span class="line"><span class="keyword">K</span>       跳到当前目录下同级的第一个结点</span><br><span class="line"><span class="keyword">J</span>       跳到当前目录下同级的最后一个结点</span><br><span class="line"><span class="keyword">k</span>       跳到当前目录下同级的前一个结点</span><br><span class="line"><span class="keyword">j</span>       跳到当前目录下同级的后一个结点</span><br><span class="line"></span><br><span class="line">C       将选中目录或选中文件的父目录设为根结点</span><br><span class="line">u       将当前根结点的父目录设为根目录，并变成合拢原根结点</span><br><span class="line">U       将当前根结点的父目录设为根目录，但保持展开原根结点</span><br><span class="line"><span class="keyword">r</span>       递归刷新选中目录</span><br><span class="line"><span class="keyword">R</span>       递归刷新根结点</span><br><span class="line">m       显示文件系统菜单 #！！！然后根据提示进行文件的操作如新建，重命名等</span><br><span class="line">cd      将 CWD 设为选中目录</span><br><span class="line"></span><br><span class="line">I       切换是否显示隐藏文件</span><br><span class="line">f       切换是否使用文件过滤器</span><br><span class="line">F       切换是否显示文件</span><br><span class="line">B       切换是否显示书签</span><br><span class="line"></span><br><span class="line"><span class="keyword">q</span>       关闭 NerdTree 窗口</span><br><span class="line">?       切换是否显示 Quick Help</span><br></pre></td></tr></table></figure>
+<p>操作tab<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">tabnew</span> [++<span class="keyword">opt</span>选项] ［＋cmd］ 文件      建立对指定文件新的<span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabc</span>   关闭当前的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabo</span>   关闭所有其他的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabs</span>   查看所有打开的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabp</span>   前一个 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabn</span>   后一个 <span class="keyword">tab</span></span><br><span class="line"></span><br><span class="line">标准模式下：</span><br><span class="line">gT      前一个 <span class="keyword">tab</span></span><br><span class="line">gt      后一个 <span class="keyword">tab</span></span><br><span class="line"></span><br><span class="line">MacVim 还可以借助快捷键来完成 <span class="keyword">tab</span> 的关闭、切换</span><br><span class="line">cmd+<span class="keyword">w</span>   关闭当前的 <span class="keyword">tab</span></span><br><span class="line">cmd+&#123;   前一个 <span class="keyword">tab</span></span><br><span class="line">cmd+&#125;   后一个 <span class="keyword">tab</span></span><br></pre></td></tr></table></figure></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
-<li>文首：<code>gg</code> / <code>:0</code></li>
-<li>文末：<code>shift + g</code> / <code>:$</code></li>
-<li>行首：<code>0</code></li>
-<li>行末：<code>$</code></li>
-<li>到第一个不是空字符的位置：<code>^</code></li>
-<li>到最后一个不是空字符的位置：<code>g_</code></li>
-</ul>]]>
+    <![CDATA[<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">h</span>    光标 focus 左侧树形目录</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">l</span>    光标 focus 右侧文件显示窗口</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">w</span>    光标自动在左右侧窗口切换 #！！！</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">r</span>    移动当前窗口的布局位置</span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     
       <category term="linux" scheme="http://paranoidq.github.io/tags/linux/"/>
     
       <category term="vim" scheme="http://paranoidq.github.io/tags/vim/"/>
+    
+      <category term="nerdtree" scheme="http://paranoidq.github.io/tags/nerdtree/"/>
     
       <category term="linux" scheme="http://paranoidq.github.io/categories/linux/"/>
     

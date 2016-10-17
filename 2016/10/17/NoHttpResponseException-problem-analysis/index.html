@@ -57,15 +57,17 @@
 出现的问题是： 大概1000左右的报文会出现 NoHttpResponseException [server ip] failed to respond。调低并发度到300一下时，不会出现这样的异常。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NoHttpResponseException问题分析">
-<meta property="og:url" content="http://paranoidq.github.io/2016/10/11/NoHttpResponseException-problem-analysis/index.html">
+<meta property="og:url" content="http://paranoidq.github.io/2016/10/17/NoHttpResponseException-problem-analysis/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="场景在性能测试的时候，使用apache httpclient连续发送报文到server进行压测。压测的配置如下：123总数：10000并发：400每个发送线程的QPS限制：20
 出现的问题是： 大概1000左右的报文会出现 NoHttpResponseException [server ip] failed to respond。调低并发度到300一下时，不会出现这样的异常。">
-<meta property="og:updated_time" content="2016-10-11T12:45:37.000Z">
+<meta property="og:image" content="http://paranoidq.github.io/img/jboss-thread-model.gif">
+<meta property="og:updated_time" content="2016-10-17T02:21:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NoHttpResponseException问题分析">
 <meta name="twitter:description" content="场景在性能测试的时候，使用apache httpclient连续发送报文到server进行压测。压测的配置如下：123总数：10000并发：400每个发送线程的QPS限制：20
 出现的问题是： 大概1000左右的报文会出现 NoHttpResponseException [server ip] failed to respond。调低并发度到300一下时，不会出现这样的异常。">
+<meta name="twitter:image" content="http://paranoidq.github.io/img/jboss-thread-model.gif">
 
 
 
@@ -246,8 +248,8 @@
         <div class="post-meta">
           <span class="post-time">
             更新于
-            <time itemprop="dateCreated" datetime="2016-10-11T19:45:30+08:00" content="2016-10-11">
-              2016-10-11
+            <time itemprop="dateCreated" datetime="2016-10-17T10:11:30+08:00" content="2016-10-17">
+              2016-10-17
             </time>
           </span>
 
@@ -272,8 +274,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/10/11/NoHttpResponseException-problem-analysis/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/11/NoHttpResponseException-problem-analysis/" itemprop="commentsCount"></span>
+                <a href="/2016/10/17/NoHttpResponseException-problem-analysis/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/17/NoHttpResponseException-problem-analysis/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -298,7 +300,7 @@
 <blockquote>
 <p>In some circumstances, usually when under heavy load, the web server may be able to receive requests but unable to process them. A lack of sufficient resources like worker threads is a good example. This may cause the server to drop the connection to the client without giving any response. HttpClient throws NoHttpResponseException when it encounters such a condition. In most cases it is safe to retry a method that failed with NoHttpResponseException.</p>
 </blockquote>
-<p>大致意思跟我之前构想的一样，在并发量比较大的情况下，server的处理线程有限，于是drop掉了来自客户端的Connection，并且没有给任何应答。但是细想，为什么服务端会drop掉连接呢？首先贴一则查阅到的stackoverflow上的分析：</p>
+<p>大致意思跟我之前构想的一样，在某些情况下，通常在重负载下时，Web服务器可能能够接收请求，但无法处理它们。缺乏足够的资源，比如工作线程，这可能会导致服务器断开客户端连接，并且没有给予任何回应。当它遇到这样的条件HttpClient会抛出NoHttpResponseException。此异常是由于服务器端过载而拒绝接受请求（不再响应）所致。<br>但是细想，为什么服务端会drop掉连接呢？首先贴一则查阅到的stackoverflow上的分析：</p>
 <blockquote>
 <p>Most likely persistent connections that are kept alive by the connection manager become stale. That is, the target server shuts down the connection on its end without HttpClient being able to react to that event, while the connection is being idle, thus rendering the connection half-closed or ‘stale’. Usually this is not a problem. HttpClient employs several techniques to verify connection validity upon its lease from the pool. Even if the stale connection check is disabled and a stale connection is used to transmit a request message the request execution usually fails in the write operation with SocketException and gets automatically retried. However under some circumstances the write operation can terminate without an exception and the subsequent read operation returns -1 (end of stream). In this case HttpClient has no other choice but to assume the request succeeded but the server failed to respond most likely due to an unexpected error on the server side.</p>
 </blockquote>
@@ -307,16 +309,24 @@
 <blockquote>
 <p>1.假设server的连接限制是10，那么显然，如果现在只有5个请求来了，那么会创建5个connection。<br>2.如果现在来了20个请求，那么显然server是处理不过来的</p>
 </blockquote>
-<h3 id="u89E3_u51B3_u65B9_u6848"><a href="#u89E3_u51B3_u65B9_u6848" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="1-_retry"><a href="#1-_retry" class="headerlink" title="1. retry"></a>1. retry</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">httpClientBuilder.setRetryHandler(<span class="keyword">new</span> StandardHttpRequestRetryHandler(<span class="number">3</span>, <span class="literal">true</span>));</span><br></pre></td></tr></table></figure>
-<h4 id="2-__u9650_u5236keepAlive_u7684_u65F6_u95F4"><a href="#2-__u9650_u5236keepAlive_u7684_u65F6_u95F4" class="headerlink" title="2. 限制keepAlive的时间"></a>2. 限制keepAlive的时间</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">ConnectionKeepAliveStrategy connectionKeepAliveStrategy = new ConnectionKeepAliveStrategy() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public long getKeepAliveDuration(HttpResponse httpResponse, HttpContext httpContext) &#123;</span><br><span class="line">            return <span class="number">20</span> * <span class="number">1000</span><span class="comment">; // tomcat默认keepAliveTimeout为20s</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="comment">;</span></span><br><span class="line">PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(<span class="number">20</span>, TimeUnit.SECONDS)<span class="comment">;</span></span><br><span class="line">connManager.setMaxTotal(<span class="number">200</span>)<span class="comment">;</span></span><br><span class="line">connManager.setDefaultMaxPerRoute(<span class="number">200</span>)<span class="comment">;</span></span><br><span class="line">RequestConfig requestConfig = RequestConfig.custom()</span><br><span class="line">    .setConnectTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .setSocketTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .setConnectionRequestTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .<span class="keyword">build();</span><br><span class="line"></span>HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setConnectionManager(connManager)<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setDefaultRequestConfig(requestConfig)<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler())<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setKeepAliveStrategy(connectionKeepAliveStrategy)<span class="comment">;</span></span><br><span class="line">HttpClient httpClient = httpClientBuilder.<span class="keyword">build();</span><br><span class="line"></span>ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient)<span class="comment">;</span></span><br><span class="line">restTemplate = new RestTemplate(requestFactory)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<h3 id="u89E3_u51B3_u65B9_u6848"><a href="#u89E3_u51B3_u65B9_u6848" class="headerlink" title="解决方案"></a>解决方案</h3><h4 id="1-__u589E_u52A0_u670D_u52A1_u5668_u5904_u7406_u80FD_u529B"><a href="#1-__u589E_u52A0_u670D_u52A1_u5668_u5904_u7406_u80FD_u529B" class="headerlink" title="1. 增加服务器处理能力"></a>1. 增加服务器处理能力</h4><p>这种方法在我们的项目中有效，我们通过修改JBoss服务器的两个参数来达到增强服务器处理能力的效果：</p>
+<ul>
+<li>maxThreads 最大线程数</li>
+<li>acceptCount 最大等待线程数</li>
+</ul>
+<p>Jboss的线程模型：（引用自<a href="http://blog.csdn.net/lengyuhong/article/details/6319069" target="_blank" rel="external">http://blog.csdn.net/lengyuhong/article/details/6319069
+</a>）<br><img src="/img/jboss-thread-model.gif" alt="jboss-thread-model"></p>
+<h4 id="2-_retry"><a href="#2-_retry" class="headerlink" title="2. retry"></a>2. retry</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">httpClientBuilder.setRetryHandler(<span class="keyword">new</span> StandardHttpRequestRetryHandler(<span class="number">3</span>, <span class="literal">true</span>));</span><br></pre></td></tr></table></figure>
+<h4 id="3-__u9650_u5236keepAlive_u7684_u65F6_u95F4"><a href="#3-__u9650_u5236keepAlive_u7684_u65F6_u95F4" class="headerlink" title="3. 限制keepAlive的时间"></a>3. 限制keepAlive的时间</h4><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">ConnectionKeepAliveStrategy connectionKeepAliveStrategy = new ConnectionKeepAliveStrategy() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public long getKeepAliveDuration(HttpResponse httpResponse, HttpContext httpContext) &#123;</span><br><span class="line">            return <span class="number">20</span> * <span class="number">1000</span><span class="comment">; // tomcat默认keepAliveTimeout为20s</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="comment">;</span></span><br><span class="line">PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(<span class="number">20</span>, TimeUnit.SECONDS)<span class="comment">;</span></span><br><span class="line">connManager.setMaxTotal(<span class="number">200</span>)<span class="comment">;</span></span><br><span class="line">connManager.setDefaultMaxPerRoute(<span class="number">200</span>)<span class="comment">;</span></span><br><span class="line">RequestConfig requestConfig = RequestConfig.custom()</span><br><span class="line">    .setConnectTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .setSocketTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .setConnectionRequestTimeout(<span class="number">10</span> * <span class="number">1000</span>)</span><br><span class="line">    .<span class="keyword">build();</span><br><span class="line"></span>HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setConnectionManager(connManager)<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setDefaultRequestConfig(requestConfig)<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler())<span class="comment">;</span></span><br><span class="line">httpClientBuilder.setKeepAliveStrategy(connectionKeepAliveStrategy)<span class="comment">;</span></span><br><span class="line">HttpClient httpClient = httpClientBuilder.<span class="keyword">build();</span><br><span class="line"></span>ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient)<span class="comment">;</span></span><br><span class="line">restTemplate = new RestTemplate(requestFactory)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
 <p>主要是增加keepalive的策略，但这又带来一个问题，所有的连接只有20秒，无法使用长连接的性能优势</p>
-<h4 id="3-_closeIdleConnections"><a href="#3-_closeIdleConnections" class="headerlink" title="3. closeIdleConnections"></a>3. closeIdleConnections</h4><p>PoolingHttpClientConnectionManager.closeIdleConnections 方法<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">closeIdleConnections</span><span class="params">(<span class="keyword">final</span> <span class="keyword">long</span> idleTimeout, <span class="keyword">final</span> TimeUnit tunit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.log.isDebugEnabled()) &#123;</span><br><span class="line">        <span class="keyword">this</span>.log.debug(<span class="string">"Closing connections idle longer than "</span> + idleTimeout + <span class="string">" "</span> + tunit);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.pool.closeIdle(idleTimeout, tunit);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-_closeIdleConnections"><a href="#4-_closeIdleConnections" class="headerlink" title="4. closeIdleConnections"></a>4. closeIdleConnections</h4><p>PoolingHttpClientConnectionManager.closeIdleConnections 方法<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">closeIdleConnections</span><span class="params">(<span class="keyword">final</span> <span class="keyword">long</span> idleTimeout, <span class="keyword">final</span> TimeUnit tunit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.log.isDebugEnabled()) &#123;</span><br><span class="line">        <span class="keyword">this</span>.log.debug(<span class="string">"Closing connections idle longer than "</span> + idleTimeout + <span class="string">" "</span> + tunit);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.pool.closeIdle(idleTimeout, tunit);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>三种方案暂且列出，准备实践一下效果，后续再更新到博客中来。相比而言，retry的方案比较sb，但是估计很好用；keepAlive限制需要考虑场景，某些需要长连接的场景下可能不是很合适，并且把统一把连接过期关掉，显然会带来不小的性能损失。最后一种方案，应该是keepAlive的折中优化，本质上是如果connection一直被pool拿出来使用，那我就不关闭你；如果connection一直idle，那么过了一段时间我就主动关闭你了。这样就避免了keepAlive统一限制的问题，同时如果一个connection被pool拿出来用了，那么显然他不可能被server关闭；而idle connection被关闭了，所以不会出现上述server端drop connection而pool又无法通知idle connection的问题。</p>
 <h3 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
 <li><a href="https://my.oschina.net/sannychan/blog/485677" target="_blank" rel="external">https://my.oschina.net/sannychan/blog/485677</a></li>
 <li><a href="http://stackoverflow.com/questions/10558791/apache-httpclient-interim-error-nohttpresponseexception" target="_blank" rel="external">http://stackoverflow.com/questions/10558791/apache-httpclient-interim-error-nohttpresponseexception</a></li>
 <li><a href="http://stackoverflow.com/questions/10570672/get-nohttpresponseexception-for-load-testing/10680629#10680629" target="_blank" rel="external">http://stackoverflow.com/questions/10570672/get-nohttpresponseexception-for-load-testing/10680629#10680629</a></li>
 <li><a href="https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/" target="_blank" rel="external">https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/</a></li>
+<li><a href="http://luan.iteye.com/blog/1820054" target="_blank" rel="external">http://luan.iteye.com/blog/1820054</a></li>
 </ol>
 </span>
       
@@ -337,17 +347,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/26/时寒冰说-豆瓣评论/" rel="next" title="转载：大棋局与大智慧 —— 《时寒冰说》豆瓣书评">
-                <i class="fa fa-chevron-left"></i> 转载：大棋局与大智慧 —— 《时寒冰说》豆瓣书评
+              <a href="/2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/" rel="next" title="(翻译) Using HttpClient properly to avoid CLOSE_WAIT TCP connections">
+                <i class="fa fa-chevron-left"></i> (翻译) Using HttpClient properly to avoid CLOSE_WAIT TCP connections
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/" rel="prev" title="(翻译) Using HttpClient properly to avoid CLOSE_WAIT TCP connections">
-                (翻译) Using HttpClient properly to avoid CLOSE_WAIT TCP connections <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -374,8 +380,8 @@
         
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/10/11/NoHttpResponseException-problem-analysis/"
-           data-title="NoHttpResponseException问题分析" data-url="http://paranoidq.github.io/2016/10/11/NoHttpResponseException-problem-analysis/">
+      <div class="ds-thread" data-thread-key="2016/10/17/NoHttpResponseException-problem-analysis/"
+           data-title="NoHttpResponseException问题分析" data-url="http://paranoidq.github.io/2016/10/17/NoHttpResponseException-problem-analysis/">
       </div>
     
   </div>
@@ -501,7 +507,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u573A_u666F"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u539F_u56E0_u5206_u6790"><span class="nav-number">2.</span> <span class="nav-text">原因分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u89E3_u51B3_u65B9_u6848"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-_retry"><span class="nav-number">3.1.</span> <span class="nav-text">1. retry</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-__u9650_u5236keepAlive_u7684_u65F6_u95F4"><span class="nav-number">3.2.</span> <span class="nav-text">2. 限制keepAlive的时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-_closeIdleConnections"><span class="nav-number">3.3.</span> <span class="nav-text">3. closeIdleConnections</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003_u8D44_u6599"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u573A_u666F"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u539F_u56E0_u5206_u6790"><span class="nav-number">2.</span> <span class="nav-text">原因分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u89E3_u51B3_u65B9_u6848"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-__u589E_u52A0_u670D_u52A1_u5668_u5904_u7406_u80FD_u529B"><span class="nav-number">3.1.</span> <span class="nav-text">1. 增加服务器处理能力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-_retry"><span class="nav-number">3.2.</span> <span class="nav-text">2. retry</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-__u9650_u5236keepAlive_u7684_u65F6_u95F4"><span class="nav-number">3.3.</span> <span class="nav-text">3. 限制keepAlive的时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-_closeIdleConnections"><span class="nav-number">3.4.</span> <span class="nav-text">4. closeIdleConnections</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003_u8D44_u6599"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
