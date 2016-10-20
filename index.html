@@ -240,6 +240,221 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/20/java-webservice-tutorial-2/" itemprop="url">
+                  Java Webservice实践（2）构建Webservice客户端
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-10-20T21:39:04+08:00" content="2016-10-20">
+              2016-10-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/webservice/" itemprop="url" rel="index">
+                    <span itemprop="name">webservice</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/java-webservice-tutorial-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/java-webservice-tutorial-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：</p>
+<ol>
+<li>通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：<br>a. jdk1.6+/bin中自带工具: <code>wsimport</code><br>b. cxf/bin中的工具: <code>wsdl2java</code><br>c. axis/bin中工具</li>
+<li>通过CXF动态调用：<br>a. DynamicClientFactory<br>b. JaxWsDynamicClientFactory</li>
+<li>通过Axis动态调用：<br>a. Service.createCall()</li>
+<li>通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
+<li>通过SOAPConnection的方式调用</li>
+</ol>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/20/java-webservice-tutorial-2/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/20/java-webservice-tutorial-1/" itemprop="url">
+                  Java Webservice实践（1）构建简单的Webservice服务
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-10-20T20:45:04+08:00" content="2016-10-20">
+              2016-10-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/webservice/" itemprop="url" rel="index">
+                    <span itemprop="name">webservice</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/java-webservice-tutorial-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/java-webservice-tutorial-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="JAX-WS"><a href="#JAX-WS" class="headerlink" title="JAX-WS"></a>JAX-WS</h3><p>JAX-WS(Java API for XML Web Services)，是SOAP协议的一个Java的实现规范，这个新规范是为了简化基于SOAP的Java开发。JAX-WS规范其实就是一组XMLweb services的JAVA API，JAX-WS允许开发者可以选择RPCoriented或者message-oriented来实现自己的web services。通过使用Java™ API for XMLWeb Services (JAX-WS) 技术设计和开发 Web服务，可以带来很多好处，能简化 Web 服务的开发和部署，并能加速 Web 服务的开发。</p>
+<p>JAX-WS将本地的远程调用转换为XML协议（一般为SOAP格式），从而开发者不需要编写任何SOAP组装消息代码；同样，在服务端的JAX-WS会将SOAP消息解析为具体的函数调用，并返回结果。</p>
+<p><img src="/img/webservice/jax-ws-tutorials.gif" alt="jax-runtime"></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/20/java-webservice-tutorial-1/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/17/NoHttpResponseException-problem-analysis/" itemprop="url">
                   NoHttpResponseException问题分析
                 </a>
@@ -1059,216 +1274,6 @@
   </article>
 
 
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/15/人生新阶段随笔-1/" itemprop="url">
-                  人生新阶段随笔（1）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-07-15T20:02:53+08:00" content="2016-07-15">
-              2016-07-15
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/15/人生新阶段随笔-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/15/人生新阶段随笔-1/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>开始工作接近两周时间，算是成功从一个天真的在校学生变成了半个社会人士。<br>两周的时间虽然工作上没写什么代码，每天也没怎么需要加班加点，但感觉还是挺忙碌的。上周去苏州陪女友玩了两天，这周也算得空了，自己可以好好想想这两周以来的生活和工作。</p>
-<p>工作上的变化确实是蛮大的，跟学校里那种轻松自由的节奏完全不同。倒不是主管push你，反而是自己觉得如果没事情做，就会很着急。所以总是想方设法让自己忙碌起来，找事情做。感觉这样的想法还是挺好的，毕竟作为一个刚毕业的学生，最重要的还是能尽快学到知识和技能吧。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/15/人生新阶段随笔-1/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/04/java-inner-class-final-problem/" itemprop="url">
-                  关于Java局部类不能访问外围的非final局部变量的探索
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-07-04T21:04:47+08:00" content="2016-07-04">
-              2016-07-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/04/java-inner-class-final-problem/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/04/java-inner-class-final-problem/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u5B9E_u9A8C"><a href="#u5B9E_u9A8C" class="headerlink" title="实验"></a>实验</h3><p>关于java中的内部类，有很多坑，其中条就是：</p>
-<blockquote>
-<p>对于定义在函数中的内部类而言，在内部类中可以访问外部函数的局部变量，但这些局部变量必须被申明为final。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/04/java-inner-class-final-problem/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
     
 
   </section>
@@ -1316,21 +1321,21 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">67</span>
+              <span class="site-state-item-count">69</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">23</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">68</span>
+              <span class="site-state-item-count">69</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

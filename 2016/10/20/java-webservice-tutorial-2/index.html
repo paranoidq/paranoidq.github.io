@@ -1,0 +1,846 @@
+<!doctype html>
+<html class="theme-next ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="webservice," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="钱唯の个人博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="概述总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：
+
+通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：a. jdk1.6+/bin中自带工具: wsimportb. cxf/bin中的工具: wsdl2javac. axis/bin中工具
+通过CXF动态调用：a. DynamicClientFactoryb. JaxWsDynamicClient">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Webservice实践（2）构建Webservice客户端">
+<meta property="og:url" content="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/index.html">
+<meta property="og:site_name" content="钱唯の个人博客">
+<meta property="og:description" content="概述总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：
+
+通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：a. jdk1.6+/bin中自带工具: wsimportb. cxf/bin中的工具: wsdl2javac. axis/bin中工具
+通过CXF动态调用：a. DynamicClientFactoryb. JaxWsDynamicClient">
+<meta property="og:image" content="http://paranoidq.github.io/img/webservice/wsimport.png">
+<meta property="og:image" content="http://paranoidq.github.io/img/webservice/wsdl2java.png">
+<meta property="og:updated_time" content="2016-10-20T14:52:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java Webservice实践（2）构建Webservice客户端">
+<meta name="twitter:description" content="概述总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：
+
+通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：a. jdk1.6+/bin中自带工具: wsimportb. cxf/bin中的工具: wsdl2javac. axis/bin中工具
+通过CXF动态调用：a. DynamicClientFactoryb. JaxWsDynamicClient">
+<meta name="twitter:image" content="http://paranoidq.github.io/img/webservice/wsimport.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'always',
+    motion: false
+  };
+</script>
+
+  <title> Java Webservice实践（2）构建Webservice客户端 | 钱唯の个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">钱唯の个人博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">佳思忽来，书能下酒；侠情一往，云可赠人。</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tops">
+          <a href="/tags/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-收藏 fa-fw"></i> <br />
+            
+            收藏
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/tags/碎片/" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            碎片
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/tags/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-TODO fa-fw"></i> <br />
+            
+            待办
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java Webservice实践（2）构建Webservice客户端
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-10-20T21:39:04+08:00" content="2016-10-20">
+              2016-10-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/webservice/" itemprop="url" rel="index">
+                    <span itemprop="name">webservice</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/java-webservice-tutorial-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/java-webservice-tutorial-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：</p>
+<ol>
+<li>通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：<br>a. jdk1.6+/bin中自带工具: <code>wsimport</code><br>b. cxf/bin中的工具: <code>wsdl2java</code><br>c. axis/bin中工具</li>
+<li>通过CXF动态调用：<br>a. DynamicClientFactory<br>b. JaxWsDynamicClientFactory</li>
+<li>通过Axis动态调用：<br>a. Service.createCall()</li>
+<li>通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
+<li>通过SOAPConnection的方式调用</li>
+</ol>
+<a id="more"></a>
+<h3 id="Stub_u7684_u751F_u6210"><a href="#Stub_u7684_u751F_u6210" class="headerlink" title="Stub的生成"></a>Stub的生成</h3><h4 id="u76F4_u63A5_u62F7_u8D1D_u63A5_u53E3"><a href="#u76F4_u63A5_u62F7_u8D1D_u63A5_u53E3" class="headerlink" title="直接拷贝接口"></a>直接拷贝接口</h4><p>拷贝接口，然后利用JaxWsServerFactoryBean方式进行调用<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JaxWsProxyFactoryBean <span class="keyword">factory</span> = <span class="keyword">new</span> JaxWsProxyFactoryBean();</span><br><span class="line"><span class="keyword">factory</span>.setServiceClass(CXFDemo.<span class="keyword">class</span>);</span><br><span class="line"><span class="keyword">factory</span>.setAddress(ADDRESS);</span><br><span class="line">CXFDemo client = (CXFDemo)<span class="keyword">factory</span>.create();</span><br></pre></td></tr></table></figure></p>
+<h4 id="u901A_u8FC7wsimport_u751F_u6210stub"><a href="#u901A_u8FC7wsimport_u751F_u6210stub" class="headerlink" title="通过wsimport生成stub"></a>通过wsimport生成stub</h4><p>wsimport调用的方法是：<code>wsimport -d [目录] -keep -Xnocompile -verbose [wsdl]</code><br>其中<code>-d</code>后面表示生成文件存放的目录，<code>-keep</code>表示生成源文件，<code>-verbose</code>表示显示生成的详细过程，<code>-Xnocompile</code>表示不自动编译源码。<br>生成之后，导入到客户端的项目中。生成文件的结构类似下图：<br><img src="/img/webservice/wsimport.png" alt="wsimport-java-structure"></p>
+<p>接着，就可以在客户端调用了<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WcgWebService serverStub = <span class="keyword">new</span> WcgWebService();</span><br><span class="line">com.up.<span class="keyword">client</span>.WcgWsInterface <span class="keyword">client</span> = serverStub.getWcgWsImplPort();</span><br><span class="line">String resp = <span class="keyword">client</span>.wsRequest(<span class="string">"service"</span>, <span class="string">"requestMsg"</span>);</span><br><span class="line">System.out.println(resp);</span><br></pre></td></tr></table></figure></p>
+<h4 id="u901A_u8FC7wsdl2java_u751F_u6210"><a href="#u901A_u8FC7wsdl2java_u751F_u6210" class="headerlink" title="通过wsdl2java生成"></a>通过wsdl2java生成</h4><p>wsdl2java的调用方法与wsimport类似：<code>sh wsdl2java -d src -client http://localhost:8080/cxf-server/wcg/webservice/interface\?wsdl</code><br>其中<code>-d</code>指定输出的目录，<code>-client</code>输出客户端代码，也可以指定<code>-server</code>输出服务端代码<br>生成之后，导入客户端的项目中。生成的文件结构类似下图：<br><img src="/img/webservice/wsdl2java.png" alt="wsdl2java"></p>
+<p>接着，在客户端调用如下：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WcgWebserviceInterface client = <span class="keyword">new</span> Webservice().getWcgWebserviceImplPort();</span><br><span class="line"><span class="keyword">String</span> requestResponse = client.request(<span class="string">"param"</span>, <span class="string">"param"</span>);</span><br><span class="line">System.out.<span class="built_in">println</span>(requestResponse);</span><br></pre></td></tr></table></figure></p>
+<h4 id="u901A_u8FC7Axis_u751F_u6210"><a href="#u901A_u8FC7Axis_u751F_u6210" class="headerlink" title="通过Axis生成"></a>通过Axis生成</h4><p>调用方式：<br>…</p>
+<p>这里需要注意的是：需要指定编码方式时，可以通过以下方式设置<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stub<span class="selector-class">._setProperty</span>(Call.CHARACTER_SET_ENCODING, <span class="string">"GBK"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>参考自：<a href="http://stackoverflow.com/questions/9093078/apache-axis-charset-wrong-encoding-on-tomcat" target="_blank" rel="external">http://stackoverflow.com/questions/9093078/apache-axis-charset-wrong-encoding-on-tomcat</a></p>
+<h3 id="u901A_u8FC7CXF_u52A8_u6001_u8C03_u7528"><a href="#u901A_u8FC7CXF_u52A8_u6001_u8C03_u7528" class="headerlink" title="通过CXF动态调用"></a>通过CXF动态调用</h3><p>通过以上的几种方法，可以看出Stub调用的方式比较简单，只需要根据wsdl生成好对应的代理类就可以了，一般3-4行代码可以搞定。但是缺点就是接口不能随意改动，并且扩展起来不方便。</p>
+<h3 id="u901A_u8FC7Axis_u52A8_u6001_u8C03_u7528"><a href="#u901A_u8FC7Axis_u52A8_u6001_u8C03_u7528" class="headerlink" title="通过Axis动态调用"></a>通过Axis动态调用</h3><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String</span> namespace = <span class="string">"http://ws.wcg.unionpay.com"</span>;  <span class="comment">// 定义命名空间</span></span><br><span class="line"><span class="keyword">String</span> serviceName = <span class="string">"wcgWebService"</span>; <span class="comment">// 定义服务名</span></span><br><span class="line">QName service = <span class="keyword">new</span> QName(namespace, serviceName);</span><br><span class="line"><span class="keyword">String</span> operationName = <span class="string">"WsRequest"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">Call</span> <span class="keyword">call</span> = <span class="keyword">new</span> Service().createCall();</span><br><span class="line"><span class="keyword">call</span>.setPortTypeName(service);</span><br><span class="line"><span class="keyword">call</span>.setOperationName(<span class="keyword">new</span> QName(namespace, operationName));</span><br><span class="line"><span class="keyword">call</span>.setProperty(...)</span><br><span class="line"><span class="keyword">call</span>.addParameter(<span class="string">"service"</span>, ParameterMode.IN);</span><br><span class="line"><span class="keyword">call</span>.addParameter(<span class="string">"requestMsg"</span>, ParameterMode.IN);</span><br><span class="line"><span class="keyword">call</span>.setReturnType();</span><br><span class="line">Object[] inParams = <span class="keyword">new</span> Object[]&#123;<span class="string">"demo"</span>, <span class="string">"demo"</span>&#125;;</span><br><span class="line"><span class="keyword">String</span> ret = (<span class="keyword">String</span>)<span class="keyword">call</span>.invoke(inParams);</span><br></pre></td></tr></table></figure>
+<h3 id="u901A_u8FC7HTTPURLConnection_u8C03_u7528"><a href="#u901A_u8FC7HTTPURLConnection_u8C03_u7528" class="headerlink" title="通过HTTPURLConnection调用"></a>通过HTTPURLConnection调用</h3><p>这种调用方式就需要手动去组装SOAP报文，是一种最为原始的方式。但其实这种方式体现除了Webservice的本质，就是SOAP + HTTP POST。只不过这种方式在便利程度和扩展性方面都是很不友好的。<br>具体的代码如下：<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">private static String <span class="keyword">buildSOAP() </span>&#123;</span><br><span class="line">    String soap = <span class="string">"&lt;soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ws=\"http://ws.wcg.unionpay.com\"&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;soapenv:Header/&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;soapenv:Body&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;ws:WsRequest&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;service&gt;apram&lt;/service&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;requestMsg&gt;param&lt;/requestMsg&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;/ws:WsRequest&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;/soapenv:Body&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;/soapenv:Envelope&gt;"</span><span class="comment">;</span></span><br><span class="line">    return soap<span class="comment">;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) throws Exception &#123;</span><br><span class="line">    String soap = <span class="keyword">buildSOAP();</span><br><span class="line"></span></span><br><span class="line">    HttpURLConnection connection = (HttpURLConnection) (new URL(<span class="string">"http://localhost:8080/cxf-server/ws/request?wsdl"</span>)).openConnection()<span class="comment">;</span></span><br><span class="line">    connection.setDoInput(true)<span class="comment">;</span></span><br><span class="line">    connection.setDoOutput(true)<span class="comment">;</span></span><br><span class="line">    connection.setRequestMethod(<span class="string">"POST"</span>)<span class="comment">;</span></span><br><span class="line">    connection.setRequestProperty(<span class="string">"Content-Length"</span>, String.valueOf(soap.length()))<span class="comment">;</span></span><br><span class="line">    connection.setRequestProperty(<span class="string">"Content-Type"</span>, <span class="string">"application/xop+xml; charset=utf-8; type=\"test/xml\""</span>)<span class="comment">;</span></span><br><span class="line">    connection.setRequestProperty(<span class="string">"SOAPAction"</span>, <span class="string">"soap_action"</span>)<span class="comment">;</span></span><br><span class="line">    connection.setUseCaches(false)<span class="comment">;</span></span><br><span class="line">    connection.connect()<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    connection.getOutputStream().write(soap.getBytes(<span class="string">"UTF-8"</span>))<span class="comment">;</span></span><br><span class="line">    connection.getOutputStream().flush()<span class="comment">;</span></span><br><span class="line">    connection.getOutputStream().<span class="keyword">close();</span><br><span class="line"></span></span><br><span class="line">    InputStream in = connection.getInputStream()<span class="comment">;</span></span><br><span class="line">    String resp = IOUtils.toString(in)<span class="comment">;</span></span><br><span class="line">    System.out.println(resp)<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="u901A_u8FC7SOAPConnection_u7684_u65B9_u5F0F_u8C03_u7528"><a href="#u901A_u8FC7SOAPConnection_u7684_u65B9_u5F0F_u8C03_u7528" class="headerlink" title="通过SOAPConnection的方式调用"></a>通过SOAPConnection的方式调用</h3><p>相比于之前的HttpURLConnection方式，SOAPConnection的方式稍微高级一些，不需要通过字符串的方式手动拼报文了，SOAPConnection的API会帮你拼，你只需要做一些定制化的工作就可以了，并且可以进行一些复杂的配置。</p>
+<h3 id="Axis_u548CApache_u7684_u5BF9_u6BD4"><a href="#Axis_u548CApache_u7684_u5BF9_u6BD4" class="headerlink" title="Axis和Apache的对比"></a>Axis和Apache的对比</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>Axis2</th>
+<th>CXF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标</td>
+<td>WebService引擎</td>
+<td>简易的SOA框架，可以作为ESB</td>
+</tr>
+<tr>
+<td>ws* 标准支持</td>
+<td>不支持WS-Policy</td>
+<td>WS-Addressing，WS-Policy， WS-RM， WS-Security，WS-I Basic Profile</td>
+</tr>
+<tr>
+<td>数据绑定支持</td>
+<td>XMLBeans、JiBX、JaxMe 、JaxBRI、ADB</td>
+<td>JAXB, Aegis, XMLBeans, SDO, JiBX</td>
+</tr>
+<tr>
+<td>spring集成</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>应用集成</td>
+<td>困难</td>
+<td>简单</td>
+</tr>
+<tr>
+<td>多语言</td>
+<td>支持C/C++</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>部署</td>
+<td>web应用</td>
+<td>嵌入式</td>
+</tr>
+<tr>
+<td>服务监控和管理</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.cnblogs.com/holbrook/archive/2012/12/12/2814821.html" target="_blank" rel="external">http://www.cnblogs.com/holbrook/archive/2012/12/12/2814821.html</a></li>
+<li><a href="http://blog.csdn.net/zolalad/article/details/31735791" target="_blank" rel="external">http://blog.csdn.net/zolalad/article/details/31735791</a></li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/webservice/" rel="tag">#webservice</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/20/java-webservice-tutorial-1/" rel="next" title="Java Webservice实践（1）构建简单的Webservice服务">
+                <i class="fa fa-chevron-left"></i> Java Webservice实践（1）构建简单的Webservice服务
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/20/java-webservice-tutorial-2/"
+           data-title="Java Webservice实践（2）构建Webservice客户端" data-url="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Paranoid Qian" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Paranoid Qian</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">So we beat on, boats against the current, borne back ceaselessly into the past.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/tags/碎片/">
+              <span class="site-state-item-count">69</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">69</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/paranoidq" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2094289700/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.hollischuang.com/" target="_blank">HollisChuang</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u6982_u8FF0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stub_u7684_u751F_u6210"><span class="nav-number">2.</span> <span class="nav-text">Stub的生成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u76F4_u63A5_u62F7_u8D1D_u63A5_u53E3"><span class="nav-number">2.1.</span> <span class="nav-text">直接拷贝接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u901A_u8FC7wsimport_u751F_u6210stub"><span class="nav-number">2.2.</span> <span class="nav-text">通过wsimport生成stub</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u901A_u8FC7wsdl2java_u751F_u6210"><span class="nav-number">2.3.</span> <span class="nav-text">通过wsdl2java生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u901A_u8FC7Axis_u751F_u6210"><span class="nav-number">2.4.</span> <span class="nav-text">通过Axis生成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u901A_u8FC7CXF_u52A8_u6001_u8C03_u7528"><span class="nav-number">3.</span> <span class="nav-text">通过CXF动态调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u901A_u8FC7Axis_u52A8_u6001_u8C03_u7528"><span class="nav-number">4.</span> <span class="nav-text">通过Axis动态调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u901A_u8FC7HTTPURLConnection_u8C03_u7528"><span class="nav-number">5.</span> <span class="nav-text">通过HTTPURLConnection调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u901A_u8FC7SOAPConnection_u7684_u65B9_u5F0F_u8C03_u7528"><span class="nav-number">6.</span> <span class="nav-text">通过SOAPConnection的方式调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Axis_u548CApache_u7684_u5BF9_u6BD4"><span class="nav-number">7.</span> <span class="nav-text">Axis和Apache的对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003_u8D44_u6599"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paranoid Qian</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"paranoidq"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>

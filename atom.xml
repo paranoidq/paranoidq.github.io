@@ -4,7 +4,7 @@
   <subtitle><![CDATA[佳思忽来，书能下酒；侠情一往，云可赠人。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://paranoidq.github.io/"/>
-  <updated>2016-10-17T02:21:56.000Z</updated>
+  <updated>2016-10-20T14:52:23.000Z</updated>
   <id>http://paranoidq.github.io/</id>
   
   <author>
@@ -13,6 +13,161 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Java Webservice实践（2）构建Webservice客户端]]></title>
+    <link href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/"/>
+    <id>http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/</id>
+    <published>2016-10-20T13:39:04.000Z</published>
+    <updated>2016-10-20T14:52:23.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：</p>
+<ol>
+<li>通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：<br>a. jdk1.6+/bin中自带工具: <code>wsimport</code><br>b. cxf/bin中的工具: <code>wsdl2java</code><br>c. axis/bin中工具</li>
+<li>通过CXF动态调用：<br>a. DynamicClientFactory<br>b. JaxWsDynamicClientFactory</li>
+<li>通过Axis动态调用：<br>a. Service.createCall()</li>
+<li>通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
+<li>通过SOAPConnection的方式调用</li>
+</ol>
+<a id="more"></a>
+<h3 id="Stub_u7684_u751F_u6210"><a href="#Stub_u7684_u751F_u6210" class="headerlink" title="Stub的生成"></a>Stub的生成</h3><h4 id="u76F4_u63A5_u62F7_u8D1D_u63A5_u53E3"><a href="#u76F4_u63A5_u62F7_u8D1D_u63A5_u53E3" class="headerlink" title="直接拷贝接口"></a>直接拷贝接口</h4><p>拷贝接口，然后利用JaxWsServerFactoryBean方式进行调用<br><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JaxWsProxyFactoryBean <span class="keyword">factory</span> = <span class="keyword">new</span> JaxWsProxyFactoryBean();</span><br><span class="line"><span class="keyword">factory</span>.setServiceClass(CXFDemo.<span class="keyword">class</span>);</span><br><span class="line"><span class="keyword">factory</span>.setAddress(ADDRESS);</span><br><span class="line">CXFDemo client = (CXFDemo)<span class="keyword">factory</span>.create();</span><br></pre></td></tr></table></figure></p>
+<h4 id="u901A_u8FC7wsimport_u751F_u6210stub"><a href="#u901A_u8FC7wsimport_u751F_u6210stub" class="headerlink" title="通过wsimport生成stub"></a>通过wsimport生成stub</h4><p>wsimport调用的方法是：<code>wsimport -d [目录] -keep -Xnocompile -verbose [wsdl]</code><br>其中<code>-d</code>后面表示生成文件存放的目录，<code>-keep</code>表示生成源文件，<code>-verbose</code>表示显示生成的详细过程，<code>-Xnocompile</code>表示不自动编译源码。<br>生成之后，导入到客户端的项目中。生成文件的结构类似下图：<br><img src="/img/webservice/wsimport.png" alt="wsimport-java-structure"></p>
+<p>接着，就可以在客户端调用了<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WcgWebService serverStub = <span class="keyword">new</span> WcgWebService();</span><br><span class="line">com.up.<span class="keyword">client</span>.WcgWsInterface <span class="keyword">client</span> = serverStub.getWcgWsImplPort();</span><br><span class="line">String resp = <span class="keyword">client</span>.wsRequest(<span class="string">"service"</span>, <span class="string">"requestMsg"</span>);</span><br><span class="line">System.out.println(resp);</span><br></pre></td></tr></table></figure></p>
+<h4 id="u901A_u8FC7wsdl2java_u751F_u6210"><a href="#u901A_u8FC7wsdl2java_u751F_u6210" class="headerlink" title="通过wsdl2java生成"></a>通过wsdl2java生成</h4><p>wsdl2java的调用方法与wsimport类似：<code>sh wsdl2java -d src -client http://localhost:8080/cxf-server/wcg/webservice/interface\?wsdl</code><br>其中<code>-d</code>指定输出的目录，<code>-client</code>输出客户端代码，也可以指定<code>-server</code>输出服务端代码<br>生成之后，导入客户端的项目中。生成的文件结构类似下图：<br><img src="/img/webservice/wsdl2java.png" alt="wsdl2java"></p>
+<p>接着，在客户端调用如下：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WcgWebserviceInterface client = <span class="keyword">new</span> Webservice().getWcgWebserviceImplPort();</span><br><span class="line"><span class="keyword">String</span> requestResponse = client.request(<span class="string">"param"</span>, <span class="string">"param"</span>);</span><br><span class="line">System.out.<span class="built_in">println</span>(requestResponse);</span><br></pre></td></tr></table></figure></p>
+<h4 id="u901A_u8FC7Axis_u751F_u6210"><a href="#u901A_u8FC7Axis_u751F_u6210" class="headerlink" title="通过Axis生成"></a>通过Axis生成</h4><p>调用方式：<br>…</p>
+<p>这里需要注意的是：需要指定编码方式时，可以通过以下方式设置<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stub<span class="selector-class">._setProperty</span>(Call.CHARACTER_SET_ENCODING, <span class="string">"GBK"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>参考自：<a href="http://stackoverflow.com/questions/9093078/apache-axis-charset-wrong-encoding-on-tomcat" target="_blank" rel="external">http://stackoverflow.com/questions/9093078/apache-axis-charset-wrong-encoding-on-tomcat</a></p>
+<h3 id="u901A_u8FC7CXF_u52A8_u6001_u8C03_u7528"><a href="#u901A_u8FC7CXF_u52A8_u6001_u8C03_u7528" class="headerlink" title="通过CXF动态调用"></a>通过CXF动态调用</h3><p>通过以上的几种方法，可以看出Stub调用的方式比较简单，只需要根据wsdl生成好对应的代理类就可以了，一般3-4行代码可以搞定。但是缺点就是接口不能随意改动，并且扩展起来不方便。</p>
+<h3 id="u901A_u8FC7Axis_u52A8_u6001_u8C03_u7528"><a href="#u901A_u8FC7Axis_u52A8_u6001_u8C03_u7528" class="headerlink" title="通过Axis动态调用"></a>通过Axis动态调用</h3><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String</span> namespace = <span class="string">"http://ws.wcg.unionpay.com"</span>;  <span class="comment">// 定义命名空间</span></span><br><span class="line"><span class="keyword">String</span> serviceName = <span class="string">"wcgWebService"</span>; <span class="comment">// 定义服务名</span></span><br><span class="line">QName service = <span class="keyword">new</span> QName(namespace, serviceName);</span><br><span class="line"><span class="keyword">String</span> operationName = <span class="string">"WsRequest"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">Call</span> <span class="keyword">call</span> = <span class="keyword">new</span> Service().createCall();</span><br><span class="line"><span class="keyword">call</span>.setPortTypeName(service);</span><br><span class="line"><span class="keyword">call</span>.setOperationName(<span class="keyword">new</span> QName(namespace, operationName));</span><br><span class="line"><span class="keyword">call</span>.setProperty(...)</span><br><span class="line"><span class="keyword">call</span>.addParameter(<span class="string">"service"</span>, ParameterMode.IN);</span><br><span class="line"><span class="keyword">call</span>.addParameter(<span class="string">"requestMsg"</span>, ParameterMode.IN);</span><br><span class="line"><span class="keyword">call</span>.setReturnType();</span><br><span class="line">Object[] inParams = <span class="keyword">new</span> Object[]&#123;<span class="string">"demo"</span>, <span class="string">"demo"</span>&#125;;</span><br><span class="line"><span class="keyword">String</span> ret = (<span class="keyword">String</span>)<span class="keyword">call</span>.invoke(inParams);</span><br></pre></td></tr></table></figure>
+<h3 id="u901A_u8FC7HTTPURLConnection_u8C03_u7528"><a href="#u901A_u8FC7HTTPURLConnection_u8C03_u7528" class="headerlink" title="通过HTTPURLConnection调用"></a>通过HTTPURLConnection调用</h3><p>这种调用方式就需要手动去组装SOAP报文，是一种最为原始的方式。但其实这种方式体现除了Webservice的本质，就是SOAP + HTTP POST。只不过这种方式在便利程度和扩展性方面都是很不友好的。<br>具体的代码如下：<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">private static String <span class="keyword">buildSOAP() </span>&#123;</span><br><span class="line">    String soap = <span class="string">"&lt;soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ws=\"http://ws.wcg.unionpay.com\"&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;soapenv:Header/&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;soapenv:Body&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;ws:WsRequest&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;service&gt;apram&lt;/service&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;requestMsg&gt;param&lt;/requestMsg&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;/ws:WsRequest&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;/soapenv:Body&gt;\n"</span> +</span><br><span class="line">            <span class="string">"    &lt;/soapenv:Envelope&gt;"</span><span class="comment">;</span></span><br><span class="line">    return soap<span class="comment">;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) throws Exception &#123;</span><br><span class="line">    String soap = <span class="keyword">buildSOAP();</span><br><span class="line"></span></span><br><span class="line">    HttpURLConnection connection = (HttpURLConnection) (new URL(<span class="string">"http://localhost:8080/cxf-server/ws/request?wsdl"</span>)).openConnection()<span class="comment">;</span></span><br><span class="line">    connection.setDoInput(true)<span class="comment">;</span></span><br><span class="line">    connection.setDoOutput(true)<span class="comment">;</span></span><br><span class="line">    connection.setRequestMethod(<span class="string">"POST"</span>)<span class="comment">;</span></span><br><span class="line">    connection.setRequestProperty(<span class="string">"Content-Length"</span>, String.valueOf(soap.length()))<span class="comment">;</span></span><br><span class="line">    connection.setRequestProperty(<span class="string">"Content-Type"</span>, <span class="string">"application/xop+xml; charset=utf-8; type=\"test/xml\""</span>)<span class="comment">;</span></span><br><span class="line">    connection.setRequestProperty(<span class="string">"SOAPAction"</span>, <span class="string">"soap_action"</span>)<span class="comment">;</span></span><br><span class="line">    connection.setUseCaches(false)<span class="comment">;</span></span><br><span class="line">    connection.connect()<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    connection.getOutputStream().write(soap.getBytes(<span class="string">"UTF-8"</span>))<span class="comment">;</span></span><br><span class="line">    connection.getOutputStream().flush()<span class="comment">;</span></span><br><span class="line">    connection.getOutputStream().<span class="keyword">close();</span><br><span class="line"></span></span><br><span class="line">    InputStream in = connection.getInputStream()<span class="comment">;</span></span><br><span class="line">    String resp = IOUtils.toString(in)<span class="comment">;</span></span><br><span class="line">    System.out.println(resp)<span class="comment">;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="u901A_u8FC7SOAPConnection_u7684_u65B9_u5F0F_u8C03_u7528"><a href="#u901A_u8FC7SOAPConnection_u7684_u65B9_u5F0F_u8C03_u7528" class="headerlink" title="通过SOAPConnection的方式调用"></a>通过SOAPConnection的方式调用</h3><p>相比于之前的HttpURLConnection方式，SOAPConnection的方式稍微高级一些，不需要通过字符串的方式手动拼报文了，SOAPConnection的API会帮你拼，你只需要做一些定制化的工作就可以了，并且可以进行一些复杂的配置。</p>
+<h3 id="Axis_u548CApache_u7684_u5BF9_u6BD4"><a href="#Axis_u548CApache_u7684_u5BF9_u6BD4" class="headerlink" title="Axis和Apache的对比"></a>Axis和Apache的对比</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>Axis2</th>
+<th>CXF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标</td>
+<td>WebService引擎</td>
+<td>简易的SOA框架，可以作为ESB</td>
+</tr>
+<tr>
+<td>ws* 标准支持</td>
+<td>不支持WS-Policy</td>
+<td>WS-Addressing，WS-Policy， WS-RM， WS-Security，WS-I Basic Profile</td>
+</tr>
+<tr>
+<td>数据绑定支持</td>
+<td>XMLBeans、JiBX、JaxMe 、JaxBRI、ADB</td>
+<td>JAXB, Aegis, XMLBeans, SDO, JiBX</td>
+</tr>
+<tr>
+<td>spring集成</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>应用集成</td>
+<td>困难</td>
+<td>简单</td>
+</tr>
+<tr>
+<td>多语言</td>
+<td>支持C/C++</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>部署</td>
+<td>web应用</td>
+<td>嵌入式</td>
+</tr>
+<tr>
+<td>服务监控和管理</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+</tbody>
+</table>
+<h3 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.cnblogs.com/holbrook/archive/2012/12/12/2814821.html" target="_blank" rel="external">http://www.cnblogs.com/holbrook/archive/2012/12/12/2814821.html</a></li>
+<li><a href="http://blog.csdn.net/zolalad/article/details/31735791" target="_blank" rel="external">http://blog.csdn.net/zolalad/article/details/31735791</a></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：</p>
+<ol>
+<li>通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：<br>a. jdk1.6+/bin中自带工具: <code>wsimport</code><br>b. cxf/bin中的工具: <code>wsdl2java</code><br>c. axis/bin中工具</li>
+<li>通过CXF动态调用：<br>a. DynamicClientFactory<br>b. JaxWsDynamicClientFactory</li>
+<li>通过Axis动态调用：<br>a. Service.createCall()</li>
+<li>通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
+<li>通过SOAPConnection的方式调用</li>
+</ol>]]>
+    
+    </summary>
+    
+      <category term="webservice" scheme="http://paranoidq.github.io/tags/webservice/"/>
+    
+      <category term="webservice" scheme="http://paranoidq.github.io/categories/webservice/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Java Webservice实践（1）构建简单的Webservice服务]]></title>
+    <link href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-1/"/>
+    <id>http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-1/</id>
+    <published>2016-10-20T12:45:04.000Z</published>
+    <updated>2016-10-20T14:48:00.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="JAX-WS"><a href="#JAX-WS" class="headerlink" title="JAX-WS"></a>JAX-WS</h3><p>JAX-WS(Java API for XML Web Services)，是SOAP协议的一个Java的实现规范，这个新规范是为了简化基于SOAP的Java开发。JAX-WS规范其实就是一组XMLweb services的JAVA API，JAX-WS允许开发者可以选择RPCoriented或者message-oriented来实现自己的web services。通过使用Java™ API for XMLWeb Services (JAX-WS) 技术设计和开发 Web服务，可以带来很多好处，能简化 Web 服务的开发和部署，并能加速 Web 服务的开发。</p>
+<p>JAX-WS将本地的远程调用转换为XML协议（一般为SOAP格式），从而开发者不需要编写任何SOAP组装消息代码；同样，在服务端的JAX-WS会将SOAP消息解析为具体的函数调用，并返回结果。</p>
+<p><img src="/img/webservice/jax-ws-tutorials.gif" alt="jax-runtime"></p>
+<a id="more"></a>
+<h3 id="u5B9E_u73B0_u4E00_u4E2Awebservice_u7684_u9700_u8981_u7684_u5927_u81F4_u6D41_u7A0B"><a href="#u5B9E_u73B0_u4E00_u4E2Awebservice_u7684_u9700_u8981_u7684_u5927_u81F4_u6D41_u7A0B" class="headerlink" title="实现一个webservice的需要的大致流程"></a>实现一个webservice的需要的大致流程</h3><ol>
+<li>服务端，定义服务接口（SEI: service endpoint interface）,并提供相关的实现类（SIB: service implementation bean）</li>
+<li>通过JAX-WS服务API接口发布为webservice服务，从而可以产生一个公开的?wsdl网页，能够访问到提供了哪些服务</li>
+<li><p>客户端通过JAX-WS的API根据公开的wsdl生成本地的代理（Stub）来实现对于远程方法的调用，调用过程就像在调用本地方法一样，JAX-WS Runtime会处理SOAP报文组装和网络传输等底层细节</p>
+<p>当然，JAX-WS 也提供了一组针对底层消息进行操作的API调用，你可以通过Dispatch 直接使用SOAP消息或XML消息发送请求或者使用Provider处理SOAP或XML消息。</p>
+</li>
+</ol>
+<h3 id="u4E00_u4E2A_u7B80_u5355_u7684_u5B9E_u73B0"><a href="#u4E00_u4E2A_u7B80_u5355_u7684_u5B9E_u73B0" class="headerlink" title="一个简单的实现"></a>一个简单的实现</h3><h4 id="u9996_u5148_u5B9A_u4E49_u63A5_u53E3_uFF1A"><a href="#u9996_u5148_u5B9A_u4E49_u63A5_u53E3_uFF1A" class="headerlink" title="首先定义接口："></a>首先定义接口：</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">package com<span class="selector-class">.up</span><span class="selector-class">.ws</span><span class="selector-class">.server</span>;</span><br><span class="line"></span><br><span class="line">import javax<span class="selector-class">.jws</span><span class="selector-class">.WebMethod</span>;</span><br><span class="line">import javax<span class="selector-class">.jws</span><span class="selector-class">.WebParam</span>;</span><br><span class="line">import javax<span class="selector-class">.jws</span><span class="selector-class">.WebResult</span>;</span><br><span class="line">import javax<span class="selector-class">.jws</span><span class="selector-class">.WebService</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * @author paranoidq</span><br><span class="line"> * @since 0.1</span><br><span class="line"> */</span></span><br><span class="line"><span class="variable">@WebService</span>(targetNamespace = <span class="string">"http://ws.wcg.unionpay.com"</span>)</span><br><span class="line">public interface WcgWsInterface &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">@WebMethod</span>(operationName = <span class="string">"WsRequest"</span>)</span><br><span class="line">    <span class="variable">@WebResult</span>(name = <span class="string">"WsResponse"</span>)</span><br><span class="line">    String request(<span class="variable">@WebParam</span>(name = <span class="string">"service"</span>) String service, <span class="variable">@WebParam</span>(name = <span class="string">"requestMsg"</span>) String requestMsg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意点：</p>
+<ol>
+<li>这里定义了targetNamespace, 如果没有定义，则默认为该类的包名</li>
+<li>用@WebMethod注解来指定了operationName，如果没有指定，则操作名默认为方法名</li>
+<li>用@WebResult定义了返回值的名字，如果没有指定，默认为response</li>
+<li>用@WebParamd定义了参数名字，如果没有指定，默认为param1（或arg1？）</li>
+</ol>
+<p>实际上，这些注解提高了wsdl的可读性。</p>
+<h4 id="u5B9A_u4E49_u5B9E_u73B0_u7C7B"><a href="#u5B9A_u4E49_u5B9E_u73B0_u7C7B" class="headerlink" title="定义实现类"></a>定义实现类</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">package com<span class="selector-class">.up</span><span class="selector-class">.ws</span><span class="selector-class">.server</span>;</span><br><span class="line"></span><br><span class="line">import javax<span class="selector-class">.jws</span><span class="selector-class">.WebService</span>;</span><br><span class="line">import javax<span class="selector-class">.jws</span><span class="selector-class">.soap</span><span class="selector-class">.SOAPBinding</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * @author paranoidq</span><br><span class="line"> * @since 0.1</span><br><span class="line"> */</span></span><br><span class="line"><span class="variable">@WebService</span>(endpointInterface = <span class="string">"com.up.ws.server.WcgWsInterface"</span>, serviceName = <span class="string">"wcgWebService"</span>, targetNamespace = <span class="string">"http://ws.wcg.unionpay.com"</span>)</span><br><span class="line"><span class="variable">@SOAPBinding</span>(style = SOAPBinding.Style.DOCUMENT)</span><br><span class="line">public class WcgWsImpl implements WcgWsInterface &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">@Override</span></span><br><span class="line">    public String request(String service, String requestMsg) &#123;</span><br><span class="line">        return "hello world";</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里指定了实现类对应的接口，以及服务名。同时，指定了SOAPBinding的类型。<br>一般而言，SOAP消息的格式有两种：RPC和DOCUMENT。(<strong>后面再理解区别</strong>)</p>
+<h4 id="u53D1_u5E03_u63A5_u53E3"><a href="#u53D1_u5E03_u63A5_u53E3" class="headerlink" title="发布接口"></a>发布接口</h4><p>这里我们采用两种简单的方式发布接口</p>
+<ol>
+<li><p>第一种方式：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">IHelloServices impl = <span class="keyword">new</span> WcgWsImpl();  </span><br><span class="line"><span class="comment">// 创建WebServices服务接口  </span></span><br><span class="line">WcgWsInterface <span class="keyword">factory</span> = <span class="keyword">new</span> JaxWsServerFactoryBean();  </span><br><span class="line"><span class="comment">// 注册webservices接口  </span></span><br><span class="line"><span class="keyword">factory</span>.setServiceClass(WcgWsInterface.<span class="keyword">class</span>);  </span><br><span class="line"><span class="comment">// 发布接口  </span></span><br><span class="line"><span class="keyword">factory</span>.setAddress(<span class="string">"http://localhost:8090/webservice"</span>);  </span><br><span class="line"><span class="keyword">factory</span>.setServiceBean(impl);  </span><br><span class="line"><span class="comment">// 创建服务  </span></span><br><span class="line"><span class="keyword">factory</span>.create();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第二种方式：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Endpoint<span class="selector-class">.publish</span>(<span class="string">"http://localhost:8090/webservice"</span>, new WcgWsImpl());</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>发布之后，我们就可以通过<code>http://localhost:8090/webservice?wsdl</code>查看提供的服务了。<br>需要注意的是：CXF看上去没有在tomcat容器中运行，其实还是有容器的，而容器就是jetty。因此，需要我们在pom文件中包含相应的依赖。这里列出所有的依赖：(利用Endpoint的方式发布的时候，不需要<code>cxf-rt-frontend-jaxws</code>这个依赖)<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-discovery<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>20040218.194635<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.cxf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cxf-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.cxf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cxf-rt-transports-http<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.cxf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cxf-rt-frontend-jaxws<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.cxf<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cxf-rt-transports-http-jetty<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>注意</strong>：<code>cxf-rt-transports-http-jetty</code>这个依赖一定要包含，否则会出现<code>CXF BusException No DestinationFactory for Namespace: http://cxf.apache.org/transport/http</code>的错误, 参考：<br><a href="http://stackoverflow.com/questions/24447280/cxf-busexception-no-destinationfactory-for-namespace-http-cxf-apache-org-trans" target="_blank" rel="external">http://stackoverflow.com/questions/24447280/cxf-busexception-no-destinationfactory-for-namespace-http-cxf-apache-org-trans</a></p>
+<p>这样我们的一个webservice就构建好了。<br>下一篇将讲解如何构建客户端来访问我们的服务。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="JAX-WS"><a href="#JAX-WS" class="headerlink" title="JAX-WS"></a>JAX-WS</h3><p>JAX-WS(Java API for XML Web Services)，是SOAP协议的一个Java的实现规范，这个新规范是为了简化基于SOAP的Java开发。JAX-WS规范其实就是一组XMLweb services的JAVA API，JAX-WS允许开发者可以选择RPCoriented或者message-oriented来实现自己的web services。通过使用Java™ API for XMLWeb Services (JAX-WS) 技术设计和开发 Web服务，可以带来很多好处，能简化 Web 服务的开发和部署，并能加速 Web 服务的开发。</p>
+<p>JAX-WS将本地的远程调用转换为XML协议（一般为SOAP格式），从而开发者不需要编写任何SOAP组装消息代码；同样，在服务端的JAX-WS会将SOAP消息解析为具体的函数调用，并返回结果。</p>
+<p><img src="/img/webservice/jax-ws-tutorials.gif" alt="jax-runtime"></p>]]>
+    
+    </summary>
+    
+      <category term="webservice" scheme="http://paranoidq.github.io/tags/webservice/"/>
+    
+      <category term="webservice" scheme="http://paranoidq.github.io/categories/webservice/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[NoHttpResponseException问题分析]]></title>
@@ -553,6 +708,71 @@
   </entry>
   
   <entry>
+    <title><![CDATA[什么是中间件？]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/middleware-expalined-simply/"/>
+    <id>http://paranoidq.github.io/2016/05/27/middleware-expalined-simply/</id>
+    <published>2016-05-27T15:45:36.000Z</published>
+    <updated>2016-05-27T15:45:36.000Z</updated>
+    <content type="html"><![CDATA[<p>之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。</p>
+<h3 id="u5B9A_u4E49"><a href="#u5B9A_u4E49" class="headerlink" title="定义"></a>定义</h3><p>维基百科定义：</p>
+<blockquote>
+<p>提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的集中的逻辑，在现代信息技术应用框架如Web服务、面向服务的体系结构等中应用比较广泛。如数据库、Apache的Tomcat，IBM公司的WebSphere,BEA公司的WebLogic[[应用服务器]，东方通公司的Tong系列中间件，以及Kingdee公司的等都属于中间件。</p>
+</blockquote>
+<p>简单归纳：<br>业务应用 - 中间件 - 基础资源</p>
+<ul>
+<li>中间件处于两者中间的的位置，封装基础资源，向上层提供更完善的功能。</li>
+<li>基础资源包括硬的资源：如CPU、存储(分布式)、网络；我个人认为也包括进程、线程、消息队列、数据库这种软性资源，中间件对这些资源做了封装处理。</li>
+</ul>
+<h3 id="u4F5C_u7528"><a href="#u4F5C_u7528" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>封装</li>
+<li>整合</li>
+<li>屏蔽</li>
+<li>容错</li>
+</ul>
+<p>我个人归纳为这四个主要功能。封装和整合的是基础资源，使得难用的基础资源更便于使用，而不用考虑细节。（调用顺序、分布式、配置、初始化属性等等）。屏蔽的是底层细节，同时也屏蔽底层的差异（例如，JVM这种本质意义上其实也可算作中间件，通过JVM屏蔽不同系统的差异，从而能够无差异运行Java程序）。容错，则是中间件的另一个重要作用，保证上层无论如何调用，都会得到相应的处理，而不会将错误传递到底层去或直接消失。</p>
+<h3 id="u5E38_u89C1_u79CD_u7C7B_uFF1A"><a href="#u5E38_u89C1_u79CD_u7C7B_uFF1A" class="headerlink" title="常见种类："></a>常见种类：</h3><ul>
+<li>分布式调用RPC：</li>
+<li>消息队列</li>
+<li>事务处理</li>
+<li>数据库组件</li>
+<li>安全组件</li>
+<li>并发组件</li>
+<li>应用容器组件</li>
+<li>日志组件：Apache Kafaka</li>
+<li>监控组件：Zookkeeper, Mesos, </li>
+</ul>
+<h3 id="u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u7684_u51E0_u4E2A_u6848_u4F8B_28_u672C_u8282_u6765_u81EA_u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u56E2_u961F_u535A_u5BA2_29"><a href="#u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u7684_u51E0_u4E2A_u6848_u4F8B_28_u672C_u8282_u6765_u81EA_u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u56E2_u961F_u535A_u5BA2_29" class="headerlink" title="阿里巴巴中间件的几个案例(本节来自阿里巴巴中间件团队博客)"></a>阿里巴巴中间件的几个案例(本节来自阿里巴巴中间件团队博客)</h3><p><img src="http://jm.taobao.org/wp-content/uploads/2013/07/jm.jpg" alt="阿里巴巴中间件支撑平台"></p>
+<ul>
+<li><strong>Diamond</strong>: 软负载配置中心，用于存储静态配置，并能够提供配置变更动态推送功能，结构简单，超高可用性。在全网被使用于存储不经常发生变化的配置信息。</li>
+<li><strong>Notify</strong>, <strong>Meta</strong>: 消息中间件</li>
+<li><strong>HSF</strong>: 阿里分布式服务框架，统一整个集团rpc的调用，包括服务方式的统一调用，软负载，服务治理等，提供一套简单方便，高性能的分布式服务框架。</li>
+<li><strong>eagleeye</strong>: 淘宝分布式跟踪系统，该系统实现基于单链路的实时监控，系统依赖，性能调优，风险控制等</li>
+<li><strong>Pandora</strong>: 淘宝隔离容器，该系统主要解决大规模富二方包升级，二方包隔离，二方包监控等问题。</li>
+<li><strong>TDDL</strong>: 通用数据访问层，部署在客户端的jar包，用于将用户的SQL路由到指定的数据库中。目前有1000+应用在使用</li>
+<li><strong>精卫</strong>: 通用数据总线，用于将数据从一个数据节点迁移到其他一个或多个数据节点中，目前支持mysql,oracle,hbase等。目前有100+应用在使用</li>
+<li><strong>愚公</strong>: 数据自动迁移引擎，海量数据自动运维工具，可用于对用户无影响的自动扩容和缩容，数据平滑迁移，以及异构数据源迁移，目前已经完成了214次业务迁移或扩容。</li>
+<li><strong>NewSQL</strong>: NewSQL系统，可以将SQL运行于传统MYSQL/Oracle关系数据库，也可以支持NoSQL数据库如bdb , hbase等。 可以实现其中的跨机合并和跨机交操作等复杂关系操作。</li>
+<li><strong>CSP2.0</strong>: 持续稳定性平台帮助阿里系统保障高可用性，包含线上压测、容量规划、依赖治理、限流降级、监控报警、问题定位等模块。</li>
+<li><strong>Hotspot</strong>: 性能分析平台通过对基础软件、服务端、前端加载、网络、CDN等方面的性能分析，来帮助阿里系统提升吞吐量、降低延迟时间、节约成本。</li>
+<li><strong>TProfiler</strong>: TProfiler是可以在生产环境长期使用的性能分析工具，通过在Java层面记录代码执行热点、对象创建热点等数据，帮助系统定位性能瓶颈。</li>
+</ul>
+<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BB%B6" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BB%B6</a><br><a href="http://jm-blog.aliapp.com/?page_id=2449" target="_blank" rel="external">阿里巴巴中间件团队博客</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料]]>
+    </summary>
+    
+      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
+    
+      <category term="架构" scheme="http://paranoidq.github.io/tags/%E6%9E%B6%E6%9E%84/"/>
+    
+      <category term="中间件" scheme="http://paranoidq.github.io/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+      <category term="架构" scheme="http://paranoidq.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[java.util.ResourceBundle 源码分析]]></title>
     <link href="http://paranoidq.github.io/2016/05/27/ResourceBundle-source-code-inside/"/>
     <id>http://paranoidq.github.io/2016/05/27/ResourceBundle-source-code-inside/</id>
@@ -603,145 +823,112 @@
   </entry>
   
   <entry>
-    <title><![CDATA[大数据生态圈技术总结（持续补充）]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/Big-data-ecosystem/"/>
-    <id>http://paranoidq.github.io/2016/05/27/Big-data-ecosystem/</id>
+    <title><![CDATA[Vim Commands]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/vim-commands/"/>
+    <id>http://paranoidq.github.io/2016/05/27/vim-commands/</id>
     <published>2016-05-27T15:45:36.000Z</published>
     <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u5206_u5E03_u5F0F_u6587_u4EF6_u7CFB_u7EDF"><a href="#u5206_u5E03_u5F0F_u6587_u4EF6_u7CFB_u7EDF" class="headerlink" title="分布式文件系统"></a>分布式文件系统</h3><ol>
-<li><p>磁盘</p>
-<ul>
-<li>HDFS</li>
-<li>S3</li>
-<li>Ceph</li>
-<li>NFS</li>
-<li>Gluster FS</li>
+    <content type="html"><![CDATA[<h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
+<li>文首：<code>gg</code> / <code>:0</code></li>
+<li>文末：<code>shift + g</code> / <code>:$</code></li>
+<li>行首：<code>0</code></li>
+<li>行末：<code>$</code></li>
+<li>到第一个不是空字符的位置：<code>^</code></li>
+<li>到最后一个不是空字符的位置：<code>g_</code></li>
 </ul>
-</li>
-<li><p>内存</p>
+<a id="more"></a>
+<p>按单词移动：</p>
 <ul>
-<li>Tachyon</li>
-<li>Spark</li>
+<li>到下一个单词的开头：<code>w</code></li>
+<li>到下一个单词的结尾：<code>e</code></li>
 </ul>
-</li>
+<p>按匹配的单词移动：</p>
+<ul>
+<li>匹配光标所在的单词，移动到下一个：<code>*</code></li>
+<li>匹配光标所在的单词，移动到上一个: <code>#</code></li>
+</ul>
+<p>按页移动：</p>
+<ul>
+<li>向下一页：<code>ctrl + F</code></li>
+<li>向上一页：<code>ctrl + B</code></li>
+<li>向下半页：<code>ctrl + D</code></li>
+<li>向上半页：<code>ctrl + U</code></li>
+</ul>
+<h4 id="u63D2_u5165"><a href="#u63D2_u5165" class="headerlink" title="插入"></a>插入</h4><p>切换到插入模式的几种方式:</p>
+<ul>
+<li>在光标之前插入：<code>i</code></li>
+<li>在行开始前插入：<code>I</code></li>
+<li>在光标后面插入：<code>a</code></li>
+<li>在行结束后插入：<code>A</code></li>
+</ul>
+<p>插入行：</p>
+<ul>
+<li>在当前位置下面插入一行，并进入编辑状态：<code>o</code></li>
+<li>在当前位置上面插入一行，并进入编辑状态：<code>O</code></li>
+</ul>
+<h3 id="u6587_u672C_u64CD_u4F5C"><a href="#u6587_u672C_u64CD_u4F5C" class="headerlink" title="文本操作"></a>文本操作</h3><h4 id="u57FA_u672C_u884C_u64CD_u4F5C"><a href="#u57FA_u672C_u884C_u64CD_u4F5C" class="headerlink" title="基本行操作"></a>基本行操作</h4><p>复制</p>
+<ul>
+<li>复制一行：<code>yy</code></li>
+<li>复制光标到行尾的部分：<code>y$</code></li>
+<li>复制多行(1)：<code>Nyy</code> + ‘p’ (粘贴)</li>
+<li>复制多行(2)：<code>6, 9 co 12</code> (复制6行和9行中间的部分到12行后面)</li>
+</ul>
+<p>复制大量的行：</p>
+<ol>
+<li>光标移到起始行，输入ma</li>
+<li>光标移到结束行，输入mb</li>
+<li>光标移到粘贴行，输入mc</li>
+<li>然后 :’a,’b co ‘c 把 co 改成 m 就成剪切了</li>
 </ol>
-<h3 id="u5206_u5E03_u5F0F_u6570_u636E_u5E93"><a href="#u5206_u5E03_u5F0F_u6570_u636E_u5E93" class="headerlink" title="分布式数据库"></a>分布式数据库</h3><ol>
-<li><p>磁盘</p>
+<p>粘贴</p>
 <ul>
-<li>Cassandra</li>
-<li>HBase</li>
-<li>MongoDB</li>
+<li>粘贴：<code>p</code></li>
 </ul>
-</li>
-<li><p>内存 </p>
+<p>删除</p>
 <ul>
-<li>Redis</li>
-<li>Memcached</li>
+<li>删除光标后一个字符：<code>x</code></li>
+<li>删除光标到行尾的部分：<code>d$</code></li>
+<li>删除单行：<code>dd</code> / <code>1d</code></li>
+<li>删除多行(1)：<code>1, Nd</code> / <code>Ndd</code>(删除包含光标所在行的下面N行)</li>
+<li>删除多行(2)：<code>:1, 4 de</code></li>
 </ul>
-</li>
-</ol>
-<h3 id="u5206_u5E03_u5F0F_u8BA1_u7B97"><a href="#u5206_u5E03_u5F0F_u8BA1_u7B97" class="headerlink" title="分布式计算"></a>分布式计算</h3><ol>
-<li><p>批处理</p>
+<p>替换</p>
 <ul>
-<li>Hadoop MapReduce</li>
-<li>Spark(支持迭代)</li>
-<li>Flink(支持迭代)</li>
+<li>替换从光标位置到后一个单词结尾的字符：<code>cw</code></li>
 </ul>
-</li>
-<li><p>流式计算</p>
+<h4 id="u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C"><a href="#u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C" class="headerlink" title="任意区间的文本操作"></a>任意区间的文本操作</h4><p>首先进入visual模式，直接按v键进入visual模式，然后<code>v+ j/k/h/l</code>进行文本选择</p>
 <ul>
-<li>Storm</li>
-<li>Samza</li>
-<li>Spark Streaming</li>
-<li>Flink</li>
+<li>剪切：<code>d</code></li>
+<li>复制：<code>y</code></li>
+<li>粘贴：<code>p</code></li>
 </ul>
-</li>
-<li><p>即席查询(ad-hoc)</p>
-<ul>
-<li>Hive</li>
-<li>SparkSQL</li>
-<li>Presto(Facebook)</li>
-<li>Impala</li>
-<li>Drill(Google Dremel的开源实现)</li>
+<h4 id="u884C_u5757_u64CD_u4F5C"><a href="#u884C_u5757_u64CD_u4F5C" class="headerlink" title="行块操作"></a>行块操作</h4><h3 id="u64A4_u9500_u64CD_u4F5C"><a href="#u64A4_u9500_u64CD_u4F5C" class="headerlink" title="撤销操作"></a>撤销操作</h3><ul>
+<li>撤销上一个命令： <code>u</code></li>
+<li>反撤销：<code>ctrl + r</code> </li>
 </ul>
-</li>
-</ol>
-<h3 id="u8D44_u6E90_u8C03_u5EA6_u4E0E_u7BA1_u7406"><a href="#u8D44_u6E90_u8C03_u5EA6_u4E0E_u7BA1_u7406" class="headerlink" title="资源调度与管理"></a>资源调度与管理</h3><ul>
-<li>ZooKeeper</li>
-<li>YARN</li>
-<li>Mesos</li>
+<h3 id="u641C_u7D22_u64CD_u4F5C"><a href="#u641C_u7D22_u64CD_u4F5C" class="headerlink" title="搜索操作"></a>搜索操作</h3><ul>
+<li>搜索：<code>/pattern</code></li>
+<li>下一个：<code>n</code></li>
+<li>上一个：<code>N</code></li>
 </ul>
-<h3 id="u5206_u5E03_u5F0F_u6D88_u606F_u7CFB_u7EDF"><a href="#u5206_u5E03_u5F0F_u6D88_u606F_u7CFB_u7EDF" class="headerlink" title="分布式消息系统"></a>分布式消息系统</h3><ul>
-<li>StormMQ</li>
-<li>RabbitMQ</li>
-<li>ZeroMQ</li>
-<li>Apache ActiveMQ</li>
-<li>Jafka(LinkedIn)</li>
-<li>Kafka(LinkedIn)</li>
-</ul>
-<h3 id="RPC_u6846_u67B6"><a href="#RPC_u6846_u67B6" class="headerlink" title="RPC框架"></a>RPC框架</h3><ul>
-<li>Apache Avro</li>
-<li>Thrift(Facebook)</li>
-<li>Kyro</li>
-</ul>
-<h3 id="u96C6_u7FA4_u76D1_u63A7"><a href="#u96C6_u7FA4_u76D1_u63A7" class="headerlink" title="集群监控"></a>集群监控</h3><ul>
-<li>Zabbix</li>
-<li>Ganglia</li>
-<li>Nagios</li>
-<li>Ambari()</li>
-</ul>
-<h3 id="u6570_u636E_u6536_u96C6"><a href="#u6570_u636E_u6536_u96C6" class="headerlink" title="数据收集"></a>数据收集</h3><ul>
-<li>Flume</li>
-<li>Scribe(Facebook)</li>
-<li>Logstash</li>
-<li>Kafka</li>
-</ul>
-<h3 id="u56FE_u8BA1_u7B97_u6846_u67B6"><a href="#u56FE_u8BA1_u7B97_u6846_u67B6" class="headerlink" title="图计算框架"></a>图计算框架</h3><ul>
-<li>Spark Graphx</li>
-<li>PowerGraph</li>
-<li>Giraph</li>
-<li>Neo4j</li>
-</ul>
-<h3 id="u5927_u89C4_u6A21_u673A_u5668_u5B66_u4E60"><a href="#u5927_u89C4_u6A21_u673A_u5668_u5B66_u4E60" class="headerlink" title="大规模机器学习"></a>大规模机器学习</h3><ul>
-<li>Spark MLlib</li>
-<li>Mahout</li>
-<li>PredictionIO</li>
-</ul>
-<h3 id="u641C_u7D22_u5F15_u64CE"><a href="#u641C_u7D22_u5F15_u64CE" class="headerlink" title="搜索引擎"></a>搜索引擎</h3><ul>
-<li>Lucene</li>
-<li>Solr</li>
-<li>ElasticSearch</li>
-<li>Sphinx</li>
-<li>SenseiDB</li>
-</ul>
-<h3 id="IaaS"><a href="#IaaS" class="headerlink" title="IaaS"></a>IaaS</h3><ul>
-<li>OpenStack</li>
-<li>Docker </li>
-<li>Kubernetes(容器调度管理)</li>
-</ul>
-<h3 id="u57FA_u7840_u7ED3_u6784"><a href="#u57FA_u7840_u7ED3_u6784" class="headerlink" title="基础结构"></a>基础结构</h3><ul>
-<li>LevelDB</li>
-<li>SSTable(BigTable基础)</li>
-<li>RecordIO(文件格式)</li>
-<li>Flat Buffer(Google, 高效、跨平台的序列化库)</li>
-<li>ProtocolBuffers(Google, 数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面)</li>
-<li>Consistent Hashing</li>
-<li>Netty(提供异步的、事件驱动的网络应用程序框架和工具，用以快速开发高性能、高可靠性的网络服务器和客户端程序)</li>
-<li>BloomFilter</li>
-</ul>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.36dsj.com/archives/25042" target="_blank" rel="external">http://www.36dsj.com/archives/25042</a><br><a href="http://www.csdn.net/article/2015-09-11/2825674" target="_blank" rel="external">http://www.csdn.net/article/2015-09-11/2825674</a></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h3 id="u5206_u5E03_u5F0F_u6587_u4EF6_u7CFB_u7EDF"><a href="#u5206_u5E03_u5F0F_u6587_u4EF6_u7CFB_u7EDF" class="headerlink" title="分布式文件系统"><]]>
+    <![CDATA[<h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
+<li>文首：<code>gg</code> / <code>:0</code></li>
+<li>文末：<code>shift + g</code> / <code>:$</code></li>
+<li>行首：<code>0</code></li>
+<li>行末：<code>$</code></li>
+<li>到第一个不是空字符的位置：<code>^</code></li>
+<li>到最后一个不是空字符的位置：<code>g_</code></li>
+</ul>]]>
+    
     </summary>
     
-      <category term="大数据" scheme="http://paranoidq.github.io/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+      <category term="linux" scheme="http://paranoidq.github.io/tags/linux/"/>
     
-      <category term="攻略" scheme="http://paranoidq.github.io/tags/%E6%94%BB%E7%95%A5/"/>
+      <category term="vim" scheme="http://paranoidq.github.io/tags/vim/"/>
     
-      <category term="top" scheme="http://paranoidq.github.io/tags/top/"/>
-    
-      <category term="大数据" scheme="http://paranoidq.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+      <category term="linux" scheme="http://paranoidq.github.io/categories/linux/"/>
     
   </entry>
   
@@ -847,43 +1034,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[nginx与tomcat有什么区别]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/nginx-vs-tomcat/"/>
-    <id>http://paranoidq.github.io/2016/05/27/nginx-vs-tomcat/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
-<a id="more"></a>
-<p>Http Server的核心是Http协议层面的传输和访问控制，包括代理、负载均衡等。客户端通过Http协议访问Http Server上的文件资源(HTML文件、图片等)，然后Http Server如实将文件通过Http协议传输给客户端。当然，通过<code>CGI</code>技术也可以对Http Server传输的内容进行一些处理。<br>大多数时候，Nginx主要作为Tomcat前端的负载均衡器和代理，负责请求的转发和静态内容的直接返回。因为其高效的IO机制[2]，能够显著提高系统的吞吐率。</p>
-<p>Web App Server，应用执行的容器。它首先需要支持开发语言的 Runtime（对于 Tomcat 来说，就是 Java），保证应用能够在应用服务器上正常运行。其次，需要支持应用相关的规范，例如类库、安全方面的特性。对于 Tomcat 来说，就是需要提供 JSP/Sevlet 运行需要的标准类库、Interface 等。为了方便，<br>应用服务器往往也会集成 HTTP Server 的功能，但是不如专业的 HTTP Server 那么强大，所以应用服务器往往是运行在 HTTP Server 的背后，执行应用，将动态的内容转化为静态的内容之后，通过 HTTP Server 分发到客户端。<br>Tomcat和Jetty，WebLogic同属一类。</p>
-<p><hr></p>
-<blockquote>
-<p>“tomcat用在java后台程序上，java后台程序难道不能用apache和nginx吗？”</p>
-</blockquote>
-<p>—— 不能。apache和nginx不是servlet容器。什么是servlet容器呢？即实现HttpServletRequest、HttpServletResponse、HttpSession等等接口，解析http请求，通过类加载器加载对应的servlet实现类并调用，也就是说servlet容器必须由java或者基于jvm的语言实现。<br><strong>本质上，Servlet是J2EE规范的一部分，规定了容器和Web App必须遵循的接口规范。容器必须按照接口解析Java类，然后处理请求；同样Web App也只有按照规范来编写实现类，才能被容器所加载解析，从而完成特定的功能。</strong></p>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><ol>
-<li><a href="https://www.zhihu.com/question/32212996" target="_blank" rel="external">https://www.zhihu.com/question/32212996</a></li>
-<li><a href="http://90112526.blog.51cto.com/6013499/1059700" target="_blank" rel="external">http://90112526.blog.51cto.com/6013499/1059700</a></li>
-</ol>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>]]>
-    
-    </summary>
-    
-      <category term="碎片" scheme="http://paranoidq.github.io/tags/%E7%A2%8E%E7%89%87/"/>
-    
-      <category term="server" scheme="http://paranoidq.github.io/tags/server/"/>
-    
-      <category term="nginx" scheme="http://paranoidq.github.io/tags/nginx/"/>
-    
-      <category term="tomcat" scheme="http://paranoidq.github.io/tags/tomcat/"/>
-    
-      <category term="中间件" scheme="http://paranoidq.github.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[Mac中如何查找Java的路径]]></title>
     <link href="http://paranoidq.github.io/2016/05/27/Mac-java-config/"/>
     <id>http://paranoidq.github.io/2016/05/27/Mac-java-config/</id>
@@ -913,97 +1063,6 @@
       <category term="碎片" scheme="http://paranoidq.github.io/tags/%E7%A2%8E%E7%89%87/"/>
     
       <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[什么是中间件？]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/middleware-expalined-simply/"/>
-    <id>http://paranoidq.github.io/2016/05/27/middleware-expalined-simply/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<p>之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。</p>
-<h3 id="u5B9A_u4E49"><a href="#u5B9A_u4E49" class="headerlink" title="定义"></a>定义</h3><p>维基百科定义：</p>
-<blockquote>
-<p>提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的集中的逻辑，在现代信息技术应用框架如Web服务、面向服务的体系结构等中应用比较广泛。如数据库、Apache的Tomcat，IBM公司的WebSphere,BEA公司的WebLogic[[应用服务器]，东方通公司的Tong系列中间件，以及Kingdee公司的等都属于中间件。</p>
-</blockquote>
-<p>简单归纳：<br>业务应用 - 中间件 - 基础资源</p>
-<ul>
-<li>中间件处于两者中间的的位置，封装基础资源，向上层提供更完善的功能。</li>
-<li>基础资源包括硬的资源：如CPU、存储(分布式)、网络；我个人认为也包括进程、线程、消息队列、数据库这种软性资源，中间件对这些资源做了封装处理。</li>
-</ul>
-<h3 id="u4F5C_u7528"><a href="#u4F5C_u7528" class="headerlink" title="作用"></a>作用</h3><ul>
-<li>封装</li>
-<li>整合</li>
-<li>屏蔽</li>
-<li>容错</li>
-</ul>
-<p>我个人归纳为这四个主要功能。封装和整合的是基础资源，使得难用的基础资源更便于使用，而不用考虑细节。（调用顺序、分布式、配置、初始化属性等等）。屏蔽的是底层细节，同时也屏蔽底层的差异（例如，JVM这种本质意义上其实也可算作中间件，通过JVM屏蔽不同系统的差异，从而能够无差异运行Java程序）。容错，则是中间件的另一个重要作用，保证上层无论如何调用，都会得到相应的处理，而不会将错误传递到底层去或直接消失。</p>
-<h3 id="u5E38_u89C1_u79CD_u7C7B_uFF1A"><a href="#u5E38_u89C1_u79CD_u7C7B_uFF1A" class="headerlink" title="常见种类："></a>常见种类：</h3><ul>
-<li>分布式调用RPC：</li>
-<li>消息队列</li>
-<li>事务处理</li>
-<li>数据库组件</li>
-<li>安全组件</li>
-<li>并发组件</li>
-<li>应用容器组件</li>
-<li>日志组件：Apache Kafaka</li>
-<li>监控组件：Zookkeeper, Mesos, </li>
-</ul>
-<h3 id="u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u7684_u51E0_u4E2A_u6848_u4F8B_28_u672C_u8282_u6765_u81EA_u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u56E2_u961F_u535A_u5BA2_29"><a href="#u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u7684_u51E0_u4E2A_u6848_u4F8B_28_u672C_u8282_u6765_u81EA_u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u56E2_u961F_u535A_u5BA2_29" class="headerlink" title="阿里巴巴中间件的几个案例(本节来自阿里巴巴中间件团队博客)"></a>阿里巴巴中间件的几个案例(本节来自阿里巴巴中间件团队博客)</h3><p><img src="http://jm.taobao.org/wp-content/uploads/2013/07/jm.jpg" alt="阿里巴巴中间件支撑平台"></p>
-<ul>
-<li><strong>Diamond</strong>: 软负载配置中心，用于存储静态配置，并能够提供配置变更动态推送功能，结构简单，超高可用性。在全网被使用于存储不经常发生变化的配置信息。</li>
-<li><strong>Notify</strong>, <strong>Meta</strong>: 消息中间件</li>
-<li><strong>HSF</strong>: 阿里分布式服务框架，统一整个集团rpc的调用，包括服务方式的统一调用，软负载，服务治理等，提供一套简单方便，高性能的分布式服务框架。</li>
-<li><strong>eagleeye</strong>: 淘宝分布式跟踪系统，该系统实现基于单链路的实时监控，系统依赖，性能调优，风险控制等</li>
-<li><strong>Pandora</strong>: 淘宝隔离容器，该系统主要解决大规模富二方包升级，二方包隔离，二方包监控等问题。</li>
-<li><strong>TDDL</strong>: 通用数据访问层，部署在客户端的jar包，用于将用户的SQL路由到指定的数据库中。目前有1000+应用在使用</li>
-<li><strong>精卫</strong>: 通用数据总线，用于将数据从一个数据节点迁移到其他一个或多个数据节点中，目前支持mysql,oracle,hbase等。目前有100+应用在使用</li>
-<li><strong>愚公</strong>: 数据自动迁移引擎，海量数据自动运维工具，可用于对用户无影响的自动扩容和缩容，数据平滑迁移，以及异构数据源迁移，目前已经完成了214次业务迁移或扩容。</li>
-<li><strong>NewSQL</strong>: NewSQL系统，可以将SQL运行于传统MYSQL/Oracle关系数据库，也可以支持NoSQL数据库如bdb , hbase等。 可以实现其中的跨机合并和跨机交操作等复杂关系操作。</li>
-<li><strong>CSP2.0</strong>: 持续稳定性平台帮助阿里系统保障高可用性，包含线上压测、容量规划、依赖治理、限流降级、监控报警、问题定位等模块。</li>
-<li><strong>Hotspot</strong>: 性能分析平台通过对基础软件、服务端、前端加载、网络、CDN等方面的性能分析，来帮助阿里系统提升吞吐量、降低延迟时间、节约成本。</li>
-<li><strong>TProfiler</strong>: TProfiler是可以在生产环境长期使用的性能分析工具，通过在Java层面记录代码执行热点、对象创建热点等数据，帮助系统定位性能瓶颈。</li>
-</ul>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BB%B6" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BB%B6</a><br><a href="http://jm-blog.aliapp.com/?page_id=2449" target="_blank" rel="external">阿里巴巴中间件团队博客</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料]]>
-    </summary>
-    
-      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
-    
-      <category term="架构" scheme="http://paranoidq.github.io/tags/%E6%9E%B6%E6%9E%84/"/>
-    
-      <category term="中间件" scheme="http://paranoidq.github.io/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-      <category term="架构" scheme="http://paranoidq.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Vim 插件NERDTree命令]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/NERDTree-commands/"/>
-    <id>http://paranoidq.github.io/2016/05/27/NERDTree-commands/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">h</span>    光标 focus 左侧树形目录</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">l</span>    光标 focus 右侧文件显示窗口</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">w</span>    光标自动在左右侧窗口切换 #！！！</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">r</span>    移动当前窗口的布局位置</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">o       在已有窗口中打开文件、目录或书签，并跳到该窗口</span><br><span class="line">go      在已有窗口 中打开文件、目录或书签，但不跳到该窗口</span><br><span class="line">t       在新 Tab 中打开选中文件/书签，并跳到新 Tab</span><br><span class="line">T       在新 Tab 中打开选中文件/书签，但不跳到新 Tab</span><br><span class="line">i       split 一个新窗口打开选中文件，并跳到该窗口</span><br><span class="line">gi      split 一个新窗口打开选中文件，但不跳到该窗口</span><br><span class="line"><span class="keyword">s</span>       vsplit 一个新窗口打开选中文件，并跳到该窗口</span><br><span class="line">gs      vsplit 一个新 窗口打开选中文件，但不跳到该窗口</span><br><span class="line">!       执行当前文件</span><br><span class="line">O       递归打开选中 结点下的所有目录</span><br><span class="line"><span class="keyword">x</span>       合拢选中结点的父目录</span><br><span class="line"><span class="keyword">X</span>       递归 合拢选中结点下的所有目录</span><br><span class="line">e       Edit the current dif</span><br><span class="line"></span><br><span class="line"># 双击    相当于 NERDTree-o (Mac下无效...)</span><br><span class="line"># 中键    对文件相当于 NERDTree-i，对目录相当于 NERDTree-e</span><br><span class="line"></span><br><span class="line"><span class="keyword">D</span>       删除当前书签</span><br><span class="line"></span><br><span class="line">P       跳到根结点</span><br><span class="line">p       跳到父结点</span><br><span class="line"><span class="keyword">K</span>       跳到当前目录下同级的第一个结点</span><br><span class="line"><span class="keyword">J</span>       跳到当前目录下同级的最后一个结点</span><br><span class="line"><span class="keyword">k</span>       跳到当前目录下同级的前一个结点</span><br><span class="line"><span class="keyword">j</span>       跳到当前目录下同级的后一个结点</span><br><span class="line"></span><br><span class="line">C       将选中目录或选中文件的父目录设为根结点</span><br><span class="line">u       将当前根结点的父目录设为根目录，并变成合拢原根结点</span><br><span class="line">U       将当前根结点的父目录设为根目录，但保持展开原根结点</span><br><span class="line"><span class="keyword">r</span>       递归刷新选中目录</span><br><span class="line"><span class="keyword">R</span>       递归刷新根结点</span><br><span class="line">m       显示文件系统菜单 #！！！然后根据提示进行文件的操作如新建，重命名等</span><br><span class="line">cd      将 CWD 设为选中目录</span><br><span class="line"></span><br><span class="line">I       切换是否显示隐藏文件</span><br><span class="line">f       切换是否使用文件过滤器</span><br><span class="line">F       切换是否显示文件</span><br><span class="line">B       切换是否显示书签</span><br><span class="line"></span><br><span class="line"><span class="keyword">q</span>       关闭 NerdTree 窗口</span><br><span class="line">?       切换是否显示 Quick Help</span><br></pre></td></tr></table></figure>
-<p>操作tab<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">tabnew</span> [++<span class="keyword">opt</span>选项] ［＋cmd］ 文件      建立对指定文件新的<span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabc</span>   关闭当前的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabo</span>   关闭所有其他的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabs</span>   查看所有打开的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabp</span>   前一个 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabn</span>   后一个 <span class="keyword">tab</span></span><br><span class="line"></span><br><span class="line">标准模式下：</span><br><span class="line">gT      前一个 <span class="keyword">tab</span></span><br><span class="line">gt      后一个 <span class="keyword">tab</span></span><br><span class="line"></span><br><span class="line">MacVim 还可以借助快捷键来完成 <span class="keyword">tab</span> 的关闭、切换</span><br><span class="line">cmd+<span class="keyword">w</span>   关闭当前的 <span class="keyword">tab</span></span><br><span class="line">cmd+&#123;   前一个 <span class="keyword">tab</span></span><br><span class="line">cmd+&#125;   后一个 <span class="keyword">tab</span></span><br></pre></td></tr></table></figure></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">h</span>    光标 focus 左侧树形目录</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">l</span>    光标 focus 右侧文件显示窗口</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">w</span>    光标自动在左右侧窗口切换 #！！！</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">r</span>    移动当前窗口的布局位置</span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="linux" scheme="http://paranoidq.github.io/tags/linux/"/>
-    
-      <category term="vim" scheme="http://paranoidq.github.io/tags/vim/"/>
-    
-      <category term="nerdtree" scheme="http://paranoidq.github.io/tags/nerdtree/"/>
-    
-      <category term="linux" scheme="http://paranoidq.github.io/categories/linux/"/>
     
   </entry>
   
