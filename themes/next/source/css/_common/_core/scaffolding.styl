@@ -3,10 +3,10 @@
 // =================================================
 
 
-::selection {
-  background: $blue-deep;
-  color: white;
-}
+//::selection {
+  //background: $blue-bright;
+  //color: $black-light;
+//}
 
 body {
   position: relative; // Required by scrollspy
@@ -47,13 +47,27 @@ p { margin: 0 0 25px 0; }
 a {
   color: $link-color;
   text-decoration: none;
-  border-bottom: 1px solid $grey-dark;
+  //border-bottom: 1px solid $grey-dark;
 
   &:hover {
     color: $link-hover-color;
     border-bottom-color: $link-decoration-hover-color;
   }
 }
+
+.post-body {
+  a {
+    color: $link-hover-color;
+    text-decoration: none;
+    //border-bottom: 1px solid $grey-dark;
+
+    &:hover {
+      color: $link-hover-color;
+      border-bottom: 1px solid $link-hover-color;
+    }
+  }
+}
+
 
 ul { list-style: none; }
 

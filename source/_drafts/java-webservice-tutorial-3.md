@@ -5,7 +5,7 @@ categories: [webservice]
 ---
 
 ### 概述
-
+在第一篇实践中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。
 
  <!--more-->
 
