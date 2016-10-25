@@ -59,7 +59,7 @@
 <meta property="og:url" content="http://paranoidq.github.io/2016/08/01/base64-newline-trap/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="问题描述client发报文给server，server端接收到http post发来的报文之后做base64解码，然后通过消息中间件传给核心系统进行处理。然后发现，client端发过来的报文会多出很多/r/n这样的字符，导致核心系统base64解码后也多出了/r/n，而核心系统之前没有考虑到这些问题，从而报错。">
-<meta property="og:updated_time" content="2016-10-11T12:15:05.000Z">
+<meta property="og:updated_time" content="2016-10-25T12:47:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BASE64换行符的坑">
 <meta name="twitter:description" content="问题描述client发报文给server，server端接收到http post发来的报文之后做base64解码，然后通过消息中间件传给核心系统进行处理。然后发现，client端发过来的报文会多出很多/r/n这样的字符，导致核心系统base64解码后也多出了/r/n，而核心系统之前没有考虑到这些问题，从而报错。">
@@ -413,7 +413,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">69</span>
+              <span class="site-state-item-count">68</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

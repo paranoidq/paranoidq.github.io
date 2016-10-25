@@ -298,14 +298,28 @@
 
       
         
-          <h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：</p>
-<ol>
-<li>通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：<br>a. jdk1.6+/bin中自带工具: <code>wsimport</code><br>b. cxf/bin中的工具: <code>wsdl2java</code><br>c. axis/bin中工具</li>
-<li>通过CXF动态调用：<br>a. DynamicClientFactory<br>b. JaxWsDynamicClientFactory</li>
-<li>通过Axis动态调用：<br>a. Service.createCall()</li>
-<li>通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
-<li>通过SOAPConnection的方式调用</li>
-</ol>
+          <h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice客户端的方式有很多种，概括起来分为两个环节：客户端stub生成和调用远程服务。对于生成stub而言，主要的方式是有两种：<strong>通过wsdl静态生成然后导入客户端代码</strong>和<strong>通过Java反射机制动态生成（利用了JAXB API）</strong>。</p>
+<p>动态生成这里不介绍了，介绍一下静态生成的方法，具体可以细分为以下几种：</p>
+<ul>
+<li>jdk1.6+/bin中自带工具: <code>wsimport</code></li>
+<li>cxf/bin中的工具: <code>wsdl2java</code></li>
+<li>axis/bin中工具</li>
+</ul>
+<p>调用的方法可以分为：</p>
+<ul>
+<li>通过stub静态调用</li>
+<li>通过JaxWsProxyFactoryBean半动态调用</li>
+<li>通过CXF动态调用：<ul>
+<li>DynamicClientFactory方式（对于非JAX-WS标准）</li>
+<li>JaxWsDynamicClientFactory方式（针对JAX-WS标准）</li>
+</ul>
+</li>
+<li>通过Axis动态调用：<ul>
+<li>Service.createCall()<br>— 通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
+</ul>
+</li>
+<li>通过JAX Dispatch API的方式构建SOAP报文并调用</li>
+</ul>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/20/java-webservice-tutorial-2/#more" rel="contents">
               more>>
@@ -768,113 +782,6 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/25/graceful-logging-in-concurrent-context/" itemprop="url">
-                  如何优雅的在多线程环境中log
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-08-25T16:16:39+08:00" content="2016-08-25">
-              2016-08-25
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/25/graceful-logging-in-concurrent-context/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/25/graceful-logging-in-concurrent-context/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            问题描述方案设计缺陷和瓶颈为什么不使用ELK参考资料
-            
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/25/graceful-logging-in-concurrent-context/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2016/08/02/linux-server-optimization-tools/" itemprop="url">
                   Linux服务器性能调优常用工具及实例
                 </a>
@@ -1274,6 +1181,110 @@
   </article>
 
 
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/15/人生新阶段随笔-1/" itemprop="url">
+                  人生新阶段随笔（1）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-07-15T20:02:53+08:00" content="2016-07-15">
+              2016-07-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/15/人生新阶段随笔-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/15/人生新阶段随笔-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>开始工作接近两周时间，算是成功从一个天真的在校学生变成了半个社会人士。<br>两周的时间虽然工作上没写什么代码，每天也没怎么需要加班加点，但感觉还是挺忙碌的。上周去苏州陪女友玩了两天，这周也算得空了，自己可以好好想想这两周以来的生活和工作。</p>
+<p>工作上的变化确实是蛮大的，跟学校里那种轻松自由的节奏完全不同。倒不是主管push你，反而是自己觉得如果没事情做，就会很着急。所以总是想方设法让自己忙碌起来，找事情做。感觉这样的想法还是挺好的，毕竟作为一个刚毕业的学生，最重要的还是能尽快学到知识和技能吧。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/15/人生新阶段随笔-1/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
 
   </section>
@@ -1321,7 +1332,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">69</span>
+              <span class="site-state-item-count">68</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

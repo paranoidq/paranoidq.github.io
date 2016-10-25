@@ -180,16 +180,12 @@ td,
 th {
   padding: 0;
 }
-::selection {
-  background: #262a30;
-  color: #fff;
-}
 body {
   position: relative;
-  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
+  font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB, WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
   font-size: 15px;
-  line-height: 2;
-  color: #555;
+  line-height: 1.7em;
+  color: #444;
   background: #fff;
 }
 @media (max-width: 767px) {
@@ -217,7 +213,7 @@ h6 {
   padding: 0;
   font-weight: bold;
   line-height: 1;
-  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
+  font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB, WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
 }
 h1 {
   font-size: 24px;
@@ -271,13 +267,20 @@ p {
   margin: 0 0 25px 0;
 }
 a {
-  color: #555;
+  color: #444;
   text-decoration: none;
-  border-bottom: 1px solid #999;
 }
 a:hover {
-  color: #222;
+  color: #01579f;
   border-bottom-color: #222;
+}
+.post-body a {
+  color: #01579f;
+  text-decoration: none;
+}
+.post-body a:hover {
+  color: #01579f;
+  border-bottom: 1px solid #01579f;
 }
 ul {
   list-style: none;
@@ -352,7 +355,7 @@ dd {
 }
 .highlight a,
 .gist a {
-  color: #222 !important;
+  color: #01579f !important;
   text-decoration: none !important;
 }
 .video-container {
@@ -463,7 +466,7 @@ pre,
   margin: 20px 0;
   padding: 15px;
   overflow: auto;
-  font-size: 13px;
+  font-size: 1.2em;
   color: #4d4d4c;
   line-height: 1.6;
 }
@@ -472,14 +475,14 @@ pre,
 }
 pre,
 code {
-  font-family: Consolas, Monaco, Menlo, monospace;
+  font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB, WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
   font-size: 0.9em;
 }
 code {
   word-break: break-all;
-  background: #eee;
+  background: #f7f7f7;
   text-shadow: 0 1px #fff;
-  padding: 0 0.5em;
+  padding: 0.2em 0.5em;
 }
 pre code {
   background: none;
@@ -535,7 +538,7 @@ pre code {
 }
 .gist .gist-file {
   border: none;
-  font-family: Consolas, Monaco, Menlo, monospace;
+  font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB, WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
   margin: 0;
 }
 .gist .gist-file .gist-data {
@@ -558,7 +561,7 @@ pre code {
 .gist .gist-file .gist-meta {
   background: #f7f7f7;
   color: #8e908c;
-  font: 13px "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
+  font: 13px "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB, WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
   text-shadow: 0 0;
   padding: 0;
   margin-top: 1em;
@@ -714,7 +717,7 @@ body {
   color: #222;
   background: #222;
   border-bottom: none;
-  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
+  font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB, WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
 }
 .brand:hover {
   color: #222;
@@ -875,7 +878,7 @@ body {
 }
 .sidebar a {
   color: #999;
-  border-bottom-color: #555;
+  border-bottom-color: #444;
 }
 .sidebar a:hover {
   color: #eee;
@@ -911,7 +914,7 @@ body {
 .site-description {
   margin-top: 5px;
   font-size: 14px;
-  color: #555;
+  color: #444;
 }
 .site-state {
   overflow: hidden;
@@ -965,7 +968,7 @@ body {
   vertical-align: middle;
   margin-right: 10px;
   margin-bottom: 10px;
-  border-bottom-color: #555;
+  border-bottom-color: #444;
   font-size: 13px;
 }
 .links-of-author a:before {
@@ -976,7 +979,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #343763;
+  background: #8bff63;
 }
 .sidebar-nav {
   margin: 0 0 20px;
@@ -1196,7 +1199,7 @@ body {
   display: block;
   width: 22px;
   height: 2px;
-  background: #555;
+  background: #444;
   border-radius: 1px;
 }
 .btn-bar+.btn-bar {
@@ -1216,7 +1219,7 @@ body {
   font-size: 15px;
   color: #999;
   font-weight: bold;
-  line-height: 1;
+  line-height: 1.6em;
 }
 .post-sticky-flag {
   display: inline-block;
@@ -1254,7 +1257,7 @@ body {
 .posts-expand .post-title-link {
   display: inline-block;
   position: relative;
-  color: #555;
+  color: #444;
   border-bottom: none;
   line-height: 1.2;
   vertical-align: top;
@@ -1354,7 +1357,7 @@ body {
   display: inline-block;
   line-height: 25px;
   font-size: 14px;
-  color: #555;
+  color: #444;
   border-bottom: none;
 }
 .post-nav-item a:hover {
@@ -1475,8 +1478,8 @@ body {
   margin-left: 60px;
   font-size: 16px;
   font-weight: normal;
-  font-family: "TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, sans-serif;
-  line-height: inherit;
+  font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB, WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
+  line-height: 2.2em;
 }
 .posts-collapse .post-title::after {
   margin-left: 3px;
@@ -1928,7 +1931,7 @@ body {
   width: 10px;
   height: 10px;
   opacity: 0.5;
-  background: #555;
+  background: #444;
   border: 1px solid #fff;
   border-radius: 50%;
 }
