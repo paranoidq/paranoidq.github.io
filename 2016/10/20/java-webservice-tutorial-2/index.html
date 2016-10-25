@@ -69,7 +69,7 @@ jdk1.6+/bin中自带工具: wsimport
 cxf/bin中">
 <meta property="og:image" content="http://paranoidq.github.io/img/webservice/wsimport.png">
 <meta property="og:image" content="http://paranoidq.github.io/img/webservice/wsdl2java.png">
-<meta property="og:updated_time" content="2016-10-25T13:03:07.000Z">
+<meta property="og:updated_time" content="2016-10-25T13:31:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java Webservice实践（2）构建Webservice客户端">
 <meta name="twitter:description" content="概述总体而言，构建Webservice客户端的方式有很多种，概括起来分为两个环节：客户端stub生成和调用远程服务。对于生成stub而言，主要的方式是有两种：通过wsdl静态生成然后导入客户端代码和通过Java反射机制动态生成（利用了JAXB API）。
@@ -268,8 +268,8 @@ cxf/bin中">
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/webservice/" itemprop="url" rel="index">
-                    <span itemprop="name">webservice</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -321,9 +321,10 @@ cxf/bin中">
 </ul>
 </li>
 <li>通过Axis动态调用：<ul>
-<li>Service.createCall()<br>— 通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
+<li>Service.createCall()</li>
 </ul>
 </li>
+<li>通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
 <li>通过JAX Dispatch API的方式构建SOAP报文并调用</li>
 </ul>
 <a id="more"></a>
@@ -440,6 +441,10 @@ cxf/bin中">
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2016/10/20/java-webservice-tutorial-3/" rel="prev" title="Java Webservice实践（3）在tomcat容器中发布webservice服务">
+                Java Webservice实践（3）在tomcat容器中发布webservice服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -510,7 +515,7 @@ cxf/bin中">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">68</span>
+              <span class="site-state-item-count">70</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -524,7 +529,7 @@ cxf/bin中">
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">69</span>
+              <span class="site-state-item-count">70</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
