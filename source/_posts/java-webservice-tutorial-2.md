@@ -2,7 +2,7 @@ layout: "post"
 title: "Java Webservice实践（2）构建Webservice客户端"
 date: "2016-10-20 21:39:04"
 tags: [webservice]
-categories: [webservice]
+categories: [java]
 ---
 
 ### 概述
@@ -21,7 +21,7 @@ categories: [webservice]
  + JaxWsDynamicClientFactory方式（针对JAX-WS标准）
 - 通过Axis动态调用：
  + Service.createCall()
-— 通过HTTPURLConnection的方式调用（手动组装SOAP报文）
+- 通过HTTPURLConnection的方式调用（手动组装SOAP报文）
 - 通过JAX Dispatch API的方式构建SOAP报文并调用
 
 <!--more-->

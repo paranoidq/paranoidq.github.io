@@ -1,7 +1,7 @@
 title: 如何优雅的在多线程环境中log
 date: 2016-08-25 16:16:39
 tags: [java, log, 系统设计]
-categories: java
+categories: [java]
 
 ---
 
