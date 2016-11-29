@@ -4,7 +4,7 @@
   <subtitle><![CDATA[佳思忽来，书能下酒；侠情一往，云可赠人。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://paranoidq.github.io/"/>
-  <updated>2016-11-29T13:18:41.000Z</updated>
+  <updated>2016-11-29T13:45:22.000Z</updated>
   <id>http://paranoidq.github.io/</id>
   
   <author>
@@ -13,6 +13,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[我的书单]]></title>
+    <link href="http://paranoidq.github.io/2016/11/29/just-reading/"/>
+    <id>http://paranoidq.github.io/2016/11/29/just-reading/</id>
+    <published>2016-11-29T13:45:07.000Z</published>
+    <updated>2016-11-29T13:45:22.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="u4EBA_u6587"><a href="#u4EBA_u6587" class="headerlink" title="人文"></a>人文</h3><p><a href="http://book.douban.com/subject/1059336/" target="_blank" rel="external">往事并不如烟</a> (完成)<br><a href="http://book.douban.com/subject/1438394/" target="_blank" rel="external">更多的人死于心碎</a></p>
+<a id="more"></a>
+<h3 id="u793E_u4F1A"><a href="#u793E_u4F1A" class="headerlink" title="社会"></a>社会</h3><p><a href="https://book.douban.com/subject/1472854/" target="_blank" rel="external">山坳上的中国</a><br><a href="http://book.douban.com/subject/26306686/" target="_blank" rel="external">创业维艰</a></p>
+<h3 id="u5386_u53F2"><a href="#u5386_u53F2" class="headerlink" title="历史"></a>历史</h3><p><a href="https://book.douban.com/subject/26315806/" target="_blank" rel="external">台湾往事：台湾经济改革故事</a> (完成)<br><a href="https://book.douban.com/subject/26754615/" target="_blank" rel="external">极简人类史</a> (完成)</p>
+<h3 id="u79D1_u666E"><a href="#u79D1_u666E" class="headerlink" title="科普"></a>科普</h3><p><a href="https://book.douban.com/subject/1636374/" target="_blank" rel="external">人类的群星闪耀时</a></p>
+<h3 id="IT"><a href="#IT" class="headerlink" title="IT"></a>IT</h3><p><a href="https://book.douban.com/subject/6709783/" target="_blank" rel="external">浪潮之巅</a> (完成)</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="u4EBA_u6587"><a href="#u4EBA_u6587" class="headerlink" title="人文"></a>人文</h3><p><a href="http://book.douban.com/subject/1059336/">往事并不如烟</a> (完成)<br><a href="http://book.douban.com/subject/1438394/">更多的人死于心碎</a></p>]]>
+    
+    </summary>
+    
+      <category term="top" scheme="http://paranoidq.github.io/tags/top/"/>
+    
+      <category term="todo" scheme="http://paranoidq.github.io/tags/todo/"/>
+    
+      <category term="阅读" scheme="http://paranoidq.github.io/tags/%E9%98%85%E8%AF%BB/"/>
+    
+      <category term="阅读" scheme="http://paranoidq.github.io/categories/%E9%98%85%E8%AF%BB/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Http KeepAlive的理解]]></title>
@@ -715,33 +743,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[我的书单]]></title>
-    <link href="http://paranoidq.github.io/2016/07/25/just-reading/"/>
-    <id>http://paranoidq.github.io/2016/07/25/just-reading/</id>
-    <published>2016-07-24T16:14:07.000Z</published>
-    <updated>2016-07-24T16:26:03.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u4EBA_u6587"><a href="#u4EBA_u6587" class="headerlink" title="人文"></a>人文</h3><p><a href="http://book.douban.com/subject/1059336/" target="_blank" rel="external">往事并不如烟</a> (完成)<br><a href="http://book.douban.com/subject/1438394/" target="_blank" rel="external">更多的人死于心碎</a></p>
-<h3 id="u793E_u4F1A"><a href="#u793E_u4F1A" class="headerlink" title="社会"></a>社会</h3><p><a href="https://book.douban.com/subject/1472854/" target="_blank" rel="external">山坳上的中国</a><br><a href="http://book.douban.com/subject/26306686/" target="_blank" rel="external">创业维艰</a></p>
-<a id="more"></a>
-<h3 id="IT"><a href="#IT" class="headerlink" title="IT"></a>IT</h3><p><a href="https://book.douban.com/subject/6709783/" target="_blank" rel="external">浪潮之巅</a> (完成)</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="u4EBA_u6587"><a href="#u4EBA_u6587" class="headerlink" title="人文"></a>人文</h3><p><a href="http://book.douban.com/subject/1059336/">往事并不如烟</a> (完成)<br><a href="http://book.douban.com/subject/1438394/">更多的人死于心碎</a></p>
-<h3 id="u793E_u4F1A"><a href="#u793E_u4F1A" class="headerlink" title="社会"></a>社会</h3><p><a href="https://book.douban.com/subject/1472854/">山坳上的中国</a><br><a href="http://book.douban.com/subject/26306686/">创业维艰</a></p>]]>
-    
-    </summary>
-    
-      <category term="top" scheme="http://paranoidq.github.io/tags/top/"/>
-    
-      <category term="todo" scheme="http://paranoidq.github.io/tags/todo/"/>
-    
-      <category term="阅读" scheme="http://paranoidq.github.io/tags/%E9%98%85%E8%AF%BB/"/>
-    
-      <category term="阅读" scheme="http://paranoidq.github.io/categories/%E9%98%85%E8%AF%BB/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[人生新阶段随笔（1）]]></title>
     <link href="http://paranoidq.github.io/2016/07/15/%E4%BA%BA%E7%94%9F%E6%96%B0%E9%98%B6%E6%AE%B5%E9%9A%8F%E7%AC%94-1/"/>
     <id>http://paranoidq.github.io/2016/07/15/人生新阶段随笔-1/</id>
@@ -940,169 +941,18 @@
   </entry>
   
   <entry>
-    <title><![CDATA[什么是中间件？]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/middleware-expalined-simply/"/>
-    <id>http://paranoidq.github.io/2016/05/27/middleware-expalined-simply/</id>
+    <title><![CDATA[Vim 插件NERDTree命令]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/NERDTree-commands/"/>
+    <id>http://paranoidq.github.io/2016/05/27/NERDTree-commands/</id>
     <published>2016-05-27T15:45:36.000Z</published>
     <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<p>之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。</p>
-<h3 id="u5B9A_u4E49"><a href="#u5B9A_u4E49" class="headerlink" title="定义"></a>定义</h3><p>维基百科定义：</p>
-<blockquote>
-<p>提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的集中的逻辑，在现代信息技术应用框架如Web服务、面向服务的体系结构等中应用比较广泛。如数据库、Apache的Tomcat，IBM公司的WebSphere,BEA公司的WebLogic[[应用服务器]，东方通公司的Tong系列中间件，以及Kingdee公司的等都属于中间件。</p>
-</blockquote>
-<p>简单归纳：<br>业务应用 - 中间件 - 基础资源</p>
-<ul>
-<li>中间件处于两者中间的的位置，封装基础资源，向上层提供更完善的功能。</li>
-<li>基础资源包括硬的资源：如CPU、存储(分布式)、网络；我个人认为也包括进程、线程、消息队列、数据库这种软性资源，中间件对这些资源做了封装处理。</li>
-</ul>
-<h3 id="u4F5C_u7528"><a href="#u4F5C_u7528" class="headerlink" title="作用"></a>作用</h3><ul>
-<li>封装</li>
-<li>整合</li>
-<li>屏蔽</li>
-<li>容错</li>
-</ul>
-<p>我个人归纳为这四个主要功能。封装和整合的是基础资源，使得难用的基础资源更便于使用，而不用考虑细节。（调用顺序、分布式、配置、初始化属性等等）。屏蔽的是底层细节，同时也屏蔽底层的差异（例如，JVM这种本质意义上其实也可算作中间件，通过JVM屏蔽不同系统的差异，从而能够无差异运行Java程序）。容错，则是中间件的另一个重要作用，保证上层无论如何调用，都会得到相应的处理，而不会将错误传递到底层去或直接消失。</p>
-<h3 id="u5E38_u89C1_u79CD_u7C7B_uFF1A"><a href="#u5E38_u89C1_u79CD_u7C7B_uFF1A" class="headerlink" title="常见种类："></a>常见种类：</h3><ul>
-<li>分布式调用RPC：</li>
-<li>消息队列</li>
-<li>事务处理</li>
-<li>数据库组件</li>
-<li>安全组件</li>
-<li>并发组件</li>
-<li>应用容器组件</li>
-<li>日志组件：Apache Kafaka</li>
-<li>监控组件：Zookkeeper, Mesos, </li>
-</ul>
-<h3 id="u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u7684_u51E0_u4E2A_u6848_u4F8B_28_u672C_u8282_u6765_u81EA_u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u56E2_u961F_u535A_u5BA2_29"><a href="#u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u7684_u51E0_u4E2A_u6848_u4F8B_28_u672C_u8282_u6765_u81EA_u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u56E2_u961F_u535A_u5BA2_29" class="headerlink" title="阿里巴巴中间件的几个案例(本节来自阿里巴巴中间件团队博客)"></a>阿里巴巴中间件的几个案例(本节来自阿里巴巴中间件团队博客)</h3><p><img src="http://jm.taobao.org/wp-content/uploads/2013/07/jm.jpg" alt="阿里巴巴中间件支撑平台"></p>
-<ul>
-<li><strong>Diamond</strong>: 软负载配置中心，用于存储静态配置，并能够提供配置变更动态推送功能，结构简单，超高可用性。在全网被使用于存储不经常发生变化的配置信息。</li>
-<li><strong>Notify</strong>, <strong>Meta</strong>: 消息中间件</li>
-<li><strong>HSF</strong>: 阿里分布式服务框架，统一整个集团rpc的调用，包括服务方式的统一调用，软负载，服务治理等，提供一套简单方便，高性能的分布式服务框架。</li>
-<li><strong>eagleeye</strong>: 淘宝分布式跟踪系统，该系统实现基于单链路的实时监控，系统依赖，性能调优，风险控制等</li>
-<li><strong>Pandora</strong>: 淘宝隔离容器，该系统主要解决大规模富二方包升级，二方包隔离，二方包监控等问题。</li>
-<li><strong>TDDL</strong>: 通用数据访问层，部署在客户端的jar包，用于将用户的SQL路由到指定的数据库中。目前有1000+应用在使用</li>
-<li><strong>精卫</strong>: 通用数据总线，用于将数据从一个数据节点迁移到其他一个或多个数据节点中，目前支持mysql,oracle,hbase等。目前有100+应用在使用</li>
-<li><strong>愚公</strong>: 数据自动迁移引擎，海量数据自动运维工具，可用于对用户无影响的自动扩容和缩容，数据平滑迁移，以及异构数据源迁移，目前已经完成了214次业务迁移或扩容。</li>
-<li><strong>NewSQL</strong>: NewSQL系统，可以将SQL运行于传统MYSQL/Oracle关系数据库，也可以支持NoSQL数据库如bdb , hbase等。 可以实现其中的跨机合并和跨机交操作等复杂关系操作。</li>
-<li><strong>CSP2.0</strong>: 持续稳定性平台帮助阿里系统保障高可用性，包含线上压测、容量规划、依赖治理、限流降级、监控报警、问题定位等模块。</li>
-<li><strong>Hotspot</strong>: 性能分析平台通过对基础软件、服务端、前端加载、网络、CDN等方面的性能分析，来帮助阿里系统提升吞吐量、降低延迟时间、节约成本。</li>
-<li><strong>TProfiler</strong>: TProfiler是可以在生产环境长期使用的性能分析工具，通过在Java层面记录代码执行热点、对象创建热点等数据，帮助系统定位性能瓶颈。</li>
-</ul>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BB%B6" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BB%B6</a><br><a href="http://jm-blog.aliapp.com/?page_id=2449" target="_blank" rel="external">阿里巴巴中间件团队博客</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料]]>
-    </summary>
-    
-      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
-    
-      <category term="架构" scheme="http://paranoidq.github.io/tags/%E6%9E%B6%E6%9E%84/"/>
-    
-      <category term="中间件" scheme="http://paranoidq.github.io/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-      <category term="架构" scheme="http://paranoidq.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Vim Commands]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/vim-commands/"/>
-    <id>http://paranoidq.github.io/2016/05/27/vim-commands/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
-<li>文首：<code>gg</code> / <code>:0</code></li>
-<li>文末：<code>shift + g</code> / <code>:$</code></li>
-<li>行首：<code>0</code></li>
-<li>行末：<code>$</code></li>
-<li>到第一个不是空字符的位置：<code>^</code></li>
-<li>到最后一个不是空字符的位置：<code>g_</code></li>
-</ul>
+    <content type="html"><![CDATA[<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">h</span>    光标 focus 左侧树形目录</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">l</span>    光标 focus 右侧文件显示窗口</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">w</span>    光标自动在左右侧窗口切换 #！！！</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">r</span>    移动当前窗口的布局位置</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>按单词移动：</p>
-<ul>
-<li>到下一个单词的开头：<code>w</code></li>
-<li>到下一个单词的结尾：<code>e</code></li>
-</ul>
-<p>按匹配的单词移动：</p>
-<ul>
-<li>匹配光标所在的单词，移动到下一个：<code>*</code></li>
-<li>匹配光标所在的单词，移动到上一个: <code>#</code></li>
-</ul>
-<p>按页移动：</p>
-<ul>
-<li>向下一页：<code>ctrl + F</code></li>
-<li>向上一页：<code>ctrl + B</code></li>
-<li>向下半页：<code>ctrl + D</code></li>
-<li>向上半页：<code>ctrl + U</code></li>
-</ul>
-<h4 id="u63D2_u5165"><a href="#u63D2_u5165" class="headerlink" title="插入"></a>插入</h4><p>切换到插入模式的几种方式:</p>
-<ul>
-<li>在光标之前插入：<code>i</code></li>
-<li>在行开始前插入：<code>I</code></li>
-<li>在光标后面插入：<code>a</code></li>
-<li>在行结束后插入：<code>A</code></li>
-</ul>
-<p>插入行：</p>
-<ul>
-<li>在当前位置下面插入一行，并进入编辑状态：<code>o</code></li>
-<li>在当前位置上面插入一行，并进入编辑状态：<code>O</code></li>
-</ul>
-<h3 id="u6587_u672C_u64CD_u4F5C"><a href="#u6587_u672C_u64CD_u4F5C" class="headerlink" title="文本操作"></a>文本操作</h3><h4 id="u57FA_u672C_u884C_u64CD_u4F5C"><a href="#u57FA_u672C_u884C_u64CD_u4F5C" class="headerlink" title="基本行操作"></a>基本行操作</h4><p>复制</p>
-<ul>
-<li>复制一行：<code>yy</code></li>
-<li>复制光标到行尾的部分：<code>y$</code></li>
-<li>复制多行(1)：<code>Nyy</code> + ‘p’ (粘贴)</li>
-<li>复制多行(2)：<code>6, 9 co 12</code> (复制6行和9行中间的部分到12行后面)</li>
-</ul>
-<p>复制大量的行：</p>
-<ol>
-<li>光标移到起始行，输入ma</li>
-<li>光标移到结束行，输入mb</li>
-<li>光标移到粘贴行，输入mc</li>
-<li>然后 :’a,’b co ‘c 把 co 改成 m 就成剪切了</li>
-</ol>
-<p>粘贴</p>
-<ul>
-<li>粘贴：<code>p</code></li>
-</ul>
-<p>删除</p>
-<ul>
-<li>删除光标后一个字符：<code>x</code></li>
-<li>删除光标到行尾的部分：<code>d$</code></li>
-<li>删除单行：<code>dd</code> / <code>1d</code></li>
-<li>删除多行(1)：<code>1, Nd</code> / <code>Ndd</code>(删除包含光标所在行的下面N行)</li>
-<li>删除多行(2)：<code>:1, 4 de</code></li>
-</ul>
-<p>替换</p>
-<ul>
-<li>替换从光标位置到后一个单词结尾的字符：<code>cw</code></li>
-</ul>
-<h4 id="u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C"><a href="#u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C" class="headerlink" title="任意区间的文本操作"></a>任意区间的文本操作</h4><p>首先进入visual模式，直接按v键进入visual模式，然后<code>v+ j/k/h/l</code>进行文本选择</p>
-<ul>
-<li>剪切：<code>d</code></li>
-<li>复制：<code>y</code></li>
-<li>粘贴：<code>p</code></li>
-</ul>
-<h4 id="u884C_u5757_u64CD_u4F5C"><a href="#u884C_u5757_u64CD_u4F5C" class="headerlink" title="行块操作"></a>行块操作</h4><h3 id="u64A4_u9500_u64CD_u4F5C"><a href="#u64A4_u9500_u64CD_u4F5C" class="headerlink" title="撤销操作"></a>撤销操作</h3><ul>
-<li>撤销上一个命令： <code>u</code></li>
-<li>反撤销：<code>ctrl + r</code> </li>
-</ul>
-<h3 id="u641C_u7D22_u64CD_u4F5C"><a href="#u641C_u7D22_u64CD_u4F5C" class="headerlink" title="搜索操作"></a>搜索操作</h3><ul>
-<li>搜索：<code>/pattern</code></li>
-<li>下一个：<code>n</code></li>
-<li>上一个：<code>N</code></li>
-</ul>
+<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">o       在已有窗口中打开文件、目录或书签，并跳到该窗口</span><br><span class="line">go      在已有窗口 中打开文件、目录或书签，但不跳到该窗口</span><br><span class="line">t       在新 Tab 中打开选中文件/书签，并跳到新 Tab</span><br><span class="line">T       在新 Tab 中打开选中文件/书签，但不跳到新 Tab</span><br><span class="line">i       split 一个新窗口打开选中文件，并跳到该窗口</span><br><span class="line">gi      split 一个新窗口打开选中文件，但不跳到该窗口</span><br><span class="line"><span class="keyword">s</span>       vsplit 一个新窗口打开选中文件，并跳到该窗口</span><br><span class="line">gs      vsplit 一个新 窗口打开选中文件，但不跳到该窗口</span><br><span class="line">!       执行当前文件</span><br><span class="line">O       递归打开选中 结点下的所有目录</span><br><span class="line"><span class="keyword">x</span>       合拢选中结点的父目录</span><br><span class="line"><span class="keyword">X</span>       递归 合拢选中结点下的所有目录</span><br><span class="line">e       Edit the current dif</span><br><span class="line"></span><br><span class="line"># 双击    相当于 NERDTree-o (Mac下无效...)</span><br><span class="line"># 中键    对文件相当于 NERDTree-i，对目录相当于 NERDTree-e</span><br><span class="line"></span><br><span class="line"><span class="keyword">D</span>       删除当前书签</span><br><span class="line"></span><br><span class="line">P       跳到根结点</span><br><span class="line">p       跳到父结点</span><br><span class="line"><span class="keyword">K</span>       跳到当前目录下同级的第一个结点</span><br><span class="line"><span class="keyword">J</span>       跳到当前目录下同级的最后一个结点</span><br><span class="line"><span class="keyword">k</span>       跳到当前目录下同级的前一个结点</span><br><span class="line"><span class="keyword">j</span>       跳到当前目录下同级的后一个结点</span><br><span class="line"></span><br><span class="line">C       将选中目录或选中文件的父目录设为根结点</span><br><span class="line">u       将当前根结点的父目录设为根目录，并变成合拢原根结点</span><br><span class="line">U       将当前根结点的父目录设为根目录，但保持展开原根结点</span><br><span class="line"><span class="keyword">r</span>       递归刷新选中目录</span><br><span class="line"><span class="keyword">R</span>       递归刷新根结点</span><br><span class="line">m       显示文件系统菜单 #！！！然后根据提示进行文件的操作如新建，重命名等</span><br><span class="line">cd      将 CWD 设为选中目录</span><br><span class="line"></span><br><span class="line">I       切换是否显示隐藏文件</span><br><span class="line">f       切换是否使用文件过滤器</span><br><span class="line">F       切换是否显示文件</span><br><span class="line">B       切换是否显示书签</span><br><span class="line"></span><br><span class="line"><span class="keyword">q</span>       关闭 NerdTree 窗口</span><br><span class="line">?       切换是否显示 Quick Help</span><br></pre></td></tr></table></figure>
+<p>操作tab<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">:<span class="keyword">tabnew</span> [++<span class="keyword">opt</span>选项] ［＋cmd］ 文件      建立对指定文件新的<span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabc</span>   关闭当前的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabo</span>   关闭所有其他的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabs</span>   查看所有打开的 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabp</span>   前一个 <span class="keyword">tab</span></span><br><span class="line">:<span class="keyword">tabn</span>   后一个 <span class="keyword">tab</span></span><br><span class="line"></span><br><span class="line">标准模式下：</span><br><span class="line">gT      前一个 <span class="keyword">tab</span></span><br><span class="line">gt      后一个 <span class="keyword">tab</span></span><br><span class="line"></span><br><span class="line">MacVim 还可以借助快捷键来完成 <span class="keyword">tab</span> 的关闭、切换</span><br><span class="line">cmd+<span class="keyword">w</span>   关闭当前的 <span class="keyword">tab</span></span><br><span class="line">cmd+&#123;   前一个 <span class="keyword">tab</span></span><br><span class="line">cmd+&#125;   后一个 <span class="keyword">tab</span></span><br></pre></td></tr></table></figure></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
-<li>文首：<code>gg</code> / <code>:0</code></li>
-<li>文末：<code>shift + g</code> / <code>:$</code></li>
-<li>行首：<code>0</code></li>
-<li>行末：<code>$</code></li>
-<li>到第一个不是空字符的位置：<code>^</code></li>
-<li>到最后一个不是空字符的位置：<code>g_</code></li>
-</ul>]]>
+    <![CDATA[<figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">h</span>    光标 focus 左侧树形目录</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">l</span>    光标 focus 右侧文件显示窗口</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">w</span>    光标自动在左右侧窗口切换 #！！！</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">r</span>    移动当前窗口的布局位置</span><br></pre></td></tr></table></figure>]]>
     
     </summary>
     
@@ -1110,7 +960,144 @@
     
       <category term="vim" scheme="http://paranoidq.github.io/tags/vim/"/>
     
+      <category term="nerdtree" scheme="http://paranoidq.github.io/tags/nerdtree/"/>
+    
       <category term="linux" scheme="http://paranoidq.github.io/categories/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Python parameters]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/Python-parameters-explained/"/>
+    <id>http://paranoidq.github.io/2016/05/27/Python-parameters-explained/</id>
+    <published>2016-05-27T15:45:36.000Z</published>
+    <updated>2016-05-27T15:45:36.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
+<ol>
+<li>固定参数(位置参数)</li>
+<li>默认参数</li>
+<li>可变参数</li>
+<li>关键字参数</li>
+</ol>
+<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
+<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
+<a id="more"></a>
+<h3 id="u4F4D_u7F6E_u53C2_u6570_positional_parameter_28_u56FA_u5B9A_u53C2_u6570_29"><a href="#u4F4D_u7F6E_u53C2_u6570_positional_parameter_28_u56FA_u5B9A_u53C2_u6570_29" class="headerlink" title="位置参数 positional parameter(固定参数)"></a>位置参数 positional parameter(固定参数)</h3><ol>
+<li><p>函数定义时：其中的x,n 都是固定<strong>形参</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, n)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数调用时：如果不指定名字，则传入的两个<strong>实参</strong>按照位置顺序依次赋给<strong>形参</strong>x和n</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="string">'abc'</span>, <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>由于是位置参数，所以参数名在调用的时候是没有意义的，只有参数的顺序才有意义。因为形参会根据顺序依次匹配实参。</p>
+<h3 id="u9ED8_u8BA4_u53C2_u6570_default_parameter"><a href="#u9ED8_u8BA4_u53C2_u6570_default_parameter" class="headerlink" title="默认参数 default parameter"></a>默认参数 default parameter</h3><p>如果不传递n的话，上面的调用会报错：缺少位置<strong>实参</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func(<span class="string">'abc'</span>)</span><br><span class="line"><span class="comment"># output: TypeError: func() missing 1 required positional argument: 'n'</span></span><br></pre></td></tr></table></figure></p>
+<p>这时候就可以靠默认参数来帮助我们省事，不用每次都给默认形参传递实参了</p>
+<ol>
+<li><p>函数定义时：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, n=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>注意点：</p>
+<ul>
+<li>默认参数定义<strong>必须</strong>在所有的位置参数之后，并且默认参数的后面不能再有位置参数</li>
+<li>默认参数的必须指向不变的对象，否则会掉坑<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">add_end</span><span class="params">(L=[])</span>:</span></span><br><span class="line">    L.append(<span class="string">'END'</span>)</span><br><span class="line">    <span class="keyword">return</span> L</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>add_end()</span><br><span class="line">[<span class="string">'END'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>add_end()</span><br><span class="line">[<span class="string">'END'</span>, <span class="string">'END'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Python函数在定义的时候，默认参数L的值就被计算出来了，即[]，因为默认参数L也是一个变量，</span></span><br><span class="line"><span class="comment"># 它指向对象[]，每次调用该函数，如果改变了L的内容，则下次调用时，默认参数的内容就变了，不再是函数定义时的[]了。</span></span><br><span class="line"><span class="comment"># 所以，定义默认参数要牢记一点：默认参数必须指向不变对象！</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确的做法：通过None这个不变的默认参数来做</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_end</span><span class="params">(L=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> L <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        L = []</span><br><span class="line">    L.append(<span class="string">'END'</span>)</span><br><span class="line">    <span class="keyword">return</span> L</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>函数调用时：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可以不提供默认参数的实参，也可以提供</span></span><br><span class="line">func(<span class="string">'abc'</span>)  </span><br><span class="line">func(<span class="string">'abc'</span>, <span class="number">10</span>)</span><br><span class="line"><span class="comment"># 对于多个默认参数的情况，如果按顺序提供，可以不指定默认形参的名字；</span></span><br><span class="line"><span class="comment"># 否则需指定名字</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func2</span><span class="params">(x, n=<span class="number">1</span>, m=<span class="number">2</span>)</span>:</span></span><br><span class="line">   <span class="keyword">pass</span></span><br><span class="line">func2(<span class="string">'abc'</span>, m=<span class="number">23</span>, n=<span class="number">24</span>)</span><br></pre></td></tr></table></figure>
+<p>注意：不按顺序提供实参的情况仅仅适用于默认参数部分。也就是无论如何，必须先按顺序提供位置参数，之后提供的默认实参才有不按顺序一说。下面的调用是错误的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func(n=<span class="number">10</span>, <span class="string">'acb'</span>)</span><br><span class="line"><span class="comment"># output: SyntaxError: non-keyword arg after keyword arg</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="u53EF_u53D8_u53C2_u6570"><a href="#u53EF_u53D8_u53C2_u6570" class="headerlink" title="可变参数"></a>可变参数</h3><p>在定义函数的时候，传入的位置参数个数不确定的时候使用</p>
+<p>不用可变参数怎么做？转化为list或tuple：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(numbers)</span>:</span></span><br><span class="line">    sum = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> numbers:</span><br><span class="line">        sum = sum + n * n</span><br><span class="line">    <span class="keyword">return</span> sum</span><br><span class="line">calc([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">calc((<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure></p>
+<p>利用可变参数就可以直接传入，不需要显示转化了<code>calc(1, 2, 3)</code></p>
+<ol>
+<li><p>函数定义<br>使用*表达式即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(*numbers)</span>:</span></span><br><span class="line">    <span class="comment"># the same with above</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数调用：可以传入任意个数的实参，包括0个</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">calc(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于对已有的列表进行操作</span></span><br><span class="line">nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">calc(*nums)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>注意：函数调用的时候，实参做了拷贝，原有的实参不变！</p>
+<p>可变参数可以同时定义在位置参数后面：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, *args)</span>:</span></span><br><span class="line">    print(x)</span><br><span class="line">    print(args)</span><br><span class="line">func(<span class="string">'abc'</span>)</span><br><span class="line"><span class="comment"># output: 'abc' ()</span></span><br><span class="line">func(<span class="string">'abc'</span>, <span class="string">'efg'</span>) <span class="comment"># （2）</span></span><br><span class="line"><span class="comment"># output: 'abc' ('efg')</span></span><br><span class="line">func(<span class="string">'abc'</span>, *<span class="string">'efg'</span>) <span class="comment"># （3）</span></span><br><span class="line"><span class="comment"># output: 'abc', ('e', 'f', 'g')</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func2</span><span class="params">(x=<span class="string">'123'</span>, *args)</span>:</span></span><br><span class="line">    print(x)</span><br><span class="line">    print(args)</span><br><span class="line">func(<span class="string">'abc'</span>)</span><br><span class="line"><span class="comment"># output: 'abc' ()</span></span><br><span class="line">func(<span class="string">'abc'</span>, <span class="string">'efg'</span>) <span class="comment"># （4）</span></span><br><span class="line"><span class="comment"># output: 'abc' ('efg')</span></span><br><span class="line">func(<span class="string">'abc'</span>, *<span class="string">'efg'</span>) <span class="comment"># （5）</span></span><br><span class="line"><span class="comment"># output: 'c', ('f', 'g')</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>优先匹配位置参数, 无论有没有默认值。有默认值覆盖默认值，没有默认值赋值。剩下来的部分才给可变参数！</li>
+<li>注意(2)和(3)调用方式的不同</li>
+<li>注意(4)和(5)结果的不同</li>
+</ul>
+<h3 id="u5173_u952E_u5B57_u53C2_u6570_uFF08keyword_parameter_uFF09"><a href="#u5173_u952E_u5B57_u53C2_u6570_uFF08keyword_parameter_uFF09" class="headerlink" title="关键字参数（keyword parameter）"></a>关键字参数（keyword parameter）</h3><p>可变参数允许你传入0个或任意个参数，这些可变参数在函数调用时自动组装为一个tuple。而关键字参数允许你传入0个或任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict。</p>
+<ol>
+<li><p>函数定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, **kw)</span>:</span></span><br><span class="line">   print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, kw)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数调用：<br>可以只传入位置参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">person(<span class="string">'Michael'</span>, <span class="number">30</span>)</span><br></pre></td></tr></table></figure>
+<p>也可以传入任意个数任意名字的关键字实参</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">person(<span class="string">'Bob'</span>, <span class="number">35</span>, city=<span class="string">'Beijing'</span>)</span><br><span class="line">person(<span class="string">'Adam'</span>, <span class="number">45</span>, gender=<span class="string">'M'</span>, job=<span class="string">'Engineer'</span>)</span><br></pre></td></tr></table></figure>
+<p>传入dict的方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">extra = &#123;<span class="string">'city'</span>: <span class="string">'Beijing'</span>, <span class="string">'job'</span>: <span class="string">'Engineer'</span>&#125;</span><br><span class="line">person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=extra[<span class="string">'city'</span>], job=extra[<span class="string">'job'</span>])</span><br><span class="line">person(<span class="string">'Jack'</span>, <span class="number">24</span>, **extra)</span><br></pre></td></tr></table></figure>
+<p>注意：注意kw获得的dict是extra的一份拷贝，对kw的改动不会影响到函数外的extra</p>
+</li>
+</ol>
+<h3 id="u547D_u540D_u5173_u952E_u5B57_u53C2_u6570"><a href="#u547D_u540D_u5173_u952E_u5B57_u53C2_u6570" class="headerlink" title="命名关键字参数"></a>命名关键字参数</h3><p>如果要限制关键字参数的名字，就可以用命名关键字参数，例如，只接收city和job作为关键字参数</p>
+<ol>
+<li><p>函数定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, *, city, job)</span>:</span></span><br><span class="line">    print(name, age, city, job)</span><br></pre></td></tr></table></figure>
+<p>定义时可以有缺省值：由于指定名字，所以带缺省值的parameter不关心顺序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person</span><span class="params">(name, age, *, city=<span class="string">'beijing'</span>, job)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>函数调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">person(<span class="string">'Jack'</span>, <span class="number">24</span>, city=<span class="string">'Beijing'</span>, job=<span class="string">'Engineer'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 必须传入参数名(除非使用定义了的缺省值，连值也不传)，否则会报TypeError</span></span><br><span class="line">person(<span class="string">'Jack'</span>, <span class="number">24</span>, <span class="string">'Beijing'</span>, <span class="string">'Engineer'</span>)</span><br><span class="line">TypeError: person() takes <span class="number">2</span> positional arguments but <span class="number">4</span> were given</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="u53C2_u6570_u7684_u7EC4_u5408"><a href="#u53C2_u6570_u7684_u7EC4_u5408" class="headerlink" title="参数的组合"></a>参数的组合</h3><p>必须是如下顺序：<br><strong>必选参数、默认参数、可变参数/命名关键字参数和关键字参数</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span><span class="params">(a, b, c=<span class="number">0</span>, *args, **kw)</span>:</span></span><br><span class="line">    print(<span class="string">'a ='</span>, a, <span class="string">'b ='</span>, b, <span class="string">'c ='</span>, c, <span class="string">'args ='</span>, args, <span class="string">'kw ='</span>, kw)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span><span class="params">(a, b, c=<span class="number">0</span>, *, d, **kw)</span>:</span></span><br><span class="line">    print(<span class="string">'a ='</span>, a, <span class="string">'b ='</span>, b, <span class="string">'c ='</span>, c, <span class="string">'d ='</span>, d, <span class="string">'kw ='</span>, kw)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">0</span> args = () kw = &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>, c=<span class="number">3</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">3</span> args = () kw = &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'a'</span>, <span class="string">'b'</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">3</span> args = (<span class="string">'a'</span>, <span class="string">'b'</span>) kw = &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, x=<span class="number">99</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">3</span> args = (<span class="string">'a'</span>, <span class="string">'b'</span>) kw = &#123;<span class="string">'x'</span>: <span class="number">99</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f2(<span class="number">1</span>, <span class="number">2</span>, d=<span class="number">99</span>, ext=<span class="keyword">None</span>)</span><br><span class="line">a = <span class="number">1</span> b = <span class="number">2</span> c = <span class="number">0</span> d = <span class="number">99</span> kw = &#123;<span class="string">'ext'</span>: <span class="keyword">None</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>另外，对于任意函数，都可以通过类似func(<em>args, *</em>kw)的形式调用它，无论它的参数是如何定义的</p>
+<p>反之，接受任何参数的函数，可以定义为func(<em>args, *</em>kw)这种形式。这种定义并不好，实际上，没有通用的规则在一个接受任何参数的函数内部做处理。但是对于decorator等一些应用，接受任何参数的设定就非常有用，因为decorator不关心包装的函数参数是什么，它确实可能需要一个这样的机制来传参。</p>
+<h3 id="u6CE8_u610F_u70B9_uFF1A"><a href="#u6CE8_u610F_u70B9_uFF1A" class="headerlink" title="注意点："></a>注意点：</h3><ol>
+<li><p>关键字参数会覆盖位置参数的默认值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a=<span class="string">'a'</span>, b=<span class="string">'b'</span>, c=<span class="string">'c'</span>, **kwargs)</span>:</span></span><br><span class="line">    print(<span class="string">'a:%s, b:%s, c:%s'</span> % (a, b, c))</span><br><span class="line">func(**&#123;<span class="string">'a'</span>: <span class="string">'z'</span>, <span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>&#125;)  <span class="comment"># 关键字参数会覆盖前面的默认值</span></span><br><span class="line"><span class="comment"># output: a:z, b:d, c:r</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关键字参数与默认参数不同</p>
+<ul>
+<li>在定义的适合，默认参数本质上还是给了默认值的位置参数，必须定义在关键字参数的前面；而关键字参数应该最后定义，并且需要<code>**</code>表达式</li>
+<li>在调用时候，默认参数部分会优先匹配，匹配之后剩下来的才给关键字参数。所以在函数调用的时候谈论关键字参数实际上没有意义，它只是函数定义时的一个为了扩展用的占位符而已<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a=<span class="string">'a'</span>, b=<span class="string">'b'</span>, c=<span class="string">'c'</span>, **kwargs)</span>:</span></span><br><span class="line">    print(a, b, c)</span><br><span class="line">    print(kwargs)</span><br><span class="line"></span><br><span class="line">func()</span><br><span class="line"><span class="comment"># output: a b c &#123;&#125;</span></span><br><span class="line">func(**&#123;<span class="string">'a'</span>: <span class="string">'z'</span>, <span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>&#125;)</span><br><span class="line"><span class="comment"># output: z d r &#123;&#125; # 注意，全部先匹配了默认参数</span></span><br><span class="line">func(**&#123;<span class="string">'a'</span>: <span class="string">'z'</span>, <span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>, <span class="string">'d'</span>:<span class="string">'z'</span>&#125;)</span><br><span class="line"><span class="comment"># output: z d r &#123;'d': 'z'&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用kwargs为没有提供默认值的位置参数提供值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a, b=<span class="string">'b'</span>, c=<span class="string">'c'</span>, **kwargs)</span>:</span></span><br><span class="line">    print(a, b, c)</span><br><span class="line">    print(kwargs)</span><br><span class="line">func(**&#123;<span class="string">'a'</span>: <span class="string">'z'</span>, <span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>&#125;)</span><br><span class="line"><span class="comment"># output: z d r &#123;&#125;</span></span><br><span class="line"><span class="comment"># 如果kwargs里面没有为a提供值，那么就会报TypeError了</span></span><br><span class="line">func(**&#123;<span class="string">'b'</span>: <span class="string">'d'</span>, <span class="string">'c'</span>: <span class="string">'r'</span>&#125;)</span><br><span class="line"><span class="comment"># output: TypeError: func() missing 1 required positional argument: 'a'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="Best_Practices_3A"><a href="#Best_Practices_3A" class="headerlink" title="Best Practices:"></a>Best Practices:</h3><ol>
+<li><p><a href="https://www.python.org/dev/peps/pep-3102/" target="_blank" rel="external">PEP-3102</a>: 定义了keyworkd-only 参数（本质就是命名关键字参数），避免模糊不清地被位置参数匹配。（”keyword-only” arguments: arguments that can only be supplied by keyword and which will never be automatically filled in by a positional argument）</p>
+<p>有时候使用者希望函数可以接受可变参数，同时接受一些以keword形式传递的实参。如果不允许在可变参数后面定义named-keyword参数的话，唯一的解决办法是同时定义<code>*args</code>和<code>**kwargs</code>，然后手动抽取其中的一些entry。<br>Why? 看实参传递的顺序，non-keyword实参 &gt; keyword实参。所以如果定义在可变参数前，可能会被位置参数匹配掉(也就是不是真正意义上的keyword参数，而可能被解释器认为是带默认值的位置参数)。</p>
+<p>PEP3102允许在可变参数后面定义regular parameter,作为keyword-only arguments。永远不会被位置参数匹配，必须指定名字。</p>
+<p>定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同时有可变参数存在， 可变参数会suck up所有的non-keyword实参</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sortwords</span><span class="params">(*wordlist, case_sensitive=False)</span>:</span></span><br><span class="line"><span class="comment"># 没有可变参数存在, * means不允许任何可变参数存在</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sortwords2</span><span class="params">(*, case_sensitive)</span>:</span></span><br></pre></td></tr></table></figure>
+<p>显然，case_sensitive只能以keyword的方式赋值，不会被位置参数匹配。</p>
+</li>
+</ol>
+<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431752945034eb82ac80a3e64b9bb4929b16eeed1eb9000" target="_blank" rel="external">廖雪峰的Python教程</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-3102/" target="_blank" rel="external">PEP3102</a> </li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
+<ol>
+<li>固定参数(位置参数)</li>
+<li>默认参数</li>
+<li>可变参数</li>
+<li>关键字参数</li>
+</ol>
+<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
+<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>]]>
+    
+    </summary>
+    
+      <category term="python" scheme="http://paranoidq.github.io/tags/python/"/>
+    
+      <category term="python" scheme="http://paranoidq.github.io/categories/python/"/>
     
   </entry>
   
