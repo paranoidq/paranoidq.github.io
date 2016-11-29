@@ -4,7 +4,7 @@
   <subtitle><![CDATA[佳思忽来，书能下酒；侠情一往，云可赠人。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://paranoidq.github.io/"/>
-  <updated>2016-10-25T13:57:51.000Z</updated>
+  <updated>2016-11-29T13:18:41.000Z</updated>
   <id>http://paranoidq.github.io/</id>
   
   <author>
@@ -13,6 +13,103 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Http KeepAlive的理解]]></title>
+    <link href="http://paranoidq.github.io/2016/11/29/http-keepalive-vs-pipeline/"/>
+    <id>http://paranoidq.github.io/2016/11/29/http-keepalive-vs-pipeline/</id>
+    <published>2016-11-29T13:11:10.000Z</published>
+    <updated>2016-11-29T13:18:41.000Z</updated>
+    <content type="html"><![CDATA[<p>本篇结合资料，阐述了Http协议中的keep alive的理解。<br><a id="more"></a></p>
+<h3 id="keepalive_u4E3A_u4EC0_u4E48_u4E0D_u80FD_u8FDE_u7EED_u53D1_u9001_u591A_u4E2A_u8BF7_u6C42_u62A5_u6587"><a href="#keepalive_u4E3A_u4EC0_u4E48_u4E0D_u80FD_u8FDE_u7EED_u53D1_u9001_u591A_u4E2A_u8BF7_u6C42_u62A5_u6587" class="headerlink" title="keepalive为什么不能连续发送多个请求报文"></a>keepalive为什么不能连续发送多个请求报文</h3><p>知乎原贴：<a href="https://www.zhihu.com/question/26515427" target="_blank" rel="external">https://www.zhihu.com/question/26515427</a></p>
+<p>keepalive之前，是发出一个request,然后等待收取 response,在没有 conten-length的时候利用关闭链接的事件来判断 response接收完毕。因为那个时候网站就是一个HTML的文本，你仅仅需要请求一次就可以得到整个页面了。</p>
+<p>后来,随着网页表现形式的多样化，一个页面的资源增多，构成一个页面的文件数不再是一个，为了快速加载网页(是快速，理论上你只开一个socket用完了关，再用再开也行)，同时并行地打开多个socket来获取资源(网络IO时间和页面渲染时间的比重越大，这个效果越明显)。</p>
+<p>这个时候有一个问题就来了，我们为什么不在 一个socket上连续发送多个request。原因是因为HTTP1.1 及更低版本的协议，并没有一个字段用来区分一个response是归属于哪一个request的。但HTTP 2 就有这个字段了。因此在HTTP1.1 及更低版本，你只能在发送一个request之后，等待response的到来。</p>
+<p>直到今日，应用最广泛的依然是HTTP1.1协议,这就造成了目前浏览器都是并行加载的,是的都是并行的。</p>
+<p>在真正试图解决你的疑问的之前，我们来看一下,从发出request之前到接收respon之后，都发生了什么。</p>
+<ul>
+<li>你向浏览器的地址栏输入一个域名.如 <a href="http://www.zhihu.com" target="_blank" rel="external">http://www.zhihu.com</a></li>
+<li>浏览器向你的本地DNS服务器请求解析该域名,即将你的<a href="http://www.zhihu.com" target="_blank" rel="external">http://www.zhihu.com</a> 解析为真实的IP地址.详细协议请查询RFC文档，其中对DNS协议的格式内容，指令意义，压缩算法，等都作出了规定。</li>
+<li>拿到ip地址之后，发起TCP 握手(3次)，详情请看计算机网络TCP协议部分</li>
+<li>握手成功，构造request,即 HTTP 中request请求.并发送到目的地。有关HTTP协议的内容请查阅RFC文档可以购买HTTP权威指南作为参考和释疑.</li>
+<li>服务器接受到一个完整的request(该边界的指定一般是conten-length,chunked也有),根据用户的request内容运算出相应的response。</li>
+<li>服务器将response 沿着request建立的连接，向浏览器(客户端)发送数据。</li>
+<li>keepalive的时候不关闭该连接，没有keepalive的时候发起tcp close,4次握手</li>
+<li>浏览器根据接收到的response开始渲染页面。</li>
+</ul>
+<p>至此，一个网页的打开过程完毕，我们从中提取出耗时的部分。</p>
+<ul>
+<li>DNS查询时间(一来一回,走UDP协议) 网络IO</li>
+<li>tcp 建立连接握手 网络IO</li>
+<li>request构造时间(cpu运算)</li>
+<li>request发送完毕时间(网络IO)</li>
+<li>服务器接收request运算构造response(CPU运算,特指构造response过程中没有任何IO操作)</li>
+<li>服务器发送response到客户端的时间(网络IO)</li>
+<li>服务器关闭连接时间(IO)</li>
+<li>客户端接收数据渲染页面时间(cpu运算)。</li>
+</ul>
+<p>至此，一个流程就这样简单地构造完毕了。</p>
+<p>好了，我们的目标是,尽可能地缩短完成一个页面加载的时间。<br>那么我们就需要不断地削减上述时间中的某一个。<br>到底什么才是最好的方案，将随着上述时间的比重不断地变化，没有什么是最优的。</p>
+<p>浏览器默认的常用做法是，并行打开多个连接向服务器请求资源.（这里要注意）请求第一个页面的时候，只有一个连接(有的浏览器为了加速后面的多tcp问题，会有预连接,但是效果却因为资源不一定在一个ip上或者服务器不支持过多的连接而没有太大效果)，这里请求道的response之后解析出其关联的其他资源，才开始并行连接获取资源。</p>
+<p>但是,tcp的握手和关闭是一个想当耗时,而且重复的过程(当传输速度变快的时候这个的比重相当大)，因此 keepalive的作用就是用来 复用已经打开的tcp连接.</p>
+<p>这里有个数学问题，请求6个资源是，开3个连接复用三个呢,还是开6个连接,这就看情况了。</p>
+<p>1.浏览器已经并行了，这个跟你想的不一样.<br>2.keepalive，是复用的意思，不是连续发出多个request.(这是HTTP1.1)，不算是串行。</p>
+<p>个人看法：<br>HTTP1.1 request和response 的无标识符问题(即response无法指明是哪一个request的)，就造就了现在这种情况。HTTP 2 协议解除了这个问题。</p>
+<p>HTTP 1.1，也没有一个request 多个 response的机制，没request，光有response的机制。关于这个特性HTTP 2有实现，但是争议依然比较大。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>本篇结合资料，阐述了Http协议中的keep alive的理解。<br>]]>
+    
+    </summary>
+    
+      <category term="http" scheme="http://paranoidq.github.io/tags/http/"/>
+    
+      <category term="network" scheme="http://paranoidq.github.io/tags/network/"/>
+    
+      <category term="keepalive" scheme="http://paranoidq.github.io/tags/keepalive/"/>
+    
+      <category term="network" scheme="http://paranoidq.github.io/categories/network/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[HttpClient使用实践]]></title>
+    <link href="http://paranoidq.github.io/2016/11/29/httpclient-usage-practice/"/>
+    <id>http://paranoidq.github.io/2016/11/29/httpclient-usage-practice/</id>
+    <published>2016-11-29T12:51:09.000Z</published>
+    <updated>2016-11-29T13:37:14.000Z</updated>
+    <content type="html"><![CDATA[<p>本篇主要总结在HttpClient使用过程中的最佳实践、注意点以及踩到的坑。<br><a id="more"></a></p>
+<h3 id="u5305_u542B_u8FDE_u63A5_u6C60_u7684HttpClient"><a href="#u5305_u542B_u8FDE_u63A5_u6C60_u7684HttpClient" class="headerlink" title="包含连接池的HttpClient"></a>包含连接池的HttpClient</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = <span class="keyword">new</span> PoolingHttpClientConnectionManager();</span><br><span class="line">poolingHttpClientConnectionManager.setDefaultMaxPerRoute(WcgProperties.WCG_HTTP_CLIENT_POOL_MAX_CONNECTION_PER_ROUTE);</span><br><span class="line">poolingHttpClientConnectionManager.setMaxTotal(WcgProperties.WCG_HTTP_CLIENT_POOL_MAX_CONNECTION_PER_TARGET);</span><br><span class="line"></span><br><span class="line">HttpClientBuilder clientBuilder = HttpClientBuilder.create();</span><br><span class="line">clientBuilder.setConnectionManager(poolingHttpClientConnectionManager)</span><br><span class="line">        .setConnectionTimeToLive(WcgProperties.WCG_HTTP_CLIENT_POOL_TTL, TimeUnit.SECONDS)</span><br><span class="line">        .setConnectionManagerShared(<span class="keyword">true</span>)</span><br><span class="line">        .setKeepAliveStrategy(<span class="keyword">new</span> DefaultConnectionKeepAliveStrategy() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            public long getKeepAliveDuration(HttpResponse response, HttpContext context) &#123;</span><br><span class="line">            <span class="keyword">return</span> WcgProperties.WCG_HTTP_CLIENT_KEEP_ALIVE_TIMEOUT * <span class="number">1000</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">client = clientBuilder.build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 是否开启idle connection auto close</span></span><br><span class="line"><span class="keyword">if</span> (WcgProperties.ENABLE_IDLE_CONNECTION_AUTO_CLOSE == <span class="number">1</span>) &#123;</span><br><span class="line">    IdleConnManageUtil.closeIdleConnectionsPeriodically(poolingHttpClientConnectionManager);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="markdown">/<span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span><span class="strong">*****</span>*/</span></span></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">IdleConnManageUtil</span> </span>&#123;</span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">void</span> closeIdleConnectionsPeriodically(PoolingHttpClientConnectionManager connectionManager) &#123;</span><br><span class="line">        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(<span class="keyword">new</span> ThreadFactory() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            public Thread newThread(Runnable runnable) &#123;</span><br><span class="line">                Thread thread = <span class="keyword">new</span> Thread(runnable);</span><br><span class="line">                thread.setDaemon(<span class="keyword">true</span>);</span><br><span class="line">                <span class="keyword">return</span> thread;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        scheduledExecutorService.scheduleAtFixedRate(<span class="keyword">new</span> IdleConnectionMonitorThread(connectionManager), <span class="number">60</span>, WcgProperties.WCG_HTTP_IDLE_CONNECTION_ALIVE_TIMEOUT, TimeUnit.SECONDS);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意点：</p>
+<ul>
+<li>可以理解为<code>setDefaultMaxPerRoute</code>针对单个IP，<code>setMaxTotal</code>针对所有请求</li>
+<li><code>setKeepAliveStrategy</code>可以自定义TCP连接KeepAlive的时间。但是需要注意的是，如果TCP连接在池中空闲的期间到期了，那么即使Server端关闭连接，Client端的这个TCP socket也感知不到。此时Server处于<code>CLOSE_WAIT</code>状态，知道TCP Socket从池中被唤醒或者超过CLOSE_WAIT时间或者被池自己关掉。当TCP被唤醒时，C端会感知到S端的关闭连接操作，因此会关闭这个TCP链路，重新建立一条链路发送下一次请求。（等于说每次request之前都会检查一下从池中取出的TCP链路是否有效，通过这个机制来保证不会出现C端拿着无效的TCP链路去请求）但是同样，以上的机制可能会导致S端有很多的<code>CLOSE_WAIT</code>状态，严重时可能造成Socket耗尽，这点需要注意。</li>
+<li><code>closeIdleConnectionsPeriodically</code>是自定义函数，可以定时关闭连接池中长时间不用的连接</li>
+</ul>
+<h3 id="u53D1_u9001request_u7684_u51E0_u79CD_u65B9_u6CD5_u548C_u6CE8_u610F_u70B9"><a href="#u53D1_u9001request_u7684_u51E0_u79CD_u65B9_u6CD5_u548C_u6CE8_u610F_u70B9" class="headerlink" title="发送request的几种方法和注意点"></a>发送request的几种方法和注意点</h3><h4 id="u63A8_u8350_u7684_u65B9_u5F0F"><a href="#u63A8_u8350_u7684_u65B9_u5F0F" class="headerlink" title="推荐的方式"></a>推荐的方式</h4><figure class="highlight vbscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">response</span> = this.client.<span class="keyword">execute</span>(<span class="built_in">request</span>, <span class="keyword">new</span> ResponseHandler&lt;<span class="built_in">Response</span>&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">Response</span> handleResponse(HttpResponse <span class="built_in">response</span>) throws ClientProtocolException, IOException &#123;</span><br><span class="line">        return <span class="built_in">Response</span>.create(</span><br><span class="line">                <span class="built_in">response</span>.getStatusLine().getStatusCode(),</span><br><span class="line">                <span class="built_in">response</span>.getStatusLine().getReasonPhrase(),</span><br><span class="line">                HttpClient.this.getHttpResponse(</span><br><span class="line">                        IOUtils.toByteArray(<span class="built_in">response</span>.getEntity().getContent()),</span><br><span class="line">                        paramsPack)</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这种方式下，HttpClient将会替你<strong>回收</strong>连接。这里用<strong>回收</strong>而不是销毁，是因为HttpClient在默认的情况下，是会进行连接复用的。</p>
+<h4 id="u81EA_u884C_u63A7_u5236_u7684_u65B9_u5F0F"><a href="#u81EA_u884C_u63A7_u5236_u7684_u65B9_u5F0F" class="headerlink" title="自行控制的方式"></a>自行控制的方式</h4><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HttpClient httpClient = <span class="keyword">new</span> HttpClient();</span><br><span class="line">HttpMethod <span class="function"><span class="keyword">method</span> = <span class="title">new</span> <span class="title">GetMethod</span><span class="params">(uri)</span>;</span></span><br><span class="line"><span class="keyword">try</span> <span class="comment">&#123;</span><br><span class="line">    int statusCode = httpClient.executeMethod(method);</span><br><span class="line">    byte[] responseBody = method.getResponseBody();</span><br><span class="line">    // ...</span><br><span class="line">    return stuff;</span><br><span class="line">&#125;</span> <span class="keyword">finally</span> <span class="comment">&#123;</span><br><span class="line">    method.releaseConnection();</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>调用<code>method.releaseConnection();</code>释放了connection使得connection对于HttpClient而言重新可用，而非真正的关闭该connection，原因在于使用了Http1.1协议，HttpClient可以在同一个connection中批量发送后续的请求。</p>
+<h4 id="u81EA_u884C_u63A7_u5236_u7684_u65B9_u5F0F2"><a href="#u81EA_u884C_u63A7_u5236_u7684_u65B9_u5F0F2" class="headerlink" title="自行控制的方式2"></a>自行控制的方式2</h4><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    CloseableHttpResponse resp = httpClient.execute(httpGet);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// Do what you have to do </span></span><br><span class="line">    <span class="comment">// but make sure the response gets closed no matter what</span></span><br><span class="line">    <span class="comment">// even if do not care about its content</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        resp.close();</span><br><span class="line">    &#125;        </span><br><span class="line">&#125; <span class="keyword">while</span> (nextPage);</span><br></pre></td></tr></table></figure>
+<p>注意：必须要在finally块中调用<code>resp.close()</code>，否则这次请求会一直占用连接，不会被回收。而<strong>默认的情况下，一个正常new出来的HttpClient实例只会给一个route留2个connection</strong> [1]，因此一旦没有关闭，那么在多线程的情况下，上面的代码至多只能执行2次就会阻塞。</p>
+<p>另一种释放连接的方法是：调用<code>EntityUtils.consume(resp);</code>，该函数内部会调用<code>resp.close()</code>从而释放连接。但是需要注意的是这种方式存在安全隐患，要明确resp不会过大或者是恶意的应答，从而挤爆缓冲区。最好能判断一下resp的大小，对于明显过大的应答要进行过滤。</p>
+<h3 id="u53D6_u6D88request"><a href="#u53D6_u6D88request" class="headerlink" title="取消request"></a>取消request</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HttpGet <span class="keyword">get</span> = <span class="keyword">new</span> HttpGet();</span><br><span class="line"><span class="keyword">get</span>.abor1.</span><br></pre></td></tr></table></figure>
+<h3 id="u53C2_u8003_u8D44_u6599_uFF1A"><a href="#u53C2_u8003_u8D44_u6599_uFF1A" class="headerlink" title="参考资料："></a>参考资料：</h3><ol>
+<li><a href="http://stackoverflow.com/questions/22069821/apache-httpclient-4-3-3-execute-method-for-a-get-request-blocks-and-never-return" target="_blank" rel="external">http://stackoverflow.com/questions/22069821/apache-httpclient-4-3-3-execute-method-for-a-get-request-blocks-and-never-return</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>本篇主要总结在HttpClient使用过程中的最佳实践、注意点以及踩到的坑。<br>]]>
+    
+    </summary>
+    
+      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
+    
+      <category term="httpclient" scheme="http://paranoidq.github.io/tags/httpclient/"/>
+    
+      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Java程序和Jvm编码机制的分析]]></title>
@@ -80,40 +177,6 @@
       <category term="基础" scheme="http://paranoidq.github.io/tags/%E5%9F%BA%E7%A1%80/"/>
     
       <category term="encoding" scheme="http://paranoidq.github.io/tags/encoding/"/>
-    
-      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Java Webservice实践（3）在tomcat容器中发布webservice服务]]></title>
-    <link href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-3/"/>
-    <id>http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-3/</id>
-    <published>2016-10-20T13:39:04.000Z</published>
-    <updated>2016-10-25T13:31:28.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
-<p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>
- <a id="more"></a>
-<h3 id="u57FA_u4E8Espring_framework"><a href="#u57FA_u4E8Espring_framework" class="headerlink" title="基于spring framework"></a>基于spring framework</h3><p>基于Spring的配置方式很简单，我们只需要关联对应的webservice bean，然后定义访问路径就可以了。</p>
-<p>项目的结构类似下图：<br><img src="/img/webservice/spring-config-1.png" alt="cxf-spring-intergeration"></p>
-<h4 id="Step_1"><a href="#Step_1" class="headerlink" title="Step 1"></a>Step 1</h4><p>在<code>webservice-definition-beans.xml</code>中，我们给出jaxws的endpoint的定义，配置某一个webservice的实现类以及这个服务<strong>对应于项目路径的相对URL</strong>。需要注意的是，这里可以直接写具体的实现类，而不一定需要引用<code>service-definition-beans.xml</code>中定义的bean。当然，如果统一在spring的beans定义文件中定义了，那么在webservice的xml定义中只需要简单引用一下即可。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span><span class="meta">?&gt;</span></span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:jaxws</span>=<span class="string">"http://cxf.apache.org/jaxws"</span></span><br><span class="line">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span><br><span class="line">                       http://www.springframework.org/schema/beans/spring-beans.xsd</span><br><span class="line">                       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--&lt;import resource="classpath:service-definition-beans.xml"/&gt;--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">resource</span>=<span class="string">"classpath:META-INF/cxf/cxf.xml"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">resource</span>=<span class="string">"classpath:META-INF/cxf/cxf-extension-soap.xml"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">resource</span>=<span class="string">"classpath:META-INF/cxf/cxf-servlet.xml"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">jaxws:endpoint</span> <span class="attr">id</span>=<span class="string">"webservice"</span> <span class="attr">implementor</span>=<span class="string">"com.cup.wcg.access.webservice.WcgWsImpl"</span> <span class="attr">address</span>=<span class="string">"/request"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="Step_2"><a href="#Step_2" class="headerlink" title="Step 2"></a>Step 2</h4><p>配置完webservice bean的xml文件之后，配置web.xml:<br><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;context-param&gt;</span></span><br><span class="line">    <span class="params">&lt;param-name&gt;</span>contextConfigLocation<span class="params">&lt;/param-name&gt;</span></span><br><span class="line">    <span class="params">&lt;param-value&gt;</span>WEB-INF/webservice-definition-beans.xml<span class="params">&lt;/param-value&gt;</span></span><br><span class="line"><span class="params">&lt;/context-param&gt;</span></span><br><span class="line"><span class="params">&lt;servlet&gt;</span></span><br><span class="line">    <span class="params">&lt;servlet-name&gt;</span>CXFServlet<span class="params">&lt;/servlet-name&gt;</span></span><br><span class="line">    <span class="params">&lt;servlet-class&gt;</span>org.apache.cxf.transport.servlet.CXFServlet<span class="params">&lt;/servlet-class&gt;</span></span><br><span class="line">    <span class="params">&lt;load-on-startup&gt;</span><span class="number">1</span><span class="params">&lt;/load-on-startup&gt;</span></span><br><span class="line"><span class="params">&lt;/servlet&gt;</span></span><br><span class="line"><span class="params">&lt;servlet-mapping&gt;</span></span><br><span class="line">    <span class="params">&lt;servlet-name&gt;</span>CXFServlet<span class="params">&lt;/servlet-name&gt;</span></span><br><span class="line">    <span class="params">&lt;url-pattern&gt;</span><span class="meta-keyword">/ws/</span>*<span class="params">&lt;/url-pattern&gt;</span></span><br><span class="line"><span class="params">&lt;/servlet-mapping&gt;</span></span><br><span class="line"><span class="params">&lt;listener&gt;</span></span><br><span class="line">    <span class="params">&lt;listener-class&gt;</span></span><br><span class="line">        org.springframework.web.context.ContextLoaderListener</span><br><span class="line">    <span class="params">&lt;/listener-class&gt;</span></span><br><span class="line"><span class="params">&lt;/listener&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>其中CXFServlet指明了路径到webservice的映射关系。</p>
-<h3 id="u57FA_u4E8EServlet"><a href="#u57FA_u4E8EServlet" class="headerlink" title="基于Servlet"></a>基于Servlet</h3><p>参考这篇文章<a href="https://www.oschina.net/question/54100_26066" target="_blank" rel="external">https://www.oschina.net/question/54100_26066</a></p>
-<h4 id="Step_1-1"><a href="#Step_1-1" class="headerlink" title="Step 1"></a>Step 1</h4><p>继承CXFNoSpringServlet，并override其中的loadBus方法<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.<span class="type">ServletConfig</span>;</span><br><span class="line"><span class="keyword">import</span> javax.xml.ws.<span class="type">Endpoint</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> org.apache.cxf.transport.servlet.<span class="type">CXFNonSpringServlet</span>;</span><br><span class="line">  </span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">WebServiceServlet</span> <span class="keyword">extends</span> <span class="title">CXFNonSpringServlet</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> long serialVersionUID = <span class="number">-5314312869027558456</span>L;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> void loadBus(<span class="type">ServletConfig</span> servletConfig) &#123;</span><br><span class="line">        <span class="keyword">super</span>.loadBus(servletConfig);</span><br><span class="line">        <span class="type">System</span>.out.println(<span class="string">"#####################"</span>);</span><br><span class="line">        <span class="type">Endpoint</span>.publish(<span class="string">"/helloWorldService"</span>, <span class="keyword">new</span> <span class="type">HelloWorldServiceImpl</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="Step_2-1"><a href="#Step_2-1" class="headerlink" title="Step 2"></a>Step 2</h4><p>配置web.xml，指定webapp的URL以及对应的servlet<br><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;servlet&gt;</span></span><br><span class="line">  <span class="params">&lt;servlet-name&gt;</span>webservice<span class="params">&lt;/servlet-name&gt;</span></span><br><span class="line">  <span class="params">&lt;servlet-class&gt;</span>com.crazycoder2010.webservice.cxf.server.servlet.WebServiceServlet<span class="params">&lt;/servlet-class&gt;</span></span><br><span class="line"><span class="params">&lt;/servlet&gt;</span></span><br><span class="line"><span class="params">&lt;servlet-mapping&gt;</span></span><br><span class="line">  <span class="params">&lt;servlet-name&gt;</span>webservice<span class="params">&lt;/servlet-name&gt;</span></span><br><span class="line">  <span class="params">&lt;url-pattern&gt;</span><span class="meta-keyword">/webservice/</span>*<span class="params">&lt;/url-pattern&gt;</span></span><br><span class="line"><span class="params">&lt;/servlet-mapping&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>部署之后就可以通过<code>http://localhost:8080/CXF-Server/webservice/helloWorldService?wsdl</code>访问webservice服务了。</p>
-<h3 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
-<li><a href="https://www.oschina.net/question/54100_26066" target="_blank" rel="external">https://www.oschina.net/question/54100_26066</a></li>
-</ul>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
-<p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>]]>
-    
-    </summary>
-    
-      <category term="webservice" scheme="http://paranoidq.github.io/tags/webservice/"/>
     
       <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
     
@@ -262,6 +325,40 @@
 <li>通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
 <li>通过JAX Dispatch API的方式构建SOAP报文并调用</li>
 </ul>]]>
+    
+    </summary>
+    
+      <category term="webservice" scheme="http://paranoidq.github.io/tags/webservice/"/>
+    
+      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Java Webservice实践（3）在tomcat容器中发布webservice服务]]></title>
+    <link href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-3/"/>
+    <id>http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-3/</id>
+    <published>2016-10-20T13:39:04.000Z</published>
+    <updated>2016-10-25T13:31:28.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
+<p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>
+ <a id="more"></a>
+<h3 id="u57FA_u4E8Espring_framework"><a href="#u57FA_u4E8Espring_framework" class="headerlink" title="基于spring framework"></a>基于spring framework</h3><p>基于Spring的配置方式很简单，我们只需要关联对应的webservice bean，然后定义访问路径就可以了。</p>
+<p>项目的结构类似下图：<br><img src="/img/webservice/spring-config-1.png" alt="cxf-spring-intergeration"></p>
+<h4 id="Step_1"><a href="#Step_1" class="headerlink" title="Step 1"></a>Step 1</h4><p>在<code>webservice-definition-beans.xml</code>中，我们给出jaxws的endpoint的定义，配置某一个webservice的实现类以及这个服务<strong>对应于项目路径的相对URL</strong>。需要注意的是，这里可以直接写具体的实现类，而不一定需要引用<code>service-definition-beans.xml</code>中定义的bean。当然，如果统一在spring的beans定义文件中定义了，那么在webservice的xml定义中只需要简单引用一下即可。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span><span class="meta">?&gt;</span></span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span><br><span class="line">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:jaxws</span>=<span class="string">"http://cxf.apache.org/jaxws"</span></span><br><span class="line">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans</span><br><span class="line">                       http://www.springframework.org/schema/beans/spring-beans.xsd</span><br><span class="line">                       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--&lt;import resource="classpath:service-definition-beans.xml"/&gt;--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">resource</span>=<span class="string">"classpath:META-INF/cxf/cxf.xml"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">resource</span>=<span class="string">"classpath:META-INF/cxf/cxf-extension-soap.xml"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">import</span> <span class="attr">resource</span>=<span class="string">"classpath:META-INF/cxf/cxf-servlet.xml"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">jaxws:endpoint</span> <span class="attr">id</span>=<span class="string">"webservice"</span> <span class="attr">implementor</span>=<span class="string">"com.cup.wcg.access.webservice.WcgWsImpl"</span> <span class="attr">address</span>=<span class="string">"/request"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Step_2"><a href="#Step_2" class="headerlink" title="Step 2"></a>Step 2</h4><p>配置完webservice bean的xml文件之后，配置web.xml:<br><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;context-param&gt;</span></span><br><span class="line">    <span class="params">&lt;param-name&gt;</span>contextConfigLocation<span class="params">&lt;/param-name&gt;</span></span><br><span class="line">    <span class="params">&lt;param-value&gt;</span>WEB-INF/webservice-definition-beans.xml<span class="params">&lt;/param-value&gt;</span></span><br><span class="line"><span class="params">&lt;/context-param&gt;</span></span><br><span class="line"><span class="params">&lt;servlet&gt;</span></span><br><span class="line">    <span class="params">&lt;servlet-name&gt;</span>CXFServlet<span class="params">&lt;/servlet-name&gt;</span></span><br><span class="line">    <span class="params">&lt;servlet-class&gt;</span>org.apache.cxf.transport.servlet.CXFServlet<span class="params">&lt;/servlet-class&gt;</span></span><br><span class="line">    <span class="params">&lt;load-on-startup&gt;</span><span class="number">1</span><span class="params">&lt;/load-on-startup&gt;</span></span><br><span class="line"><span class="params">&lt;/servlet&gt;</span></span><br><span class="line"><span class="params">&lt;servlet-mapping&gt;</span></span><br><span class="line">    <span class="params">&lt;servlet-name&gt;</span>CXFServlet<span class="params">&lt;/servlet-name&gt;</span></span><br><span class="line">    <span class="params">&lt;url-pattern&gt;</span><span class="meta-keyword">/ws/</span>*<span class="params">&lt;/url-pattern&gt;</span></span><br><span class="line"><span class="params">&lt;/servlet-mapping&gt;</span></span><br><span class="line"><span class="params">&lt;listener&gt;</span></span><br><span class="line">    <span class="params">&lt;listener-class&gt;</span></span><br><span class="line">        org.springframework.web.context.ContextLoaderListener</span><br><span class="line">    <span class="params">&lt;/listener-class&gt;</span></span><br><span class="line"><span class="params">&lt;/listener&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>其中CXFServlet指明了路径到webservice的映射关系。</p>
+<h3 id="u57FA_u4E8EServlet"><a href="#u57FA_u4E8EServlet" class="headerlink" title="基于Servlet"></a>基于Servlet</h3><p>参考这篇文章<a href="https://www.oschina.net/question/54100_26066" target="_blank" rel="external">https://www.oschina.net/question/54100_26066</a></p>
+<h4 id="Step_1-1"><a href="#Step_1-1" class="headerlink" title="Step 1"></a>Step 1</h4><p>继承CXFNoSpringServlet，并override其中的loadBus方法<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.<span class="type">ServletConfig</span>;</span><br><span class="line"><span class="keyword">import</span> javax.xml.ws.<span class="type">Endpoint</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> org.apache.cxf.transport.servlet.<span class="type">CXFNonSpringServlet</span>;</span><br><span class="line">  </span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">WebServiceServlet</span> <span class="keyword">extends</span> <span class="title">CXFNonSpringServlet</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> static <span class="keyword">final</span> long serialVersionUID = <span class="number">-5314312869027558456</span>L;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> void loadBus(<span class="type">ServletConfig</span> servletConfig) &#123;</span><br><span class="line">        <span class="keyword">super</span>.loadBus(servletConfig);</span><br><span class="line">        <span class="type">System</span>.out.println(<span class="string">"#####################"</span>);</span><br><span class="line">        <span class="type">Endpoint</span>.publish(<span class="string">"/helloWorldService"</span>, <span class="keyword">new</span> <span class="type">HelloWorldServiceImpl</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Step_2-1"><a href="#Step_2-1" class="headerlink" title="Step 2"></a>Step 2</h4><p>配置web.xml，指定webapp的URL以及对应的servlet<br><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;servlet&gt;</span></span><br><span class="line">  <span class="params">&lt;servlet-name&gt;</span>webservice<span class="params">&lt;/servlet-name&gt;</span></span><br><span class="line">  <span class="params">&lt;servlet-class&gt;</span>com.crazycoder2010.webservice.cxf.server.servlet.WebServiceServlet<span class="params">&lt;/servlet-class&gt;</span></span><br><span class="line"><span class="params">&lt;/servlet&gt;</span></span><br><span class="line"><span class="params">&lt;servlet-mapping&gt;</span></span><br><span class="line">  <span class="params">&lt;servlet-name&gt;</span>webservice<span class="params">&lt;/servlet-name&gt;</span></span><br><span class="line">  <span class="params">&lt;url-pattern&gt;</span><span class="meta-keyword">/webservice/</span>*<span class="params">&lt;/url-pattern&gt;</span></span><br><span class="line"><span class="params">&lt;/servlet-mapping&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>部署之后就可以通过<code>http://localhost:8080/CXF-Server/webservice/helloWorldService?wsdl</code>访问webservice服务了。</p>
+<h3 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="https://www.oschina.net/question/54100_26066" target="_blank" rel="external">https://www.oschina.net/question/54100_26066</a></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
+<p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>]]>
     
     </summary>
     
@@ -843,6 +940,71 @@
   </entry>
   
   <entry>
+    <title><![CDATA[什么是中间件？]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/middleware-expalined-simply/"/>
+    <id>http://paranoidq.github.io/2016/05/27/middleware-expalined-simply/</id>
+    <published>2016-05-27T15:45:36.000Z</published>
+    <updated>2016-05-27T15:45:36.000Z</updated>
+    <content type="html"><![CDATA[<p>之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。</p>
+<h3 id="u5B9A_u4E49"><a href="#u5B9A_u4E49" class="headerlink" title="定义"></a>定义</h3><p>维基百科定义：</p>
+<blockquote>
+<p>提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的集中的逻辑，在现代信息技术应用框架如Web服务、面向服务的体系结构等中应用比较广泛。如数据库、Apache的Tomcat，IBM公司的WebSphere,BEA公司的WebLogic[[应用服务器]，东方通公司的Tong系列中间件，以及Kingdee公司的等都属于中间件。</p>
+</blockquote>
+<p>简单归纳：<br>业务应用 - 中间件 - 基础资源</p>
+<ul>
+<li>中间件处于两者中间的的位置，封装基础资源，向上层提供更完善的功能。</li>
+<li>基础资源包括硬的资源：如CPU、存储(分布式)、网络；我个人认为也包括进程、线程、消息队列、数据库这种软性资源，中间件对这些资源做了封装处理。</li>
+</ul>
+<h3 id="u4F5C_u7528"><a href="#u4F5C_u7528" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>封装</li>
+<li>整合</li>
+<li>屏蔽</li>
+<li>容错</li>
+</ul>
+<p>我个人归纳为这四个主要功能。封装和整合的是基础资源，使得难用的基础资源更便于使用，而不用考虑细节。（调用顺序、分布式、配置、初始化属性等等）。屏蔽的是底层细节，同时也屏蔽底层的差异（例如，JVM这种本质意义上其实也可算作中间件，通过JVM屏蔽不同系统的差异，从而能够无差异运行Java程序）。容错，则是中间件的另一个重要作用，保证上层无论如何调用，都会得到相应的处理，而不会将错误传递到底层去或直接消失。</p>
+<h3 id="u5E38_u89C1_u79CD_u7C7B_uFF1A"><a href="#u5E38_u89C1_u79CD_u7C7B_uFF1A" class="headerlink" title="常见种类："></a>常见种类：</h3><ul>
+<li>分布式调用RPC：</li>
+<li>消息队列</li>
+<li>事务处理</li>
+<li>数据库组件</li>
+<li>安全组件</li>
+<li>并发组件</li>
+<li>应用容器组件</li>
+<li>日志组件：Apache Kafaka</li>
+<li>监控组件：Zookkeeper, Mesos, </li>
+</ul>
+<h3 id="u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u7684_u51E0_u4E2A_u6848_u4F8B_28_u672C_u8282_u6765_u81EA_u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u56E2_u961F_u535A_u5BA2_29"><a href="#u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u7684_u51E0_u4E2A_u6848_u4F8B_28_u672C_u8282_u6765_u81EA_u963F_u91CC_u5DF4_u5DF4_u4E2D_u95F4_u4EF6_u56E2_u961F_u535A_u5BA2_29" class="headerlink" title="阿里巴巴中间件的几个案例(本节来自阿里巴巴中间件团队博客)"></a>阿里巴巴中间件的几个案例(本节来自阿里巴巴中间件团队博客)</h3><p><img src="http://jm.taobao.org/wp-content/uploads/2013/07/jm.jpg" alt="阿里巴巴中间件支撑平台"></p>
+<ul>
+<li><strong>Diamond</strong>: 软负载配置中心，用于存储静态配置，并能够提供配置变更动态推送功能，结构简单，超高可用性。在全网被使用于存储不经常发生变化的配置信息。</li>
+<li><strong>Notify</strong>, <strong>Meta</strong>: 消息中间件</li>
+<li><strong>HSF</strong>: 阿里分布式服务框架，统一整个集团rpc的调用，包括服务方式的统一调用，软负载，服务治理等，提供一套简单方便，高性能的分布式服务框架。</li>
+<li><strong>eagleeye</strong>: 淘宝分布式跟踪系统，该系统实现基于单链路的实时监控，系统依赖，性能调优，风险控制等</li>
+<li><strong>Pandora</strong>: 淘宝隔离容器，该系统主要解决大规模富二方包升级，二方包隔离，二方包监控等问题。</li>
+<li><strong>TDDL</strong>: 通用数据访问层，部署在客户端的jar包，用于将用户的SQL路由到指定的数据库中。目前有1000+应用在使用</li>
+<li><strong>精卫</strong>: 通用数据总线，用于将数据从一个数据节点迁移到其他一个或多个数据节点中，目前支持mysql,oracle,hbase等。目前有100+应用在使用</li>
+<li><strong>愚公</strong>: 数据自动迁移引擎，海量数据自动运维工具，可用于对用户无影响的自动扩容和缩容，数据平滑迁移，以及异构数据源迁移，目前已经完成了214次业务迁移或扩容。</li>
+<li><strong>NewSQL</strong>: NewSQL系统，可以将SQL运行于传统MYSQL/Oracle关系数据库，也可以支持NoSQL数据库如bdb , hbase等。 可以实现其中的跨机合并和跨机交操作等复杂关系操作。</li>
+<li><strong>CSP2.0</strong>: 持续稳定性平台帮助阿里系统保障高可用性，包含线上压测、容量规划、依赖治理、限流降级、监控报警、问题定位等模块。</li>
+<li><strong>Hotspot</strong>: 性能分析平台通过对基础软件、服务端、前端加载、网络、CDN等方面的性能分析，来帮助阿里系统提升吞吐量、降低延迟时间、节约成本。</li>
+<li><strong>TProfiler</strong>: TProfiler是可以在生产环境长期使用的性能分析工具，通过在Java层面记录代码执行热点、对象创建热点等数据，帮助系统定位性能瓶颈。</li>
+</ul>
+<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BB%B6" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E4%B8%AD%E9%97%B4%E4%BB%B6</a><br><a href="http://jm-blog.aliapp.com/?page_id=2449" target="_blank" rel="external">阿里巴巴中间件团队博客</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料]]>
+    </summary>
+    
+      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
+    
+      <category term="架构" scheme="http://paranoidq.github.io/tags/%E6%9E%B6%E6%9E%84/"/>
+    
+      <category term="中间件" scheme="http://paranoidq.github.io/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+      <category term="架构" scheme="http://paranoidq.github.io/categories/%E6%9E%B6%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Vim Commands]]></title>
     <link href="http://paranoidq.github.io/2016/05/27/vim-commands/"/>
     <id>http://paranoidq.github.io/2016/05/27/vim-commands/</id>
@@ -947,321 +1109,6 @@
       <category term="linux" scheme="http://paranoidq.github.io/tags/linux/"/>
     
       <category term="vim" scheme="http://paranoidq.github.io/tags/vim/"/>
-    
-      <category term="linux" scheme="http://paranoidq.github.io/categories/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[大数据生态圈技术总结（持续补充）]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/Big-data-ecosystem/"/>
-    <id>http://paranoidq.github.io/2016/05/27/Big-data-ecosystem/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u5206_u5E03_u5F0F_u6587_u4EF6_u7CFB_u7EDF"><a href="#u5206_u5E03_u5F0F_u6587_u4EF6_u7CFB_u7EDF" class="headerlink" title="分布式文件系统"></a>分布式文件系统</h3><ol>
-<li><p>磁盘</p>
-<ul>
-<li>HDFS</li>
-<li>S3</li>
-<li>Ceph</li>
-<li>NFS</li>
-<li>Gluster FS</li>
-</ul>
-</li>
-<li><p>内存</p>
-<ul>
-<li>Tachyon</li>
-<li>Spark</li>
-</ul>
-</li>
-</ol>
-<h3 id="u5206_u5E03_u5F0F_u6570_u636E_u5E93"><a href="#u5206_u5E03_u5F0F_u6570_u636E_u5E93" class="headerlink" title="分布式数据库"></a>分布式数据库</h3><ol>
-<li><p>磁盘</p>
-<ul>
-<li>Cassandra</li>
-<li>HBase</li>
-<li>MongoDB</li>
-</ul>
-</li>
-<li><p>内存 </p>
-<ul>
-<li>Redis</li>
-<li>Memcached</li>
-</ul>
-</li>
-</ol>
-<h3 id="u5206_u5E03_u5F0F_u8BA1_u7B97"><a href="#u5206_u5E03_u5F0F_u8BA1_u7B97" class="headerlink" title="分布式计算"></a>分布式计算</h3><ol>
-<li><p>批处理</p>
-<ul>
-<li>Hadoop MapReduce</li>
-<li>Spark(支持迭代)</li>
-<li>Flink(支持迭代)</li>
-</ul>
-</li>
-<li><p>流式计算</p>
-<ul>
-<li>Storm</li>
-<li>Samza</li>
-<li>Spark Streaming</li>
-<li>Flink</li>
-</ul>
-</li>
-<li><p>即席查询(ad-hoc)</p>
-<ul>
-<li>Hive</li>
-<li>SparkSQL</li>
-<li>Presto(Facebook)</li>
-<li>Impala</li>
-<li>Drill(Google Dremel的开源实现)</li>
-</ul>
-</li>
-</ol>
-<h3 id="u8D44_u6E90_u8C03_u5EA6_u4E0E_u7BA1_u7406"><a href="#u8D44_u6E90_u8C03_u5EA6_u4E0E_u7BA1_u7406" class="headerlink" title="资源调度与管理"></a>资源调度与管理</h3><ul>
-<li>ZooKeeper</li>
-<li>YARN</li>
-<li>Mesos</li>
-</ul>
-<h3 id="u5206_u5E03_u5F0F_u6D88_u606F_u7CFB_u7EDF"><a href="#u5206_u5E03_u5F0F_u6D88_u606F_u7CFB_u7EDF" class="headerlink" title="分布式消息系统"></a>分布式消息系统</h3><ul>
-<li>StormMQ</li>
-<li>RabbitMQ</li>
-<li>ZeroMQ</li>
-<li>Apache ActiveMQ</li>
-<li>Jafka(LinkedIn)</li>
-<li>Kafka(LinkedIn)</li>
-</ul>
-<h3 id="RPC_u6846_u67B6"><a href="#RPC_u6846_u67B6" class="headerlink" title="RPC框架"></a>RPC框架</h3><ul>
-<li>Apache Avro</li>
-<li>Thrift(Facebook)</li>
-<li>Kyro</li>
-</ul>
-<h3 id="u96C6_u7FA4_u76D1_u63A7"><a href="#u96C6_u7FA4_u76D1_u63A7" class="headerlink" title="集群监控"></a>集群监控</h3><ul>
-<li>Zabbix</li>
-<li>Ganglia</li>
-<li>Nagios</li>
-<li>Ambari()</li>
-</ul>
-<h3 id="u6570_u636E_u6536_u96C6"><a href="#u6570_u636E_u6536_u96C6" class="headerlink" title="数据收集"></a>数据收集</h3><ul>
-<li>Flume</li>
-<li>Scribe(Facebook)</li>
-<li>Logstash</li>
-<li>Kafka</li>
-</ul>
-<h3 id="u56FE_u8BA1_u7B97_u6846_u67B6"><a href="#u56FE_u8BA1_u7B97_u6846_u67B6" class="headerlink" title="图计算框架"></a>图计算框架</h3><ul>
-<li>Spark Graphx</li>
-<li>PowerGraph</li>
-<li>Giraph</li>
-<li>Neo4j</li>
-</ul>
-<h3 id="u5927_u89C4_u6A21_u673A_u5668_u5B66_u4E60"><a href="#u5927_u89C4_u6A21_u673A_u5668_u5B66_u4E60" class="headerlink" title="大规模机器学习"></a>大规模机器学习</h3><ul>
-<li>Spark MLlib</li>
-<li>Mahout</li>
-<li>PredictionIO</li>
-</ul>
-<h3 id="u641C_u7D22_u5F15_u64CE"><a href="#u641C_u7D22_u5F15_u64CE" class="headerlink" title="搜索引擎"></a>搜索引擎</h3><ul>
-<li>Lucene</li>
-<li>Solr</li>
-<li>ElasticSearch</li>
-<li>Sphinx</li>
-<li>SenseiDB</li>
-</ul>
-<h3 id="IaaS"><a href="#IaaS" class="headerlink" title="IaaS"></a>IaaS</h3><ul>
-<li>OpenStack</li>
-<li>Docker </li>
-<li>Kubernetes(容器调度管理)</li>
-</ul>
-<h3 id="u57FA_u7840_u7ED3_u6784"><a href="#u57FA_u7840_u7ED3_u6784" class="headerlink" title="基础结构"></a>基础结构</h3><ul>
-<li>LevelDB</li>
-<li>SSTable(BigTable基础)</li>
-<li>RecordIO(文件格式)</li>
-<li>Flat Buffer(Google, 高效、跨平台的序列化库)</li>
-<li>ProtocolBuffers(Google, 数据描述语言，类似于XML能够将结构化数据序列化，可用于数据存储、通信协议等方面)</li>
-<li>Consistent Hashing</li>
-<li>Netty(提供异步的、事件驱动的网络应用程序框架和工具，用以快速开发高性能、高可靠性的网络服务器和客户端程序)</li>
-<li>BloomFilter</li>
-</ul>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.36dsj.com/archives/25042" target="_blank" rel="external">http://www.36dsj.com/archives/25042</a><br><a href="http://www.csdn.net/article/2015-09-11/2825674" target="_blank" rel="external">http://www.csdn.net/article/2015-09-11/2825674</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="u5206_u5E03_u5F0F_u6587_u4EF6_u7CFB_u7EDF"><a href="#u5206_u5E03_u5F0F_u6587_u4EF6_u7CFB_u7EDF" class="headerlink" title="分布式文件系统"><]]>
-    </summary>
-    
-      <category term="大数据" scheme="http://paranoidq.github.io/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
-    
-      <category term="攻略" scheme="http://paranoidq.github.io/tags/%E6%94%BB%E7%95%A5/"/>
-    
-      <category term="top" scheme="http://paranoidq.github.io/tags/top/"/>
-    
-      <category term="大数据" scheme="http://paranoidq.github.io/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Mac中如何查找Java的路径]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/Mac-java-config/"/>
-    <id>http://paranoidq.github.io/2016/05/27/Mac-java-config/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u65B9_u6CD51_uFF1A"><a href="#u65B9_u6CD51_uFF1A" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/jav<span class="built_in">a_home</span></span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<h3 id="u65B9_u6CD52_uFF1A"><a href="#u65B9_u6CD52_uFF1A" class="headerlink" title="方法2："></a>方法2：</h3><p>step-wise的方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> java</span><br></pre></td></tr></table></figure>
-<p>如果输出的时/usr/bin/java, 证明是链接，需要找到链接的source<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls <span class="_">-l</span> `<span class="built_in">which</span> java`</span><br></pre></td></tr></table></figure></p>
-<p>输出为实际的java安装路径: <code>rwxr-xr-x  1 root  wheel  74 11 25 13:36 /usr/bin/java -&gt; /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java</code></p>
-<p>如果/usr/bin/java指向的仍然是一个symbolic link, 那么继续执行以下命令，直到找到source为止 </p>
-<p>[注]</p>
-<p>ls -l ` which java`</p>
-<p>单引号把Linux命令视为字符集合。反引号会强迫执行Linux命令。和<code>$()</code>一样。在执行一条命令时，会先将其中或者是<code>$()</code> 中的语句当作命令执行一遍，再将结果加入到外层命令中执行</p>
-<h3 id="u53C2_u8003_uFF1A"><a href="#u53C2_u8003_uFF1A" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://stackoverflow.com/questions/18144660/what-is-path-of-jdk-on-mac" target="_blank" rel="external">http://stackoverflow.com/questions/18144660/what-is-path-of-jdk-on-mac</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="u65B9_u6CD51_uFF1A"><a href="#u65B9_u6CD51_uFF1A" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/jav<span class="built_in">a_home</span></span><br></pre></td></tr></table></figure></p>]]>
-    
-    </summary>
-    
-      <category term="mac" scheme="http://paranoidq.github.io/tags/mac/"/>
-    
-      <category term="java" scheme="http://paranoidq.github.io/tags/java/"/>
-    
-      <category term="碎片" scheme="http://paranoidq.github.io/tags/%E7%A2%8E%E7%89%87/"/>
-    
-      <category term="java" scheme="http://paranoidq.github.io/categories/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Linux Server Commands]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/linux-server-command/"/>
-    <id>http://paranoidq.github.io/2016/05/27/linux-server-command/</id>
-    <published>2016-05-27T15:45:36.000Z</published>
-    <updated>2016-07-31T16:07:42.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="ssh_u8FDC_u7A0B_u767B_u5F55"><a href="#ssh_u8FDC_u7A0B_u767B_u5F55" class="headerlink" title="ssh远程登录"></a>ssh远程登录</h3><p>服务器需要开启远程服务</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>客户端登陆：</p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh paranoidq@<span class="string">[ip]</span></span><br></pre></td></tr></table></figure>
-<p>免密码登陆</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh-keygen -t rsa </span><br><span class="line"></span><br><span class="line"><span class="comment"># 将公钥id_rsa.pub拷贝到目标机器上的对应位置</span></span><br><span class="line"><span class="variable">$ </span>scp /Users/paranoidq/.ssh/id_rsa.pub paranoidq<span class="variable">@192</span>.<span class="number">168.235</span>.<span class="number">131</span><span class="symbol">:/home/paranoidq/</span>.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
-<h3 id="u67E5_u770BLinux_u670D_u52A1_u5668_u72B6_u6001_u53C2_u6570"><a href="#u67E5_u770BLinux_u670D_u52A1_u5668_u72B6_u6001_u53C2_u6570" class="headerlink" title="查看Linux服务器状态参数"></a>查看Linux服务器状态参数</h3><h4 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h4><p>主要通过/proc文件夹下面的文件来获取</p>
-<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取CPU个数</span></span><br><span class="line">cat /<span class="keyword">proc</span>/cpuinfo |<span class="title"> grep</span> "physical<span class="title"> id"</span> |<span class="title"> sort</span> |<span class="title"> uniq</span> |<span class="title"> wc</span> -l</span><br><span class="line"></span><br><span class="line"># 获取CPU<span class="title"> core个数</span></span><br><span class="line">cat /<span class="keyword">proc</span>/cpuinfo |<span class="title"> grep</span> "cpu<span class="title"> cores"</span> |<span class="title"> uniq</span></span><br><span class="line"></span><br><span class="line"># 获取逻辑CPU个数 =<span class="title"> CPU个数</span> *<span class="title"> cores</span></span><br><span class="line">cat /<span class="keyword">proc</span>/cupinfo |<span class="title"> grep</span> "processor" |<span class="title"> wc</span> -l</span><br></pre></td></tr></table></figure>
-<h4 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h4><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 查看内存</span></span><br><span class="line">free -m <span class="meta"># 以MB的方式显示</span></span><br><span class="line"></span><br><span class="line">total   used    free    shared      buffers     cached</span><br><span class="line"><span class="number">3949</span>    <span class="number">1397</span>    <span class="number">2551</span>    <span class="number">0</span>           <span class="number">268</span>         <span class="number">917</span></span><br><span class="line">-/+ buffers/cached      <span class="number">211</span>        <span class="number">3737</span></span><br><span class="line"><span class="symbol">Swap:</span>   <span class="number">8001</span>       <span class="number">0</span>        <span class="number">8001</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>total：总内存</li>
-<li>used：已使用</li>
-<li>free：空闲</li>
-<li>shared: 多个进程共享内存</li>
-<li>buffers：buffer cache 和 cached page cache: 磁盘缓存</li>
-<li>-buffers/cached：(已用内存) = used - buffers - cached</li>
-<li>+buffers/cached：(<code>程序</code>可用内存) = free + buffers + cached</li>
-</ul>
-<p>注：</p>
-<ul>
-<li>buffer 和 cached 对操作系统来讲属于被使用的部分，但是程序可以挪用他们，因此程序可用内存需要算上这两个</li>
-<li>Linux系统内存是拿来用的，不满时不会使用到swap分区（这点和Windows不同，无论何时都会使用硬盘交换文件来读）。因此<code>如果swap没有被使用，那么就不用担心内存小。如果经常看到swap被使用，就需要考虑增加物理内存了——这是判断linux内存是否够用的标准</code></li>
-</ul>
-<h4 id="Disk"><a href="#Disk" class="headerlink" title="Disk"></a>Disk</h4><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 查看硬盘分区</span></span><br><span class="line">fdisk -l</span><br><span class="line"></span><br><span class="line"><span class="meta"># 查看fs的硬盘占用情况</span></span><br><span class="line">df -h</span><br><span class="line"></span><br><span class="line"><span class="meta"># 查看硬盘IO的性能</span></span><br><span class="line">iostat -d -x -k <span class="number">1</span> <span class="number">10</span> ???</span><br><span class="line"></span><br><span class="line"><span class="meta"># 查看目录大小</span></span><br><span class="line">du -sh /data</span><br><span class="line"></span><br><span class="line">找出占用空间最多的文件或目录前十</span><br><span class="line">du -cks * | sort -rn | head -n <span class="number">10</span></span><br></pre></td></tr></table></figure>
-<h4 id="Linux_Load"><a href="#Linux_Load" class="headerlink" title="Linux Load"></a>Linux Load</h4><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 动态反应系统负载状况</span></span><br><span class="line">top</span><br><span class="line"></span><br><span class="line"><span class="meta"># 过去1min、5min、15min内进程队列的平均进程数量</span></span><br><span class="line">uptime</span><br><span class="line"></span><br><span class="line"><span class="meta"># 可以查看系统当前有哪些用户，占用哪些终端</span></span><br><span class="line">w</span><br><span class="line"></span><br><span class="line"><span class="meta"># </span></span><br><span class="line">vmstat</span><br></pre></td></tr></table></figure>
-<ul>
-<li>uptime输出的三个load average值一般不能大于系统逻辑CPU的个数，如果长期大于，则表明CPU过于繁忙，系统负载较高</li>
-</ul>
-<h4 id="u6574_u4F53_u6027_u80FD"><a href="#u6574_u4F53_u6027_u80FD" class="headerlink" title="整体性能"></a>整体性能</h4><p>vmstat [采样时间间隔/s] [采样次数]</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">vmstat</span> <span class="number">1</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>procs<ul>
-<li>r: 等待运行的进程数</li>
-<li>b: 处于非中断睡眠状态的进程数</li>
-</ul>
-</li>
-<li>memory: <ul>
-<li>swpd: 虚拟内存使用情况（KB）</li>
-<li>free: 空闲内存</li>
-<li>buff: 被用来作为缓存的内存</li>
-</ul>
-</li>
-<li>swap：<ul>
-<li>si: 从磁盘交换到内存的页数（KB/s）</li>
-<li>so: 从内存交换到磁盘的页数（-）</li>
-</ul>
-</li>
-<li>io:<ul>
-<li>bi: 发送到块设备的块数（块/s）</li>
-<li>bo: 从块设备接收的块数</li>
-</ul>
-</li>
-<li>system:<ul>
-<li>in: 每秒的中断数，包括时钟中断</li>
-<li>cs: 每秒的上下文切换次数</li>
-</ul>
-</li>
-<li>cpu: (按CPU使用的百分比时间显示)<ul>
-<li>us: cpu用户模式使用时间</li>
-<li>sy: cpu系统模式使用时间</li>
-<li>id: cpu闲置时间</li>
-</ul>
-</li>
-</ul>
-<p>标准状况：r &lt; 5 和 b ·= 0</p>
-<p>如果r经常大于4，id经常少于50, | usr%+sy% &gt; 85% ，则表示系统的性能比较糟糕。</p>
-<h4 id="u5176_u4ED6_u67E5_u770B_u547D_u4EE4"><a href="#u5176_u4ED6_u67E5_u770B_u547D_u4EE4" class="headerlink" title="其他查看命令"></a>其他查看命令</h4><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 查看内核</span></span><br><span class="line">uname -a</span><br><span class="line"></span><br><span class="line"><span class="meta"># 简化版</span></span><br><span class="line">uname -r</span><br><span class="line"></span><br><span class="line"><span class="meta"># 查看发行版信息</span></span><br><span class="line"></span><br><span class="line">lsb_release -a</span><br><span class="line"></span><br><span class="line"><span class="meta"># 查看载入的模块(用lsmod查看lvs模块是否已经载入)</span></span><br><span class="line">lsmod | grep ip_vs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta"># 查看系统是否64位</span></span><br><span class="line"><span class="meta"># 1. 查找 /lib64目录</span></span><br><span class="line">ls -lF / | grep /$ | grep lib64</span><br><span class="line"></span><br><span class="line"><span class="meta"># 2. 通过file判断文件是32或64位</span></span><br><span class="line">file /sbin/init</span><br></pre></td></tr></table></figure>
-<h3 id="u67E5_u770B_u7F51_u7EDC_u914D_u7F6E"><a href="#u67E5_u770B_u7F51_u7EDC_u914D_u7F6E" class="headerlink" title="查看网络配置"></a>查看网络配置</h3><h4 id="Linux_u4E0B_u57FA_u672C_u7F51_u7EDC_u914D_u7F6E"><a href="#Linux_u4E0B_u57FA_u672C_u7F51_u7EDC_u914D_u7F6E" class="headerlink" title="Linux下基本网络配置"></a>Linux下基本网络配置</h4><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 修改hostname</span></span><br><span class="line">vi <span class="meta-keyword">/etc/</span>sysconfig/network</span><br><span class="line"></span><br><span class="line"><span class="meta"># 修改hosts</span></span><br><span class="line">vi <span class="meta-keyword">/etc/</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># DNS域名</span></span><br><span class="line">vi <span class="meta-keyword">/etc/</span>resolv.conf</span><br></pre></td></tr></table></figure>
-<h4 id="u670D_u52A1_u5668_u7F51_u7EDC_u8FDE_u63A5_u72B6_u51B5"><a href="#u670D_u52A1_u5668_u7F51_u7EDC_u8FDE_u63A5_u72B6_u51B5" class="headerlink" title="服务器网络连接状况"></a>服务器网络连接状况</h4><p>1.ifconfig</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br><span class="line"></span><br><span class="line"><span class="meta"># 只显示eth0的网络配置</span></span><br><span class="line">ifconfig eth0</span><br><span class="line"></span><br><span class="line"><span class="meta"># 只显示ehto0的Ip地址</span></span><br><span class="line"><span class="meta"># awk语句以空格和:为分隔符，并且打印第四列</span></span><br><span class="line">ifconfig eth0 | grep <span class="string">"inet addr"</span> | awk -F[:<span class="string">" "</span>] + <span class="string">'&#123;print $4&#125;'</span></span><br></pre></td></tr></table></figure>
-<p>2.ping </p>
-<p>使用ICMP协议中的ECHO_REQUEST数据报强制从特定主机返回相应，用于检测网络中某个主机是否活动或发生故障</p>
-<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 发生5个数据包</span></span><br><span class="line"><span class="built_in">ping</span> -c <span class="number">5</span> www<span class="number">.163</span>.com</span><br></pre></td></tr></table></figure>
-<p>3.netstat</p>
-<p>显示网络连接、路由表和网络接口等信息。常用参数：</p>
-<ul>
-<li>-a: 显示所有套接字状态</li>
-<li>-n: 打印实际地址，而不是显示对地址的解释或显示主机网络名之类的符号</li>
-<li>-r: 打印路由选择表</li>
-</ul>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">netstat -an <span class="string">| grep -v unix</span></span><br><span class="line"></span><br><span class="line">netstat -rn</span><br></pre></td></tr></table></figure>
-<p>4.traceroute</p>
-<p>跟踪网络数据包的路由途径，默认包大小40B。第一条是本机client的网关地址。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">tracerout</span> <span class="selector-tag">www</span><span class="selector-class">.163</span><span class="selector-class">.com</span></span><br></pre></td></tr></table></figure>
-<p>5.nslookup / dig</p>
-<p>查询机器的IP地址和对应的域名，其中nslookup是基于交互的，dig则直接在参数中附带网址</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">nslookup</span></span><br><span class="line">&gt; <span class="selector-tag">www</span><span class="selector-class">.163</span><span class="selector-class">.com</span></span><br><span class="line">&gt; ...</span><br><span class="line">&gt; ...</span><br><span class="line">&gt; <span class="selector-tag">exit</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">dig</span> <span class="selector-tag">www</span><span class="selector-class">.163</span><span class="selector-class">.com</span></span><br><span class="line"></span><br><span class="line"># 从根服务器开始追踪域名的解析过程</span><br><span class="line"><span class="selector-tag">dig</span> <span class="selector-tag">www</span><span class="selector-class">.163</span><span class="selector-class">.com</span> + <span class="selector-tag">trace</span></span><br></pre></td></tr></table></figure>
-<p>6.finger</p>
-<p>查询用户信息，例如用户名、主目录、登录时间等。类似w</p>
-<p>7.<code>lsof</code></p>
-<p>非常有用的命令，list open files。查看当前系统打开了哪些文件。</p>
-<p><code>利用lsof查看打开文件列表，对于系统检测和排错非常有帮助。</code></p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看某一个端口被哪些程序占用</span></span><br><span class="line"><span class="attribute">lsof</span> -i :<span class="number">22</span></span><br></pre></td></tr></table></figure>
-<p>8.Sockstat</p>
-<p>查看打开的socket情况，只适用于FreeBSD和OpenBSD，CentOS没有此命令</p>
-<h3 id="u670D_u52A1_u5668_u6027_u80FD_u8C03_u4F18_u5E38_u7528_u5DE5_u5177"><a href="#u670D_u52A1_u5668_u6027_u80FD_u8C03_u4F18_u5E38_u7528_u5DE5_u5177" class="headerlink" title="服务器性能调优常用工具"></a>服务器性能调优常用工具</h3><h4 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h4><p>确定有哪些进程正在运行和运行状态、占用资源等</p>
-<p>选项：参见man</p>
-<p>常用：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 显示所有</span><br><span class="line"><span class="keyword">ps</span> aux</span><br><span class="line"></span><br><span class="line"># 结合<span class="keyword">grep</span>，精确定位需要的进程号</span><br><span class="line"># -v ：反向选择，亦即显示出没有 <span class="string">'搜寻字符串'</span> 内容的那一行</span><br><span class="line"><span class="keyword">ps</span> aux | <span class="keyword">grep</span> -v <span class="keyword">grep</span> | <span class="keyword">grep</span> nginx</span><br></pre></td></tr></table></figure>
-<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>动态查看进程信息</p>
-<p>还可以通过交互命令完成功能：</p>
-<ul>
-<li>P: 根据CPU使用多少排序</li>
-<li>T: 根据时间、累计时间排序</li>
-<li>M: 根据使用内存大小排序</li>
-<li>q: 退出top命令</li>
-<li>m: 切换显示内存信息</li>
-<li>t：切换显示进程和CPU状态信息</li>
-<li>c: 切换显示命令名称和完整命令行</li>
-<li>W: 将当前的设置写入~/.toprc文件，这是写top配置文件的推荐方法</li>
-</ul>
-<p>最好使用的<code>htop</code>，使用更方便快捷！！！</p>
-<h4 id="pgrep"><a href="#pgrep" class="headerlink" title="pgrep"></a>pgrep</h4><p>查找当前运行的进程Id</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">pgrep</span> nginx</span><br></pre></td></tr></table></figure>
-<h4 id="kill__u548C_killall"><a href="#kill__u548C_killall" class="headerlink" title="kill 和 killall"></a>kill 和 killall</h4><p>向linux内核发送操作系统信号和某个程序的进程标识号，然后系统内核就可以对进程标识号指定的进程进行kill操作。</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 强行终止</span></span><br><span class="line">kill <span class="number">-9</span> [pid]</span><br><span class="line"></span><br><span class="line"><span class="meta"># 根据名称删除程序下所有进程</span></span><br><span class="line">killall nginx</span><br></pre></td></tr></table></figure>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p>[1] 构建高可用Linux服务器</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h3 id="ssh_u8FDC_u7A0B_u767B_u5F55"><a href="#ssh_u8FDC_u7A0B_u767B_u5F55" class="headerlink" title="ssh远程登录"></a>ssh远程登录</h3><p>服务器需要开启远程服务</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure>]]>
-    
-    </summary>
-    
-      <category term="linux" scheme="http://paranoidq.github.io/tags/linux/"/>
-    
-      <category term="server" scheme="http://paranoidq.github.io/tags/server/"/>
     
       <category term="linux" scheme="http://paranoidq.github.io/categories/linux/"/>
     
