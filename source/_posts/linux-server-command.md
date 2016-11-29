@@ -41,6 +41,12 @@ $ scp /Users/paranoidq/.ssh/id_rsa.pub paranoidq@192.168.235.131:/home/paranoidq
 
 ### 查看Linux服务器状态参数
 
+#### 版本
+```
+# 查看64位还是32位
+uname -a
+```
+
 #### CPU
 
 主要通过/proc文件夹下面的文件来获取
