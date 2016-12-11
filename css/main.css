@@ -979,7 +979,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #daecff;
+  background: #5d40d9;
 }
 .sidebar-nav {
   margin: 0 0 20px;
@@ -1123,7 +1123,7 @@ body {
     width: auto;
   }
   .main-inner {
-    margin: 240px auto 0;
+    margin: auto 0;
   }
   .footer-inner {
     padding: 0 10px;
@@ -2013,7 +2013,7 @@ ul li {
   background: #f5f5f5;
 }
 .header-inner {
-  margin-bottom: 40px;
+  margin-bottom: 0px;
   padding: 40px 0 0 0px;
 }
 .header-inner:before,
@@ -2026,7 +2026,7 @@ ul li {
 }
 @media (max-width: 767px) {
   .header-inner {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     padding: 10px;
   }
 }

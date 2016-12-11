@@ -1084,8 +1084,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/NERDTree-commands/" itemprop="url">
-                  Vim 插件NERDTree命令
+                <a class="post-title-link" href="/2016/05/27/Python-generator/" itemprop="url">
+                  Python generator
                 </a>
               
             
@@ -1105,8 +1105,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
                   </a>
                 </span>
 
@@ -1121,8 +1121,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/NERDTree-commands/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/NERDTree-commands/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Python-generator/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-generator/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1142,9 +1142,15 @@
 
       
         
-          <figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">h</span>    光标 focus 左侧树形目录</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">l</span>    光标 focus 右侧文件显示窗口</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">w</span>    光标自动在左右侧窗口切换 #！！！</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">r</span>    移动当前窗口的布局位置</span><br></pre></td></tr></table></figure>
+          <h3 id="python_generator_u7684_u8BBE_u8BA1_u8003_u8651"><a href="#python_generator_u7684_u8BBE_u8BA1_u8003_u8651" class="headerlink" title="python generator的设计考虑"></a>python generator的设计考虑</h3><p>在一般的程序设计中，function的调用是这样的：从第一行开始，一种执行到return语句结束。这种模式有一个特点:</p>
+<ol>
+<li>单一入口（entry point), 无论调用多少次，都从函数第一行开始</li>
+<li>无状态（Stateless），即函数的local变量每次都重新初始化，上一次被调用的状态丢失</li>
+<li>return返回控制权给caller,除非再次调用，控制权不会回来。</li>
+</ol>
+<p>而在有些情况下，我们希望的函数可以：yield一些值，也即函数暂时交出控制权给caller,你暂时不要销毁我的本地变量一些状态，因为将来还需要caller返回控制权，我可以继续执行下去。这就是yield以及生成器的设计初衷。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/NERDTree-commands/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Python-generator/#more" rel="contents">
               more>>
             </a>
           </div>
