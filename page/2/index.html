@@ -1084,8 +1084,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/nginx-vs-tomcat/" itemprop="url">
-                  nginx与tomcat有什么区别
+                <a class="post-title-link" href="/2016/05/27/Python-decorator-explained/" itemprop="url">
+                  Python decorator(译)
                 </a>
               
             
@@ -1105,8 +1105,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/中间件/" itemprop="url" rel="index">
-                    <span itemprop="name">中间件</span>
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
                   </a>
                 </span>
 
@@ -1121,8 +1121,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/nginx-vs-tomcat/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/nginx-vs-tomcat/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Python-decorator-explained/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-decorator-explained/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1142,9 +1142,9 @@
 
       
         
-          <h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
+          <h3 id="Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61"><a href="#Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61" class="headerlink" title="Python函数就是对象"></a>Python函数就是对象</h3><p>首先要理解python中函数就是object。一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shout</span><span class="params">(word=<span class="string">"yes"</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> word.capitalize()+<span class="string">"!"</span></span><br><span class="line"><span class="keyword">print</span> shout()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为function是对象，因此可以被赋值给变量。</span></span><br><span class="line"><span class="comment"># 注意这里没有用双括号，所以不是调用函数</span></span><br><span class="line">scream = shout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用变量srceam调用函数</span></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除原来的函数名，同样可以利用scream调用函数</span></span><br><span class="line"><span class="keyword">del</span> shout</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">print</span> shout()</span><br><span class="line"><span class="keyword">except</span> NameError, e:</span><br><span class="line">    <span class="keyword">print</span> e</span><br><span class="line">    <span class="comment">#outputs: "name 'shout' is not defined"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs: 'Yes!'</span></span><br></pre></td></tr></table></figure></p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/nginx-vs-tomcat/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Python-decorator-explained/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1187,8 +1187,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/linux-server-monitoring-tools/" itemprop="url">
-                  20个工具监控Linux服务性的性能(转)
+                <a class="post-title-link" href="/2016/05/27/Git-branch-management/" itemprop="url">
+                  Git 分支管理与实践（hexo博客源文件管理）
                 </a>
               
             
@@ -1208,8 +1208,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
                   </a>
                 </span>
 
@@ -1224,8 +1224,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/linux-server-monitoring-tools/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-monitoring-tools/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Git-branch-management/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Git-branch-management/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1245,9 +1245,15 @@
 
       
         
-          <p>对于每个系统管理员或网络管理员来说，每天要监控和调试 Linux 系统性能问题都是非常困难的工作。我已经有5年 Linux 管理员的工作经历，知道如何监控系统使其保持正常运行。为此，我们编写了对于 Linux/Unix 系统管理员非常有用的并且最常用的20个命令行系统监视工具。这些命令可以在所有版本的 Linux 下使用去监控和查找系统性能的实际原因。这些监控命令足够你选择适合你的监控场景。</p>
+          <span itemprop="articleBody">
+            
+            查看查看本地分支git branch
+查看包括远程分支git branch -a
+查看本地分支和远程分支的push情况git log &lt;local-branch&gt; ^origin/&lt;remote-branch&gt;   # 可以查看本地有远程没有的提交。git log &lt;remote-branch&gt; ^&lt;local-branch&gt;       # 可以查
+            ...
+          </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/linux-server-monitoring-tools/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Git-branch-management/#more" rel="contents">
               more>>
             </a>
           </div>
