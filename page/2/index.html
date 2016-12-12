@@ -1084,8 +1084,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/Python-parameters-explained/" itemprop="url">
-                  Python parameters
+                <a class="post-title-link" href="/2016/05/27/Python-generator/" itemprop="url">
+                  Python generator
                 </a>
               
             
@@ -1121,8 +1121,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-parameters-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-parameters-explained/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Python-generator/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-generator/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1142,17 +1142,15 @@
 
       
         
-          <h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
+          <h3 id="python_generator_u7684_u8BBE_u8BA1_u8003_u8651"><a href="#python_generator_u7684_u8BBE_u8BA1_u8003_u8651" class="headerlink" title="python generator的设计考虑"></a>python generator的设计考虑</h3><p>在一般的程序设计中，function的调用是这样的：从第一行开始，一种执行到return语句结束。这种模式有一个特点:</p>
 <ol>
-<li>固定参数(位置参数)</li>
-<li>默认参数</li>
-<li>可变参数</li>
-<li>关键字参数</li>
+<li>单一入口（entry point), 无论调用多少次，都从函数第一行开始</li>
+<li>无状态（Stateless），即函数的local变量每次都重新初始化，上一次被调用的状态丢失</li>
+<li>return返回控制权给caller,除非再次调用，控制权不会回来。</li>
 </ol>
-<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
-<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
+<p>而在有些情况下，我们希望的函数可以：yield一些值，也即函数暂时交出控制权给caller,你暂时不要销毁我的本地变量一些状态，因为将来还需要caller返回控制权，我可以继续执行下去。这就是yield以及生成器的设计初衷。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-parameters-explained/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Python-generator/#more" rel="contents">
               more>>
             </a>
           </div>
