@@ -1,6 +1,6 @@
 title: Java程序和Jvm编码机制的分析
 date: 2016-10-25 21:55:12
-tags: [encoding, 基础]
+tags: [encoding, 基础, java]
 categories: [java]
 ---
 
