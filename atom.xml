@@ -1027,60 +1027,62 @@
   </entry>
   
   <entry>
-    <title><![CDATA[Git 分支管理与实践（hexo博客源文件管理）]]></title>
-    <link href="http://paranoidq.github.io/2016/05/27/Git-branch-management/"/>
-    <id>http://paranoidq.github.io/2016/05/27/Git-branch-management/</id>
+    <title><![CDATA[Mac Terminal Commands]]></title>
+    <link href="http://paranoidq.github.io/2016/05/27/mac-terminal-commands/"/>
+    <id>http://paranoidq.github.io/2016/05/27/mac-terminal-commands/</id>
     <published>2016-05-27T15:45:36.000Z</published>
     <updated>2016-05-27T15:45:36.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="u67E5_u770B"><a href="#u67E5_u770B" class="headerlink" title="查看"></a>查看</h3><p>查看本地分支<br><code>git branch</code></p>
-<p>查看包括远程分支<br><code>git branch -a</code></p>
-<p>查看本地分支和远程分支的push情况<br><code>git log &lt;local-branch&gt; ^origin/&lt;remote-branch&gt;</code>   # 可以查看本地有远程没有的提交。<br><code>git log &lt;remote-branch&gt; ^&lt;local-branch&gt;</code>       # 可以查看远程有本地没有的提交。</p>
-<h3 id="u521B_u5EFA"><a href="#u521B_u5EFA" class="headerlink" title="创建"></a>创建</h3><p>创建本地分支<br><code>git checkout -b dev</code></p>
-<h3 id="u5173_u8054"><a href="#u5173_u8054" class="headerlink" title="关联"></a>关联</h3><p>目的：避免每次都需要制定push的具体分支，可以关联后在本地分支下直接push即可</p>
-<p>两种方案：</p>
-<ol>
-<li>在本地branch第一次push的时候就指定：<br> <code>git push -u origin &lt;remote-branch&gt;</code></li>
-<li>以后指定：<br><code>git branch --set-upstream &lt;local-branch&gt; origin/&lt;remote-branch&gt;</code><br>或<br><code>git push --set-upstream origin &lt;remote-branch&gt;</code><br>你的repo下的git/config会多出类似这样的配置：<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[branch "src"]</span></span><br><span class="line"><span class="attr">remote</span> = origin</span><br><span class="line"><span class="attr">merge</span> = refs/heads/src</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="u63A8_u9001"><a href="#u63A8_u9001" class="headerlink" title="推送"></a>推送</h3><p><code>git push origin &lt;local-branch&gt;</code>  # 推送本地分支到对应的远程分支</p>
-<p><code>git push</code> # 如果指定了远程关联，可以直接push</p>
-<p>两种配置： (注意，这个配置是写在~/.gitconfig中的，对所有的repo生效)<br><code>git config --global push.default simple</code>(更好, 只push当前分支到你使用git pull拉取的远程代码)<br><code>git config --global push.default matching</code> （如果没有指定具体分支，会push所有名字对应的分支）</p>
-<h3 id="u5220_u9664"><a href="#u5220_u9664" class="headerlink" title="删除"></a>删除</h3><p>删除本地分支<br><code>git branch -d dev (用-D强行删除)</code></p>
-<p>删除远程分支<br><code>git push origin --delete dev</code></p>
-<h3 id="u5B9E_u4F8B_uFF1A__u7BA1_u7406hexo_u7684src_u5206_u652F"><a href="#u5B9E_u4F8B_uFF1A__u7BA1_u7406hexo_u7684src_u5206_u652F" class="headerlink" title="实例： 管理hexo的src分支"></a>实例： 管理hexo的src分支</h3><p>说明：hexo的deployer本身在部署的时候只会生成static文件，并上传到github的master分支，而hexo的一些source和_config.yaml等配置文件则只在本地。因此需要将这些文件也管理到git中去，方便备份和多终端同步。</p>
-<p>基本思路是在本地利用src分支，然后上传源文件到src分支，并push到远程的src分支，即可管理。</p>
-<p>master分支由于是hexo的页面展示部分，所以其实是不能与origin/master保持同步的，也千万不能push，否则结果就是源文件覆盖了hexo-deployer push到master分支的静态文件，从而访问的时候404了。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>cd &lt;repo&gt;</span><br><span class="line"><span class="variable">$ </span>git init (optional)</span><br><span class="line"><span class="variable">$ </span>git checkout -b src</span><br><span class="line"><span class="variable">$ </span>git add .</span><br><span class="line"><span class="variable">$ </span>git commit -m <span class="string">"first commit for src branch"</span></span><br><span class="line"><span class="variable">$ </span>git remote add origin git<span class="variable">@github</span>.<span class="symbol">com:</span>&lt;username&gt;<span class="symbol">:&lt;username&gt;</span>.github.io.git (optional)</span><br><span class="line"><span class="variable">$ </span>git push origin src</span><br></pre></td></tr></table></figure>
-<ol>
-<li>optional部分，可能由于之前开始建立repo的时候已经做过了，所以不一定要在分支的过程中做了</li>
-<li>checkout的时候，需要保证master分支全部commit。（这里其实我做的不够完善，一开始应该是整个本地的网站不要init，让master分支全部被hexo-deployer接管。然后在创建分支的时候，才init。这样可以保证本地只有一个src的分支需要我手动管理。</li>
-<li>如果你手贱之前已经建立了master分支，那么有两个办法：<ul>
-<li>忽略与origin/master不同步的本地master分支</li>
-<li>删除本地的master分支 <code>git branch -D master</code></li>
+    <content type="html"><![CDATA[<p>   本文所有快捷键基于iterm2. 有些快捷键被系统屏蔽了，到<code>系统偏好设置</code>中删除无用的快捷键即可</p>
+<h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><ul>
+<li>显示光标位置： <code>command + /</code></li>
+<li>移动到行首： <code>ctrl + a</code></li>
+<li>移动到行尾： <code>ctrl + e</code></li>
+<li>向前移动一个字符： <code>ctrl + f</code> = Forward</li>
+<li>向后移动一个字符： <code>ctrl + b</code> = Backward</li>
+<li>向前移动一个单词： <code>alt + f</code></li>
+<li>向后移动一个单词： <code>alt + b</code></li>
 </ul>
-</li>
-</ol>
-<p><strong>另外一台电脑上如何使用：</strong><br>安装node环境和hexo-cli环境<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ brew update </span><br><span class="line">$ brew install <span class="keyword">node</span></span><br><span class="line"><span class="title">$</span> npm install hexo-cli -g</span><br></pre></td></tr></table></figure></p>
-<p>不要执行hexo init了，而是clone远程的src仓库<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone -<span class="selector-tag">b</span> src git@github<span class="selector-class">.com</span>:&lt;username&gt;:&lt;username&gt;<span class="selector-class">.github</span><span class="selector-class">.io</span><span class="selector-class">.git</span></span><br><span class="line">$ npm install <span class="comment">//根据package.json来下载依赖包</span></span><br></pre></td></tr></table></figure></p>
-<p>然后就可以继续写博客了，整个过程，手动管理的只有src，master分支本地需要，由hexo-deployer负责push。</p>
-<p>参考文献[1]中还提到了用git submodule解决第三方主题的同步问题，很不错。<br>参考文献[3]中修改hexo-deployer源码，添加了自动在deploy的时候提交src的功能，很nice。</p>
-<p>具体方法：<br>修改<code>node_modules\hexo-deployer-git\lib\deployer.js</code>插件的代码，添加gitBaseDir函数。 注意gitBaseDir函数必须写在module块中，否则会出现错误。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">git</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">var</span> len = <span class="built_in">arguments</span>.length;</span><br><span class="line">   <span class="keyword">var</span> args = <span class="keyword">new</span> <span class="built_in">Array</span>(len);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">     args[i] = <span class="built_in">arguments</span>[i];</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> spawn(<span class="string">'git'</span>, args, &#123;</span><br><span class="line">     cwd: deployDir,</span><br><span class="line">     verbose: verbose</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">gitBaseDir</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"><span class="keyword">var</span> len = <span class="built_in">arguments</span>.length;</span><br><span class="line">   <span class="keyword">var</span> args = <span class="keyword">new</span> <span class="built_in">Array</span>(len);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">     args[i] = <span class="built_in">arguments</span>[i];</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> spawn(<span class="string">'git'</span>, args, &#123;</span><br><span class="line">     cwd: baseDir,</span><br><span class="line">     verbose: verbose</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在push函数中添加提交到src的功能<br><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">push</span><span class="params">(repo)</span>&#123;</span></span><br><span class="line">   <span class="keyword">return</span> git(<span class="string">'add'</span>, <span class="string">'-A'</span>).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">     <span class="keyword">return</span> git(<span class="string">'commit'</span>, <span class="string">'-m'</span>, message).<span class="keyword">catch</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">       <span class="comment">// Do nothing. It's OK if nothing to commit.</span></span><br><span class="line">     &#125;);</span><br><span class="line">    &#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">     <span class="keyword">return</span> git(<span class="string">'push'</span>, <span class="string">'-u'</span>, repo.url, <span class="string">'master:'</span> + repo.branch, <span class="string">'--force'</span>);</span><br><span class="line">    &#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">     <span class="keyword">return</span> gitBaseDir(<span class="string">'checkout'</span>,<span class="string">'source'</span>);</span><br><span class="line">    &#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">        <span class="keyword">return</span> gitBaseDir(<span class="string">'add'</span>,<span class="string">'-A'</span>).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">            <span class="keyword">return</span> gitBaseDir(<span class="string">'commit'</span>,<span class="string">'-m'</span>,message).<span class="keyword">catch</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">    &#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span></span><br><span class="line">        <span class="keyword">return</span> gitBaseDir(<span class="string">'push'</span>,<span class="string">'-u'</span>,repo.url,<span class="string">'source:source'</span>,<span class="string">'--force'</span>)</span><br><span class="line">    &#125;);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="u53C2_u8003_uFF1A"><a href="#u53C2_u8003_uFF1A" class="headerlink" title="参考："></a>参考：</h3><ol>
-<li><a href="http://devtian.me/2015/03/17/blog-sync-solution/" target="_blank" rel="external">如何管理hexo的源文件</a></li>
-<li><a href="https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4-Master-%E5%88%86%E6%94%AF?locale=zh-CN" target="_blank" rel="external">为何以及如何删除master分支</a></li>
-<li><a href="http://boenyang.github.io/2015/09/09/hello-world/" target="_blank" rel="external">自动化hexo的源文件提交-修改hexo-deployer源码部分</a></li>
-</ol>
+<h3 id="u5B57_u7B26_u64CD_u4F5C"><a href="#u5B57_u7B26_u64CD_u4F5C" class="headerlink" title="字符操作"></a>字符操作</h3><ul>
+<li>删除一个字符： <code>ctrl + d</code> = <code>Delete</code></li>
+<li>删除一个字符（前向）： <code>ctrl + h</code> = <code>Backspace</code></li>
+<li>删除光标前到行首的字符： <code>ctrl + u</code> = 清除本行</li>
+<li>删除光标前到行尾的字符： <code>ctrl + k</code></li>
+<li>恢复之前的操作： <code>ctrl + y</code></li>
+</ul>
+<h3 id="u8F93_u5165_u64CD_u4F5C"><a href="#u8F93_u5165_u64CD_u4F5C" class="headerlink" title="输入操作"></a>输入操作</h3><ul>
+<li>自动补全历史记录： <code>command + ;</code></li>
+</ul>
+<h3 id="u5C4F_u5E55_u64CD_u4F5C"><a href="#u5C4F_u5E55_u64CD_u4F5C" class="headerlink" title="屏幕操作"></a>屏幕操作</h3><ul>
+<li>清屏： <code>command + r</code></li>
+<li>新建标签： <code>ctrl + t</code></li>
+<li>关闭当前标签页： <code>command + w</code></li>
+<li>左右分割： <code>command + d</code></li>
+<li>垂直分割： <code>command + shift + d</code></li>
+<li>切换标签页： <code>command + (+alt) +[number]/[up/down]</code></li>
+<li></li>
+</ul>
+<h3 id="u6587_u4EF6_u64CD_u4F5C"><a href="#u6587_u4EF6_u64CD_u4F5C" class="headerlink" title="文件操作"></a>文件操作</h3><ul>
+<li>打开文件： <code>command + [Click]</code></li>
+</ul>
+<h3 id="job_u64CD_u4F5C"><a href="#job_u64CD_u4F5C" class="headerlink" title="job操作"></a>job操作</h3><ul>
+<li>挂起job： <code>ctrl + z</code></li>
+<li>查看挂起的job： <code>jobs</code></li>
+<li>继续执行挂起的job： <code>fg</code></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
 ]]></content>
     <summary type="html">
-    <![CDATA[<h3 id="u67E5_u770B"><a href="#u67E5_u770B" class="headerlink" title="查看"></a>查看</h3><p>查看本地分支<br><code>git branch</code></p>
-<p>查看包括远程分支<br]]>
+    <![CDATA[<p>   本文所有快捷键基于iterm2. 有些快捷键被系统屏蔽了，到<code>系统偏好设置</code>中删除无用的快捷键即可</p>
+<h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" c]]>
     </summary>
     
-      <category term="git" scheme="http://paranoidq.github.io/tags/git/"/>
+      <category term="mac" scheme="http://paranoidq.github.io/tags/mac/"/>
     
-      <category term="git" scheme="http://paranoidq.github.io/categories/git/"/>
+      <category term="快捷键" scheme="http://paranoidq.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    
+      <category term="mac" scheme="http://paranoidq.github.io/categories/mac/"/>
     
   </entry>
   
