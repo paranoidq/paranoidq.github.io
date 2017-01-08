@@ -240,6 +240,117 @@
             
               
                 
+                <a class="post-title-link" href="/2017/01/08/how-to-analysis-java-application-using-jstack/" itemprop="url">
+                  如何用jstack命令分析java应用的性能问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2017-01-08T23:09:53+08:00" content="2017-01-08">
+              2017-01-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/08/how-to-analysis-java-application-using-jstack/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/08/how-to-analysis-java-application-using-jstack/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            前言在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。
+整体过程
+首先用jps查看java应用的进程号
+然后根据进程号查找java中各个线程的情况，命令如下：
+1top -Hp [pid]
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/01/08/how-to-analysis-java-application-using-jstack/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/29/just-reading/" itemprop="url">
                   我的书单
                 </a>
@@ -652,6 +763,110 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/20/java-webservice-tutorial-3/" itemprop="url">
+                  Java Webservice实践（3）在tomcat容器中发布webservice服务
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-10-20T21:39:04+08:00" content="2016-10-20">
+              2016-10-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/java-webservice-tutorial-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/java-webservice-tutorial-3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
+<p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/20/java-webservice-tutorial-3/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/20/java-webservice-tutorial-2/" itemprop="url">
                   Java Webservice实践（2）构建Webservice客户端
                 </a>
@@ -735,110 +950,6 @@
 </ul>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/20/java-webservice-tutorial-2/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/20/java-webservice-tutorial-3/" itemprop="url">
-                  Java Webservice实践（3）在tomcat容器中发布webservice服务
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-10-20T21:39:04+08:00" content="2016-10-20">
-              2016-10-20
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/20/java-webservice-tutorial-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/java-webservice-tutorial-3/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
-<p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/20/java-webservice-tutorial-3/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1173,110 +1284,6 @@
   </article>
 
 
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/26/时寒冰说-豆瓣评论/" itemprop="url">
-                  转载：大棋局与大智慧 —— 《时寒冰说》豆瓣书评
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-08-26T13:21:30+08:00" content="2016-08-26">
-              2016-08-26
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/阅读/" itemprop="url" rel="index">
-                    <span itemprop="name">阅读</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/26/时寒冰说-豆瓣评论/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/26/时寒冰说-豆瓣评论/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>《时寒冰说：经济大棋局，我们怎么办》是一部窥透世界大棋局的智慧之作，也是一部还原真相，普及常识的启蒙之作，时寒冰在书中淋漓尽致的演绎了他的利益与趋势分析法。</p>
-<p>赵汀阳说，思想的主体部分虽然是知识，但思想的奠基部分却是智慧，尽管我们无法保证那些代表智慧的观念是真理。① 全球化时代，智慧的稀缺使得信息爆炸与思想贫乏成为最具讽刺意义的矛盾，而中国的现状尤为突出。时下，主旋律的和谐之音，左派救亡图存的革命论调，右派改革体制的变法主张，由“左右之争”②衍生出的国家主义、民族主义、民粹主义意识形态以及专靠胡说八道混饭吃的砖家叫兽的大放厥词③,可谓“五色令人目盲，五音令人耳聋，五味令人口爽” ④。可见，比通货膨胀更可怕的是信息爆炸和思想贫乏导致的大脑膨胀，我们需要用智慧来稀释膨胀。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/26/时寒冰说-豆瓣评论/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
     
 
   </section>
@@ -1324,7 +1331,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">72</span>
+              <span class="site-state-item-count">73</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1338,7 +1345,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -1410,7 +1417,7 @@
         <div class="copyright" >
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>
