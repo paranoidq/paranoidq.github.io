@@ -240,6 +240,260 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/27/Python-decorator-explained/" itemprop="url">
+                  Python decorator(译)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/Python-decorator-explained/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-decorator-explained/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61"><a href="#Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61" class="headerlink" title="Python函数就是对象"></a>Python函数就是对象</h3><p>首先要理解python中函数就是object。一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shout</span><span class="params">(word=<span class="string">"yes"</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> word.capitalize()+<span class="string">"!"</span></span><br><span class="line"><span class="keyword">print</span> shout()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为function是对象，因此可以被赋值给变量。</span></span><br><span class="line"><span class="comment"># 注意这里没有用双括号，所以不是调用函数</span></span><br><span class="line">scream = shout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用变量srceam调用函数</span></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除原来的函数名，同样可以利用scream调用函数</span></span><br><span class="line"><span class="keyword">del</span> shout</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">print</span> shout()</span><br><span class="line"><span class="keyword">except</span> NameError, e:</span><br><span class="line">    <span class="keyword">print</span> e</span><br><span class="line">    <span class="comment">#outputs: "name 'shout' is not defined"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs: 'Yes!'</span></span><br></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/Python-decorator-explained/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/Big-data-ecosystem/" itemprop="url">
+                  大数据生态圈技术总结（持续补充）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/Big-data-ecosystem/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Big-data-ecosystem/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            分布式文件系统
+磁盘
+
+HDFS
+S3
+Ceph
+NFS
+Gluster FS
+
+
+内存
+
+Tachyon
+Spark
+
+
+
+分布式数据库
+磁盘
+
+Cassandra
+HBase
+MongoDB
+
+
+内存 
+
+Redis
+Memcached
+
+
+
+分布式计算
+批处理
+
+Hadoop MapReduce
+Spark(支持迭代)
+Flink(支持迭代)
+
+
+流式计算
+
+Storm
+Samza
+Spar
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/Big-data-ecosystem/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/27/vim-commands/" itemprop="url">
                   Vim Commands
                 </a>
@@ -308,221 +562,6 @@
 </ul>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/05/27/vim-commands/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/python-super-considered-super/" itemprop="url">
-                  Python super详解（译 + 进一步理解）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/python-super-considered-super/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/python-super-considered-super/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="articleBody">
-            
-            翻译：Python’s super() considered super!基础如果你没有惊讶于Python内置的super()，那么很可能你并没有真正知道它能做什么以及它如何有效的使用。本文章就主要在已有的python super()解释的基础上做出进一步的深入，主要包括：
-
-提供了实际的使用cases
-给出了理论模型，演示它如何工作
-展示如何使super()发挥它的作用
-使用super()的建议
-            ...
-          </span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/python-super-considered-super/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/Python-decorator-explained/" itemprop="url">
-                  Python decorator(译)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-decorator-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-decorator-explained/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61"><a href="#Python_u51FD_u6570_u5C31_u662F_u5BF9_u8C61" class="headerlink" title="Python函数就是对象"></a>Python函数就是对象</h3><p>首先要理解python中函数就是object。一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shout</span><span class="params">(word=<span class="string">"yes"</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> word.capitalize()+<span class="string">"!"</span></span><br><span class="line"><span class="keyword">print</span> shout()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为function是对象，因此可以被赋值给变量。</span></span><br><span class="line"><span class="comment"># 注意这里没有用双括号，所以不是调用函数</span></span><br><span class="line">scream = shout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用变量srceam调用函数</span></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs : 'Yes!'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除原来的函数名，同样可以利用scream调用函数</span></span><br><span class="line"><span class="keyword">del</span> shout</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">print</span> shout()</span><br><span class="line"><span class="keyword">except</span> NameError, e:</span><br><span class="line">    <span class="keyword">print</span> e</span><br><span class="line">    <span class="comment">#outputs: "name 'shout' is not defined"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> scream()</span><br><span class="line"><span class="comment"># outputs: 'Yes!'</span></span><br></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-decorator-explained/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -674,8 +713,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/Python-parameters-explained/" itemprop="url">
-                  Python parameters
+                <a class="post-title-link" href="/2016/05/27/python-super-considered-super/" itemprop="url">
+                  Python super详解（译 + 进一步理解）
                 </a>
               
             
@@ -711,8 +750,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-parameters-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-parameters-explained/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/python-super-considered-super/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/python-super-considered-super/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -732,17 +771,18 @@
 
       
         
-          <h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
-<ol>
-<li>固定参数(位置参数)</li>
-<li>默认参数</li>
-<li>可变参数</li>
-<li>关键字参数</li>
-</ol>
-<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
-<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
+          <span itemprop="articleBody">
+            
+            翻译：Python’s super() considered super!基础如果你没有惊讶于Python内置的super()，那么很可能你并没有真正知道它能做什么以及它如何有效的使用。本文章就主要在已有的python super()解释的基础上做出进一步的深入，主要包括：
+
+提供了实际的使用cases
+给出了理论模型，演示它如何工作
+展示如何使super()发挥它的作用
+使用super()的建议
+            ...
+          </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-parameters-explained/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/python-super-considered-super/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -992,8 +1032,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/NERDTree-commands/" itemprop="url">
-                  Vim 插件NERDTree命令
+                <a class="post-title-link" href="/2016/05/27/Python-parameters-explained/" itemprop="url">
+                  Python parameters
                 </a>
               
             
@@ -1013,8 +1053,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
                   </a>
                 </span>
 
@@ -1029,8 +1069,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/NERDTree-commands/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/NERDTree-commands/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Python-parameters-explained/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-parameters-explained/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1050,9 +1090,17 @@
 
       
         
-          <figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">h</span>    光标 focus 左侧树形目录</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">l</span>    光标 focus 右侧文件显示窗口</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">w</span>    光标自动在左右侧窗口切换 #！！！</span><br><span class="line">ctrl + <span class="keyword">w</span> + <span class="keyword">r</span>    移动当前窗口的布局位置</span><br></pre></td></tr></table></figure>
+          <h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
+<ol>
+<li>固定参数(位置参数)</li>
+<li>默认参数</li>
+<li>可变参数</li>
+<li>关键字参数</li>
+</ol>
+<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
+<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/NERDTree-commands/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Python-parameters-explained/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1095,8 +1143,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/java-producer-and-consumer/" itemprop="url">
-                  Java Producer and Consumer
+                <a class="post-title-link" href="/2016/05/27/middleware-expalined-simply/" itemprop="url">
+                  什么是中间件？
                 </a>
               
             
@@ -1116,8 +1164,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
+                  <a href="/categories/架构/" itemprop="url" rel="index">
+                    <span itemprop="name">架构</span>
                   </a>
                 </span>
 
@@ -1132,8 +1180,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/java-producer-and-consumer/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/java-producer-and-consumer/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/middleware-expalined-simply/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/middleware-expalined-simply/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1153,9 +1201,16 @@
 
       
         
-          <h3 id="u751F_u4EA7_u8005_u6D88_u8D39_u8005_u6A21_u5F0F_uFF08_u4EE5_u4E0B_u7B80_u79F0PC_29"><a href="#u751F_u4EA7_u8005_u6D88_u8D39_u8005_u6A21_u5F0F_uFF08_u4EE5_u4E0B_u7B80_u79F0PC_29" class="headerlink" title="生产者消费者模式（以下简称PC)"></a>生产者消费者模式（以下简称PC)</h3><p>生产者消费者模式是通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通讯，而通过阻塞队列来进行通讯，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产者要数据，而是直接从阻塞队列里取，<code>阻塞队列就相当于一个缓冲区</code>，平衡了生产者和消费者的处理能力。</p>
+          <span itemprop="articleBody">
+            
+            之前找工作之后，主管打电话问将来希望做哪个方向的技术，中间件还是linux还是云计算之类的，没头绪。发现自己其实对于这些方向的具体内容倒不明确了。其他的还好说，之前也有了解到淘宝中间件团队这样的，觉得很NB，但是对于这个中间件到底是什么，似乎没有深究。元旦正好空闲，查阅资料研究研究。
+定义维基百科定义：
+
+提供系统软件和应用软件之间连接的软件，以便于软件各部件之间的沟，特别是应用软件对于系统软件的
+            ...
+          </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/java-producer-and-consumer/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/middleware-expalined-simply/#more" rel="contents">
               more>>
             </a>
           </div>
