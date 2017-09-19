@@ -53,34 +53,18 @@
 
 
 
-<meta name="description" content="光标操作移动
-文首：gg / :0
-文末：shift + g / :$
-行首：0
-行末：$
-到第一个不是空字符的位置：^
-到最后一个不是空字符的位置：g_">
+<meta name="description" content="光标操作移动 文首：gg / :0 文末：shift + g / :$ 行首：0 行末：$ 到第一个不是空字符的位置：^ 到最后一个不是空字符的位置：g_">
+<meta name="keywords" content="linux,vim">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vim Commands">
 <meta property="og:url" content="http://paranoidq.github.io/2016/05/27/vim-commands/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
-<meta property="og:description" content="光标操作移动
-文首：gg / :0
-文末：shift + g / :$
-行首：0
-行末：$
-到第一个不是空字符的位置：^
-到最后一个不是空字符的位置：g_">
+<meta property="og:description" content="光标操作移动 文首：gg / :0 文末：shift + g / :$ 行首：0 行末：$ 到第一个不是空字符的位置：^ 到最后一个不是空字符的位置：g_">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vim Commands">
-<meta name="twitter:description" content="光标操作移动
-文首：gg / :0
-文末：shift + g / :$
-行首：0
-行末：$
-到第一个不是空字符的位置：^
-到最后一个不是空字符的位置：g_">
+<meta name="twitter:description" content="光标操作移动 文首：gg / :0 文末：shift + g / :$ 行首：0 行末：$ 到第一个不是空字符的位置：^ 到最后一个不是空字符的位置：g_">
 
 
 
@@ -307,7 +291,7 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="u5149_u6807_u64CD_u4F5C"><a href="#u5149_u6807_u64CD_u4F5C" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="u79FB_u52A8"><a href="#u79FB_u52A8" class="headerlink" title="移动"></a>移动</h4><ul>
+        <span itemprop="articleBody"><h3 id="光标操作"><a href="#光标操作" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h4><ul>
 <li>文首：<code>gg</code> / <code>:0</code></li>
 <li>文末：<code>shift + g</code> / <code>:$</code></li>
 <li>行首：<code>0</code></li>
@@ -333,7 +317,7 @@
 <li>向下半页：<code>ctrl + D</code></li>
 <li>向上半页：<code>ctrl + U</code></li>
 </ul>
-<h4 id="u63D2_u5165"><a href="#u63D2_u5165" class="headerlink" title="插入"></a>插入</h4><p>切换到插入模式的几种方式:</p>
+<h4 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h4><p>切换到插入模式的几种方式:</p>
 <ul>
 <li>在光标之前插入：<code>i</code></li>
 <li>在行开始前插入：<code>I</code></li>
@@ -345,7 +329,7 @@
 <li>在当前位置下面插入一行，并进入编辑状态：<code>o</code></li>
 <li>在当前位置上面插入一行，并进入编辑状态：<code>O</code></li>
 </ul>
-<h3 id="u6587_u672C_u64CD_u4F5C"><a href="#u6587_u672C_u64CD_u4F5C" class="headerlink" title="文本操作"></a>文本操作</h3><h4 id="u57FA_u672C_u884C_u64CD_u4F5C"><a href="#u57FA_u672C_u884C_u64CD_u4F5C" class="headerlink" title="基本行操作"></a>基本行操作</h4><p>复制</p>
+<h3 id="文本操作"><a href="#文本操作" class="headerlink" title="文本操作"></a>文本操作</h3><h4 id="基本行操作"><a href="#基本行操作" class="headerlink" title="基本行操作"></a>基本行操作</h4><p>复制</p>
 <ul>
 <li>复制一行：<code>yy</code></li>
 <li>复制光标到行尾的部分：<code>y$</code></li>
@@ -375,17 +359,17 @@
 <ul>
 <li>替换从光标位置到后一个单词结尾的字符：<code>cw</code></li>
 </ul>
-<h4 id="u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C"><a href="#u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C" class="headerlink" title="任意区间的文本操作"></a>任意区间的文本操作</h4><p>首先进入visual模式，直接按v键进入visual模式，然后<code>v+ j/k/h/l</code>进行文本选择</p>
+<h4 id="任意区间的文本操作"><a href="#任意区间的文本操作" class="headerlink" title="任意区间的文本操作"></a>任意区间的文本操作</h4><p>首先进入visual模式，直接按v键进入visual模式，然后<code>v+ j/k/h/l</code>进行文本选择</p>
 <ul>
 <li>剪切：<code>d</code></li>
 <li>复制：<code>y</code></li>
 <li>粘贴：<code>p</code></li>
 </ul>
-<h4 id="u884C_u5757_u64CD_u4F5C"><a href="#u884C_u5757_u64CD_u4F5C" class="headerlink" title="行块操作"></a>行块操作</h4><h3 id="u64A4_u9500_u64CD_u4F5C"><a href="#u64A4_u9500_u64CD_u4F5C" class="headerlink" title="撤销操作"></a>撤销操作</h3><ul>
+<h4 id="行块操作"><a href="#行块操作" class="headerlink" title="行块操作"></a>行块操作</h4><h3 id="撤销操作"><a href="#撤销操作" class="headerlink" title="撤销操作"></a>撤销操作</h3><ul>
 <li>撤销上一个命令： <code>u</code></li>
 <li>反撤销：<code>ctrl + r</code> </li>
 </ul>
-<h3 id="u641C_u7D22_u64CD_u4F5C"><a href="#u641C_u7D22_u64CD_u4F5C" class="headerlink" title="搜索操作"></a>搜索操作</h3><ul>
+<h3 id="搜索操作"><a href="#搜索操作" class="headerlink" title="搜索操作"></a>搜索操作</h3><ul>
 <li>搜索：<code>/pattern</code></li>
 <li>下一个：<code>n</code></li>
 <li>上一个：<code>N</code></li>
@@ -409,16 +393,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/27/java-implementing-softhashmap/" rel="next" title="SoftReference及其缓存应用">
-                <i class="fa fa-chevron-left"></i> SoftReference及其缓存应用
+              <a href="/2016/05/27/how-to-be-more-productive/" rel="next" title="How to be more productive(转)">
+                <i class="fa fa-chevron-left"></i> How to be more productive(转)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/27/Big-data-ecosystem/" rel="prev" title="大数据生态圈技术总结（持续补充）">
-                大数据生态圈技术总结（持续补充） <i class="fa fa-chevron-right"></i>
+              <a href="/2016/05/27/Python-generator/" rel="prev" title="Python generator">
+                Python generator <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -491,7 +475,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -573,7 +557,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5149_u6807_u64CD_u4F5C"><span class="nav-number">1.</span> <span class="nav-text">光标操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u79FB_u52A8"><span class="nav-number">1.1.</span> <span class="nav-text">移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u63D2_u5165"><span class="nav-number">1.2.</span> <span class="nav-text">插入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6587_u672C_u64CD_u4F5C"><span class="nav-number">2.</span> <span class="nav-text">文本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u57FA_u672C_u884C_u64CD_u4F5C"><span class="nav-number">2.1.</span> <span class="nav-text">基本行操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u4EFB_u610F_u533A_u95F4_u7684_u6587_u672C_u64CD_u4F5C"><span class="nav-number">2.2.</span> <span class="nav-text">任意区间的文本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u884C_u5757_u64CD_u4F5C"><span class="nav-number">2.3.</span> <span class="nav-text">行块操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u64A4_u9500_u64CD_u4F5C"><span class="nav-number">3.</span> <span class="nav-text">撤销操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u641C_u7D22_u64CD_u4F5C"><span class="nav-number">4.</span> <span class="nav-text">搜索操作</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#光标操作"><span class="nav-number">1.</span> <span class="nav-text">光标操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#移动"><span class="nav-number">1.1.</span> <span class="nav-text">移动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入"><span class="nav-number">1.2.</span> <span class="nav-text">插入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本操作"><span class="nav-number">2.</span> <span class="nav-text">文本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本行操作"><span class="nav-number">2.1.</span> <span class="nav-text">基本行操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#任意区间的文本操作"><span class="nav-number">2.2.</span> <span class="nav-text">任意区间的文本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#行块操作"><span class="nav-number">2.3.</span> <span class="nav-text">行块操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#撤销操作"><span class="nav-number">3.</span> <span class="nav-text">撤销操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索操作"><span class="nav-number">4.</span> <span class="nav-text">搜索操作</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

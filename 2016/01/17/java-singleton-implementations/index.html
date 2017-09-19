@@ -53,49 +53,18 @@
 
 
 
-<meta name="description" content="7种主要的实现方式
-懒汉，线程不安全
-懒汉，synchronized
-饿汉，static final域中直接new
-饿汉，static块中直接new （类似3）
-Double-check
-静态内部类
-Enum
-
-实现代码及关键解释参见我的GitHub Repo.
-常见单例实现的几个额外考虑的问题
-可序列化 - 需要重载readResolve()函数，返回同样的实例修复办法：(这个我不是很理解, w">
+<meta name="description" content="7种主要的实现方式 懒汉，线程不安全 懒汉，synchronized 饿汉，static final域中直接new 饿汉，static块中直接new （类似3） Double-check 静态内部类 Enum  实现代码及关键解释参见我的GitHub Repo. 常见单例实现的几个额外考虑的问题 可序列化 - 需要重载readResolve()函数，返回同样的实例修复办法：(这个我不是很理解, w">
+<meta name="keywords" content="java,设计模式,单例">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java单例的实现方式及问题(转载 + 整理)">
 <meta property="og:url" content="http://paranoidq.github.io/2016/01/17/java-singleton-implementations/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
-<meta property="og:description" content="7种主要的实现方式
-懒汉，线程不安全
-懒汉，synchronized
-饿汉，static final域中直接new
-饿汉，static块中直接new （类似3）
-Double-check
-静态内部类
-Enum
-
-实现代码及关键解释参见我的GitHub Repo.
-常见单例实现的几个额外考虑的问题
-可序列化 - 需要重载readResolve()函数，返回同样的实例修复办法：(这个我不是很理解, w">
+<meta property="og:description" content="7种主要的实现方式 懒汉，线程不安全 懒汉，synchronized 饿汉，static final域中直接new 饿汉，static块中直接new （类似3） Double-check 静态内部类 Enum  实现代码及关键解释参见我的GitHub Repo. 常见单例实现的几个额外考虑的问题 可序列化 - 需要重载readResolve()函数，返回同样的实例修复办法：(这个我不是很理解, w">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java单例的实现方式及问题(转载 + 整理)">
-<meta name="twitter:description" content="7种主要的实现方式
-懒汉，线程不安全
-懒汉，synchronized
-饿汉，static final域中直接new
-饿汉，static块中直接new （类似3）
-Double-check
-静态内部类
-Enum
-
-实现代码及关键解释参见我的GitHub Repo.
-常见单例实现的几个额外考虑的问题
-可序列化 - 需要重载readResolve()函数，返回同样的实例修复办法：(这个我不是很理解, w">
+<meta name="twitter:description" content="7种主要的实现方式 懒汉，线程不安全 懒汉，synchronized 饿汉，static final域中直接new 饿汉，static块中直接new （类似3） Double-check 静态内部类 Enum  实现代码及关键解释参见我的GitHub Repo. 常见单例实现的几个额外考虑的问题 可序列化 - 需要重载readResolve()函数，返回同样的实例修复办法：(这个我不是很理解, w">
 
 
 
@@ -322,7 +291,7 @@ Enum
       
 
       
-        <span itemprop="articleBody"><h3 id="7_u79CD_u4E3B_u8981_u7684_u5B9E_u73B0_u65B9_u5F0F"><a href="#7_u79CD_u4E3B_u8981_u7684_u5B9E_u73B0_u65B9_u5F0F" class="headerlink" title="7种主要的实现方式"></a>7种主要的实现方式</h3><ol>
+        <span itemprop="articleBody"><h3 id="7种主要的实现方式"><a href="#7种主要的实现方式" class="headerlink" title="7种主要的实现方式"></a>7种主要的实现方式</h3><ol>
 <li>懒汉，线程不安全</li>
 <li>懒汉，synchronized</li>
 <li>饿汉，static final域中直接new</li>
@@ -332,15 +301,15 @@ Enum
 <li>Enum</li>
 </ol>
 <p>实现代码及关键解释参见我的<a href="https://github.com/paranoidq/JavaHackUtils/tree/master/src/main/java/me/util/singleton" target="_blank" rel="external">GitHub Repo</a>.</p>
-<h3 id="u5E38_u89C1_u5355_u4F8B_u5B9E_u73B0_u7684_u51E0_u4E2A_u989D_u5916_u8003_u8651_u7684_u95EE_u9898"><a href="#u5E38_u89C1_u5355_u4F8B_u5B9E_u73B0_u7684_u51E0_u4E2A_u989D_u5916_u8003_u8651_u7684_u95EE_u9898" class="headerlink" title="常见单例实现的几个额外考虑的问题"></a>常见单例实现的几个额外考虑的问题</h3><ol>
+<h3 id="常见单例实现的几个额外考虑的问题"><a href="#常见单例实现的几个额外考虑的问题" class="headerlink" title="常见单例实现的几个额外考虑的问题"></a>常见单例实现的几个额外考虑的问题</h3><ol>
 <li><p>可序列化 - 需要重载readResolve()函数，返回同样的实例<br>修复办法：(这个我不是很理解, why这么做？)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> Class&lt;?&gt; getClass(String className) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">       ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span><br><span class="line">       <span class="keyword">if</span>(classLoader == <span class="keyword">null</span>)</span><br><span class="line">           classLoader = SingletonWithStaticNestedClass.class.getClassLoader();</span><br><span class="line">       <span class="keyword">return</span> (classLoader.loadClass(className));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">private</span> <span class="keyword">static</span> Class&lt;?&gt; getClass(String className) <span class="keyword">throws</span> ClassNotFoundException &#123;</div><div class="line">       ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</div><div class="line">       <span class="keyword">if</span>(classLoader == <span class="keyword">null</span>)</div><div class="line">           classLoader = SingletonWithStaticNestedClass.class.getClassLoader();</div><div class="line">       <span class="keyword">return</span> (classLoader.loadClass(className));</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 <li><p>不同类加载器加载导致对象不同的问题<br>修复办法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> SingletonHolder.instance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> Object <span class="title">readResolve</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> SingletonHolder.instance;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.blogjava.net/kenzhh/archive/2013/03/15/357824.html" target="_blank" rel="external">7种实现方式</a><br><a href="http://www.infoq.com/cn/articles/double-checked-locking-with-delay-initialization" target="_blank" rel="external">双重检查的陷阱和解决方法及原理</a><br><a href="http://stackoverflow.com/questions/70689/what-is-an-efficient-way-to-implement-a-singleton-pattern-in-java" target="_blank" rel="external">Effective way to implement singleton in java</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.blogjava.net/kenzhh/archive/2013/03/15/357824.html" target="_blank" rel="external">7种实现方式</a><br><a href="http://www.infoq.com/cn/articles/double-checked-locking-with-delay-initialization" target="_blank" rel="external">双重检查的陷阱和解决方法及原理</a><br><a href="http://stackoverflow.com/questions/70689/what-is-an-efficient-way-to-implement-a-singleton-pattern-in-java" target="_blank" rel="external">Effective way to implement singleton in java</a></p>
 </span>
       
     </div>
@@ -444,7 +413,7 @@ Enum
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -526,7 +495,7 @@ Enum
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#7_u79CD_u4E3B_u8981_u7684_u5B9E_u73B0_u65B9_u5F0F"><span class="nav-number">1.</span> <span class="nav-text">7种主要的实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5E38_u89C1_u5355_u4F8B_u5B9E_u73B0_u7684_u51E0_u4E2A_u989D_u5916_u8003_u8651_u7684_u95EE_u9898"><span class="nav-number">2.</span> <span class="nav-text">常见单例实现的几个额外考虑的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#7种主要的实现方式"><span class="nav-number">1.</span> <span class="nav-text">7种主要的实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见单例实现的几个额外考虑的问题"><span class="nav-number">2.</span> <span class="nav-text">常见单例实现的几个额外考虑的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

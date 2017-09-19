@@ -53,19 +53,18 @@
 
 
 
-<meta name="description" content="安装（Mac）Docker Toolbox
-创建docker machine1$ docker-machine create --driver vmwarefusion demo">
+<meta name="description" content="安装（Mac）Docker Toolbox 创建docker machine1$ docker-machine create --driver vmwarefusion demo">
+<meta name="keywords" content="docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker学习笔记">
 <meta property="og:url" content="http://paranoidq.github.io/2016/01/20/docker-study-record/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
-<meta property="og:description" content="安装（Mac）Docker Toolbox
-创建docker machine1$ docker-machine create --driver vmwarefusion demo">
+<meta property="og:description" content="安装（Mac）Docker Toolbox 创建docker machine1$ docker-machine create --driver vmwarefusion demo">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker学习笔记">
-<meta name="twitter:description" content="安装（Mac）Docker Toolbox
-创建docker machine1$ docker-machine create --driver vmwarefusion demo">
+<meta name="twitter:description" content="安装（Mac）Docker Toolbox 创建docker machine1$ docker-machine create --driver vmwarefusion demo">
 
 
 
@@ -292,14 +291,14 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="u5B89_u88C5_uFF08Mac_uFF09"><a href="#u5B89_u88C5_uFF08Mac_uFF09" class="headerlink" title="安装（Mac）"></a>安装（Mac）</h3><p><a href="https://docs.docker.com/engine/installation/mac/" target="_blank" rel="external">Docker Toolbox</a></p>
-<h3 id="u521B_u5EFAdocker_machine"><a href="#u521B_u5EFAdocker_machine" class="headerlink" title="创建docker machine"></a>创建docker machine</h3><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine <span class="built_in">create</span> <span class="comment">--driver vmwarefusion demo</span></span><br></pre></td></tr></table></figure>
+        <span itemprop="articleBody"><h3 id="安装（Mac）"><a href="#安装（Mac）" class="headerlink" title="安装（Mac）"></a>安装（Mac）</h3><p><a href="https://docs.docker.com/engine/installation/mac/" target="_blank" rel="external">Docker Toolbox</a></p>
+<h3 id="创建docker-machine"><a href="#创建docker-machine" class="headerlink" title="创建docker machine"></a>创建docker machine</h3><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker-machine <span class="built_in">create</span> <span class="comment">--driver vmwarefusion demo</span></div></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>之后需要进行一些设置和初始化工作<br><figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine <span class="keyword">env</span> demo</span><br><span class="line"><span class="comment">// 按照提示运行 eval</span></span><br><span class="line">$ <span class="keyword">eval</span> $(docker-machine <span class="keyword">env</span> demo)</span><br><span class="line"><span class="comment">// 现在docker-machine demo已经running了</span></span><br><span class="line">$ docker-machine <span class="keyword">ls</span></span><br><span class="line"></span><br><span class="line">NAME   ACTIVE   URL            STATE     URL                          SWARM   DOCKER   ERRORS</span><br><span class="line">demo   *        vmwarefusion   Running   tcp:<span class="comment">//192.168.235.137:2376           v1.9.1</span></span><br></pre></td></tr></table></figure></p>
-<p>启动和停止：<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine <span class="literal">start</span> demo</span><br><span class="line">docker-machine <span class="literal">stop</span> demo</span><br></pre></td></tr></table></figure></p>
-<p>查看docker-machine<br><figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine <span class="keyword">ls</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="ssh_u8FDE_u63A5"><a href="#ssh_u8FDE_u63A5" class="headerlink" title="ssh连接"></a>ssh连接</h3><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine ssh <span class="built_in">demo</span></span><br></pre></td></tr></table></figure>
-<h3 id="u83B7_u53D6_u955C_u50CF"><a href="#u83B7_u53D6_u955C_u50CF" class="headerlink" title="获取镜像"></a>获取镜像</h3><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">run</span> -d nginx <span class="comment"># -d表示后台运行</span></span><br><span class="line">docker ps           <span class="comment"># 查看正在运行的镜像</span></span><br><span class="line">docker ps -a        <span class="comment"># 查看所有镜像</span></span><br><span class="line">docker kill &lt;<span class="built_in">name</span>&gt;  <span class="comment"># 停止镜像</span></span><br><span class="line">docker rm &lt;<span class="built_in">name</span>&gt;    <span class="comment"># 移除镜像</span></span><br><span class="line">docker images       <span class="comment"># 查看本地已有的镜像</span></span><br></pre></td></tr></table></figure>
+<p>之后需要进行一些设置和初始化工作<br><figure class="highlight mel"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ docker-machine <span class="keyword">env</span> demo</div><div class="line"><span class="comment">// 按照提示运行 eval</span></div><div class="line">$ <span class="keyword">eval</span> $(docker-machine <span class="keyword">env</span> demo)</div><div class="line"><span class="comment">// 现在docker-machine demo已经running了</span></div><div class="line">$ docker-machine <span class="keyword">ls</span></div><div class="line"></div><div class="line">NAME   ACTIVE   URL            STATE     URL                          SWARM   DOCKER   ERRORS</div><div class="line">demo   *        vmwarefusion   Running   tcp:<span class="comment">//192.168.235.137:2376           v1.9.1</span></div></pre></td></tr></table></figure></p>
+<p>启动和停止：<br><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker-machine <span class="literal">start</span> demo</div><div class="line">docker-machine <span class="literal">stop</span> demo</div></pre></td></tr></table></figure></p>
+<p>查看docker-machine<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">docker-machine ls</span></div></pre></td></tr></table></figure></p>
+<h3 id="ssh连接"><a href="#ssh连接" class="headerlink" title="ssh连接"></a>ssh连接</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">docker-machine ssh demo</span></div></pre></td></tr></table></figure>
+<h3 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h3><figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">docker <span class="built_in">run</span> -d nginx <span class="comment"># -d表示后台运行</span></div><div class="line">docker ps           <span class="comment"># 查看正在运行的镜像</span></div><div class="line">docker ps -a        <span class="comment"># 查看所有镜像</span></div><div class="line">docker kill &lt;<span class="built_in">name</span>&gt;  <span class="comment"># 停止镜像</span></div><div class="line">docker rm &lt;<span class="built_in">name</span>&gt;    <span class="comment"># 移除镜像</span></div><div class="line">docker images       <span class="comment"># 查看本地已有的镜像</span></div></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -399,7 +398,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -481,7 +480,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B89_u88C5_uFF08Mac_uFF09"><span class="nav-number">1.</span> <span class="nav-text">安装（Mac）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u521B_u5EFAdocker_machine"><span class="nav-number">2.</span> <span class="nav-text">创建docker machine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh_u8FDE_u63A5"><span class="nav-number">3.</span> <span class="nav-text">ssh连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u83B7_u53D6_u955C_u50CF"><span class="nav-number">4.</span> <span class="nav-text">获取镜像</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装（Mac）"><span class="nav-number">1.</span> <span class="nav-text">安装（Mac）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建docker-machine"><span class="nav-number">2.</span> <span class="nav-text">创建docker machine</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh连接"><span class="nav-number">3.</span> <span class="nav-text">ssh连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取镜像"><span class="nav-number">4.</span> <span class="nav-text">获取镜像</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -57,6 +57,7 @@
 <meta property="og:url" content="http://paranoidq.github.io/page/2/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="So we beat on, boats against the current, borne back ceaselessly into the past.">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="钱唯の个人博客">
 <meta name="twitter:description" content="So we beat on, boats against the current, borne back ceaselessly into the past.">
@@ -217,6 +218,111 @@
 
     
     
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/" itemprop="url">
+                  (翻译) Using HttpClient properly to avoid CLOSE_WAIT TCP connections
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-10-11T20:46:41+08:00" content="2016-10-11">
+              2016-10-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>原文链接：<a href="https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/" target="_blank" rel="external">https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/</a></p>
+<p>在我帮助我的客户debug一个TCP connection关于CLOSE_WAIT状态的问题时，我发现我们错误的使用了HttpClient。在这个问题上，如果你试图google <a href="http://www.google.com/search?q=HttpClient+CLOSE_WAIT" target="_blank" rel="external">HttpClient CLOSE_WAIT</a>，你会发现很多人跟我们一样存在疑惑。但是关于这个问题，很多的解答不够直观，甚至<a href="http://hc.apache.org/httpclient-legacy/tutorial.html" target="_blank" rel="external">官方文档</a>都是错误的。所以我在这篇文章中进行了分析。</p>
+<p>Apache HttpClient的基本用法如下：<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">HttpClient httpClient = <span class="keyword">new</span> HttpClient();</div><div class="line">HttpMethod <span class="function"><span class="keyword">method</span> = <span class="title">new</span> <span class="title">GetMethod</span><span class="params">(uri)</span>;</span></div><div class="line"><span class="keyword">try</span> <span class="comment">&#123;</span></div><div class="line"><span class="comment">    int statusCode = httpClient.executeMethod(method);</span></div><div class="line"><span class="comment">    byte[] responseBody = method.getResponseBody();</span></div><div class="line"><span class="comment">    // ...</span></div><div class="line"><span class="comment">    return stuff;</span></div><div class="line"><span class="comment">&#125;</span> <span class="keyword">finally</span> <span class="comment">&#123;</span></div><div class="line"><span class="comment">    method.releaseConnection();</span></div><div class="line"><span class="comment">&#125;</span></div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
      
       
@@ -402,7 +508,7 @@
 
       
         
-          <h3 id="u67E5_u770B_u8FDB_u7A0B_u60C5_u51B5_3A_ps"><a href="#u67E5_u770B_u8FDB_u7A0B_u60C5_u51B5_3A_ps" class="headerlink" title="查看进程情况: ps"></a>查看进程情况: ps</h3><h4 id="u663E_u793A_u6240_u6709_u8FDB_u7A0B_u4FE1_u606F"><a href="#u663E_u793A_u6240_u6709_u8FDB_u7A0B_u4FE1_u606F" class="headerlink" title="显示所有进程信息"></a>显示所有进程信息</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ ps -A</span><br><span class="line">PID TTY      TIME   CMD</span><br><span class="line"><span class="number">1</span> ?        00:<span class="number">00</span>:<span class="number">00</span> init</span><br><span class="line"><span class="number">2</span> ?        00:<span class="number">00</span>:<span class="number">01</span> migration/<span class="number">0</span></span><br><span class="line"><span class="number">3</span> ?        00:<span class="number">00</span>:<span class="number">00</span> ksoftirqd/<span class="number">0</span></span><br><span class="line"><span class="number">4</span> ?        00:<span class="number">00</span>:<span class="number">01</span> migration/<span class="number">1</span></span><br><span class="line"><span class="number">5</span> ?        00:<span class="number">00</span>:<span class="number">00</span> ksoftirqd/<span class="number">1</span></span><br><span class="line"><span class="number">6</span> ?        00:<span class="number">29</span>:<span class="number">57</span> events/<span class="number">0</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+          <h3 id="查看进程情况-ps"><a href="#查看进程情况-ps" class="headerlink" title="查看进程情况: ps"></a>查看进程情况: ps</h3><h4 id="显示所有进程信息"><a href="#显示所有进程信息" class="headerlink" title="显示所有进程信息"></a>显示所有进程信息</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ ps -A</div><div class="line">PID TTY      TIME   CMD</div><div class="line"><span class="number">1</span> ?        00:<span class="number">00</span>:<span class="number">00</span> init</div><div class="line"><span class="number">2</span> ?        00:<span class="number">00</span>:<span class="number">01</span> migration/<span class="number">0</span></div><div class="line"><span class="number">3</span> ?        00:<span class="number">00</span>:<span class="number">00</span> ksoftirqd/<span class="number">0</span></div><div class="line"><span class="number">4</span> ?        00:<span class="number">00</span>:<span class="number">01</span> migration/<span class="number">1</span></div><div class="line"><span class="number">5</span> ?        00:<span class="number">00</span>:<span class="number">00</span> ksoftirqd/<span class="number">1</span></div><div class="line"><span class="number">6</span> ?        00:<span class="number">29</span>:<span class="number">57</span> events/<span class="number">0</span></div><div class="line">...</div></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/08/02/linux-server-optimization-tools/#more" rel="contents">
               more>>
@@ -505,7 +611,7 @@
 
       
         
-          <h3 id="u95EE_u9898_u63CF_u8FF0"><a href="#u95EE_u9898_u63CF_u8FF0" class="headerlink" title="问题描述"></a>问题描述</h3><p>client发报文给server，server端接收到http post发来的报文之后做base64解码，然后通过消息中间件传给核心系统进行处理。然后发现，client端发过来的报文会多出很多<code>/r/n</code>这样的字符，导致核心系统base64解码后也多出了<code>/r/n</code>，而核心系统之前没有考虑到这些问题，从而报错。</p>
+          <h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>client发报文给server，server端接收到http post发来的报文之后做base64解码，然后通过消息中间件传给核心系统进行处理。然后发现，client端发过来的报文会多出很多<code>/r/n</code>这样的字符，导致核心系统base64解码后也多出了<code>/r/n</code>，而核心系统之前没有考虑到这些问题，从而报错。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/08/01/base64-newline-trap/#more" rel="contents">
               more>>
@@ -609,10 +715,10 @@
       
         
           <blockquote>
-<p>本文转载自: <a href="http://mp.weixin.qq.com/s?__biz=MjM5OTM4MDY4MQ==&amp;mid=2650101881&amp;idx=1&amp;sn=19f426423f01f34015685ab146119469&amp;scene=23&amp;srcid=0725foRg46546T20CysgOR9b#rd">读库-张立宪</a></p>
+<p>本文转载自: <a href="http://mp.weixin.qq.com/s?__biz=MjM5OTM4MDY4MQ==&amp;mid=2650101881&amp;idx=1&amp;sn=19f426423f01f34015685ab146119469&amp;scene=23&amp;srcid=0725foRg46546T20CysgOR9b#rd" target="_blank" rel="external">读库-张立宪</a></p>
 </blockquote>
 <p>遇到几件职场上的事情，引发一些感触，在这里一并写出来，与大家一起怀疑下人生。</p>
-<h3 id="u4E00"><a href="#u4E00" class="headerlink" title="一"></a>一</h3><p>我属于那种乐观型选手，相信在现在这个世道，不管是来自家人扶助、社会救济，或者有基本社会能力的成年人随便找个工作，温饱都不会有问题，至少饿不死。有了这个底气，再去做什么，就看自己的能力、志趣和因缘了。去年在上海，有位杂志编辑，说他们的杂志快不行了。我便与他共勉：只有破产的公司，没有倒闭的个人。</p>
+<h3 id="一"><a href="#一" class="headerlink" title="一"></a>一</h3><p>我属于那种乐观型选手，相信在现在这个世道，不管是来自家人扶助、社会救济，或者有基本社会能力的成年人随便找个工作，温饱都不会有问题，至少饿不死。有了这个底气，再去做什么，就看自己的能力、志趣和因缘了。去年在上海，有位杂志编辑，说他们的杂志快不行了。我便与他共勉：只有破产的公司，没有倒闭的个人。</p>
 <p>两个月前又见到一位同行，他本是一家颇有名望的杂志社老总，如今再创业，风生水起。我问他用人之道，他说很重要的一条心得是：尽量不用媒体人，尤其是那些老部下。</p>
 <p>这种说法让我很是意外。听他一一道来：当年纸媒红火的时候，那些以“名记”身份行走传媒江湖的人，既眼高手低，又好吃懒做，真真徒有虚名，名不副实。整天乐于听人恭维，忙于开发布会拿红包，急于炫耀自己社会关系之广，却连篇软文也写不好。我不由得表示赞同，听他接着说：这样的名记，是被他所在的媒体赋予的名声，并且也被惯坏了，我要真把他招过来，既不好用，也用不起。</p>
 <p>这位仁兄的偏见实在是颇有道理：有的人实际上已经个人破产，只是在靠所供职的还没倒闭的机构活着。</p>
@@ -823,7 +929,7 @@
 
       
         
-          <h3 id="u5B9E_u9A8C"><a href="#u5B9E_u9A8C" class="headerlink" title="实验"></a>实验</h3><p>关于java中的内部类，有很多坑，其中条就是：</p>
+          <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><p>关于java中的内部类，有很多坑，其中条就是：</p>
 <blockquote>
 <p>对于定义在函数中的内部类而言，在内部类中可以访问外部函数的局部变量，但这些局部变量必须被申明为final。</p>
 </blockquote>
@@ -929,7 +1035,7 @@
 
       
         
-          <h3 id="u9759_u6001_u4EE3_u7406_u7684_u95EE_u9898"><a href="#u9759_u6001_u4EE3_u7406_u7684_u95EE_u9898" class="headerlink" title="静态代理的问题"></a>静态代理的问题</h3><p><img src="http://images.techhive.com/images/idge/imported/article/jvw/2000/11/jw-1110-proxy-100157716-orig.gif" alt="proxy pattern"></p>
+          <h3 id="静态代理的问题"><a href="#静态代理的问题" class="headerlink" title="静态代理的问题"></a>静态代理的问题</h3><p><img src="http://images.techhive.com/images/idge/imported/article/jvw/2000/11/jw-1110-proxy-100157716-orig.gif" alt="proxy pattern"></p>
 <ol>
 <li>紧耦合：代理类必须实现被代理对象的接口</li>
 <li>硬编码：项目中大量充斥着类似**proxy这样的类</li>
@@ -1142,121 +1248,10 @@
       
         
           <p>python版本管理神器： pyenv</p>
-<h3 id="u5B89_u88C5"><a href="#u5B89_u88C5" class="headerlink" title="安装"></a>安装</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>pyenv</span><br></pre></td></tr></table></figure>
-<h3 id="u914D_u7F6E"><a href="#u914D_u7F6E" class="headerlink" title="配置"></a>配置</h3><p>将一下shell加入.bash_profile或.zshrc<br><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">set</span> up <span class="comment">pyenv</span></span><br><span class="line">export <span class="comment">PYENV_ROOT=</span>/usr/<span class="comment">local</span>/var/<span class="comment">pyenv</span></span><br><span class="line">if <span class="comment">which pyenv &gt;</span> /dev/<span class="comment">null</span>; <span class="keyword">then</span> eval <span class="string">"$(pyenv init -)"</span>; fi</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">brew </span><span class="keyword">install </span>pyenv</div></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>将一下shell加入.bash_profile或.zshrc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># set up pyenv</span></div><div class="line"><span class="built_in">export</span> PYENV_ROOT=/usr/<span class="built_in">local</span>/var/pyenv</div><div class="line"><span class="keyword">if</span> <span class="built_in">which</span> pyenv &gt; /dev/null; <span class="keyword">then</span> <span class="built_in">eval</span> <span class="string">"<span class="variable">$(pyenv init -)</span>"</span>; <span class="keyword">fi</span></div></pre></td></tr></table></figure></p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/06/04/pyenv神器/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/Python-parameters-explained/" itemprop="url">
-                  Python parameters
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-parameters-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-parameters-explained/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="u63D0_u7EB2"><a href="#u63D0_u7EB2" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
-<ol>
-<li>固定参数(位置参数)</li>
-<li>默认参数</li>
-<li>可变参数</li>
-<li>关键字参数</li>
-</ol>
-<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
-<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-parameters-explained/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1324,7 +1319,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

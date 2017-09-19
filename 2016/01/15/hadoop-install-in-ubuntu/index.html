@@ -54,11 +54,13 @@
 
 
 <meta name="description" content="参考hadoop_Install_on_ubuntu_single_node_clusterstart hadoop时的文件夹权限问题">
+<meta name="keywords" content="hadoop,配置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hadoop(1) 单机安装（Ubuntu）">
 <meta property="og:url" content="http://paranoidq.github.io/2016/01/15/hadoop-install-in-ubuntu/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="参考hadoop_Install_on_ubuntu_single_node_clusterstart hadoop时的文件夹权限问题">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hadoop(1) 单机安装（Ubuntu）">
@@ -289,9 +291,9 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.bogotobogo.com/Hadoop/BigData_hadoop_Install_on_ubuntu_single_node_cluster.php" target="_blank" rel="external">hadoop_Install_on_ubuntu_single_node_cluster</a><br><a href="http://stackoverflow.com/questions/29059250/cant-start-namenode-daemon-and-datanode-daemon-in-hadoop" target="_blank" rel="external">start hadoop时的文件夹权限问题</a></p>
+        <span itemprop="articleBody"><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.bogotobogo.com/Hadoop/BigData_hadoop_Install_on_ubuntu_single_node_cluster.php" target="_blank" rel="external">hadoop_Install_on_ubuntu_single_node_cluster</a><br><a href="http://stackoverflow.com/questions/29059250/cant-start-namenode-daemon-and-datanode-daemon-in-hadoop" target="_blank" rel="external">start hadoop时的文件夹权限问题</a></p>
 <a id="more"></a>
-<h3 id="u6743_u9650_u95EE_u9898"><a href="#u6743_u9650_u95EE_u9898" class="headerlink" title="权限问题"></a>权限问题</h3><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R hadoop <span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/hadoop/</span>  <span class="meta"># 不推荐777</span></span><br></pre></td></tr></table></figure>
+<h3 id="权限问题"><a href="#权限问题" class="headerlink" title="权限问题"></a>权限问题</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo chown -R hadoop <span class="regexp">/usr/</span>local<span class="regexp">/hadoop/</span>  <span class="comment"># 不推荐777</span></div></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -393,7 +395,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -475,7 +477,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6743_u9650_u95EE_u9898"><span class="nav-number">2.</span> <span class="nav-text">权限问题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#权限问题"><span class="nav-number">2.</span> <span class="nav-text">权限问题</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

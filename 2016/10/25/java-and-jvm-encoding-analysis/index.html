@@ -54,11 +54,13 @@
 
 
 <meta name="description" content="本文起源于一次测试环境下构造报文发送时对于java编码的疑惑，经过查找资料和分析总结而成。对于JVM和Java代码中的编码问题和原理进行了较为深入的分析。如有错漏，欢迎指正。">
+<meta name="keywords" content="java,基础,encoding">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java程序和Jvm编码机制的分析">
 <meta property="og:url" content="http://paranoidq.github.io/2016/10/25/java-and-jvm-encoding-analysis/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="本文起源于一次测试环境下构造报文发送时对于java编码的疑惑，经过查找资料和分析总结而成。对于JVM和Java代码中的编码问题和原理进行了较为深入的分析。如有错漏，欢迎指正。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://paranoidq.github.io/img/java-jvm-encoding.jpg">
 <meta property="og:updated_time" content="2016-12-11T15:32:01.000Z">
 <meta name="twitter:card" content="summary">
@@ -295,7 +297,7 @@
 <a id="more"></a>
 <p>首先上一个原理图，借用自<a href="https://www.zhihu.com/question/30977092" target="_blank" rel="external">知乎</a>。个人认为非常恰当地描述了整个编码的原理，除了output部分不够详细。</p>
 <p><img src="/img/java-jvm-encoding.jpg" alt="java-jvm-encoding"></p>
-<h3 id="Java_u7A0B_u5E8F_u5185_u90E8_u7F16_u7801_u7684_u5206_u6790"><a href="#Java_u7A0B_u5E8F_u5185_u90E8_u7F16_u7801_u7684_u5206_u6790" class="headerlink" title="Java程序内部编码的分析"></a>Java程序内部编码的分析</h3><p>该过程的分析参考了<a href="http://blog.csdn.net/dslztx/article/details/47005107" target="_blank" rel="external">这篇文章</a>。<br><br></p>
+<h3 id="Java程序内部编码的分析"><a href="#Java程序内部编码的分析" class="headerlink" title="Java程序内部编码的分析"></a>Java程序内部编码的分析</h3><p>该过程的分析参考了<a href="http://blog.csdn.net/dslztx/article/details/47005107" target="_blank" rel="external">这篇文章</a>。<br><br></p>
 <ol>
 <li>在IDE中编写java代码然后保存，此时会根据<code>file.encoding</code>或<code>system.defaultEncoding</code>将文件编码为二进制的流，然后写入磁盘。<ul>
 <li>这个过程用到了系统编码或文件编码，一般为GBK或者UTF-8等<br><br></li>
@@ -329,13 +331,13 @@
 </ul>
 </li>
 </ol>
-<h3 id="Java_u5916_u90E8_u7F16_u7801_u7684_u5206_u6790"><a href="#Java_u5916_u90E8_u7F16_u7801_u7684_u5206_u6790" class="headerlink" title="Java外部编码的分析"></a>Java外部编码的分析</h3><p>java程序中的字符串很多来自于外部，这个时候就需要注意乱码的问题了</p>
+<h3 id="Java外部编码的分析"><a href="#Java外部编码的分析" class="headerlink" title="Java外部编码的分析"></a>Java外部编码的分析</h3><p>java程序中的字符串很多来自于外部，这个时候就需要注意乱码的问题了</p>
 <ul>
 <li>首先，外部过来的字符串肯定是以某种编码方式编好的byte[]。数组，无论从文件读取、命令行输入还是从网络传输，本质上都是byte[]</li>
 <li>java程序需要将这些byte[]读取到JVM中进行处理，也就是<strong>从具体的编码方式转换为Unicode的过程，因此提前知道数据源的编码方式才能正确转换</strong>。这点很重要，如果不指定编码方式，那么默认就会采用系统编码，此时就有可能解码解的不对。</li>
 <li>尽量要使用带有明确指定编码方式的method，而不要不知情的情况下使用了系统默认的编码，否则就可能造成解码错误，解出了乱码。</li>
 </ul>
-<h3 id="u53C2_u8003_u8D44_u6599_uFF1A"><a href="#u53C2_u8003_u8D44_u6599_uFF1A" class="headerlink" title="参考资料："></a>参考资料：</h3><ul>
+<h3 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h3><ul>
 <li><a href="http://blog.csdn.net/jessenpan/article/details/15505515" target="_blank" rel="external">http://blog.csdn.net/jessenpan/article/details/15505515</a></li>
 <li><a href="https://www.zhihu.com/question/30977092" target="_blank" rel="external">https://www.zhihu.com/question/30977092
 </a></li>
@@ -445,7 +447,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -527,7 +529,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java_u7A0B_u5E8F_u5185_u90E8_u7F16_u7801_u7684_u5206_u6790"><span class="nav-number">1.</span> <span class="nav-text">Java程序内部编码的分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java_u5916_u90E8_u7F16_u7801_u7684_u5206_u6790"><span class="nav-number">2.</span> <span class="nav-text">Java外部编码的分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003_u8D44_u6599_uFF1A"><span class="nav-number">3.</span> <span class="nav-text">参考资料：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java程序内部编码的分析"><span class="nav-number">1.</span> <span class="nav-text">Java程序内部编码的分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java外部编码的分析"><span class="nav-number">2.</span> <span class="nav-text">Java外部编码的分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料："><span class="nav-number">3.</span> <span class="nav-text">参考资料：</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

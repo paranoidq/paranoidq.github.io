@@ -57,6 +57,7 @@
 <meta property="og:url" content="http://paranoidq.github.io/page/5/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="So we beat on, boats against the current, borne back ceaselessly into the past.">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="钱唯の个人博客">
 <meta name="twitter:description" content="So we beat on, boats against the current, borne back ceaselessly into the past.">
@@ -240,6 +241,109 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/19/Linux学习资料/" itemprop="url">
+                  Linux学习资料
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-19T19:23:05+08:00" content="2016-05-19">
+              2016-05-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/19/Linux学习资料/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/19/Linux学习资料/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="基础入门"><a href="#基础入门" class="headerlink" title="基础入门"></a>基础入门</h3><p>《鸟哥的Linux私房菜》</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/19/Linux学习资料/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/19/hexo-hey/" itemprop="url">
                   Hexo博客管理神器：hexo hey
                 </a>
@@ -301,14 +405,14 @@
           <blockquote>
 <p>有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。</p>
 </blockquote>
-<h3 id="u5B89_u88C5"><a href="#u5B89_u88C5" class="headerlink" title="安装"></a>安装</h3><ol>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
 <li><p>install hexo-hey</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> hexo-hey <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="keyword">install</span> hexo-hey <span class="comment">--save</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>add admin user to <code>_config.yaml</code></p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Admin</span><br><span class="line"><span class="attribute">admin</span>:</span><br><span class="line">    <span class="attribute">name</span>: hexo</span><br><span class="line">    <span class="attribute">password</span>: hey</span><br><span class="line">    <span class="attribute">secret</span>: hey hexo</span><br><span class="line">    <span class="attribute">expire</span>: <span class="number">60</span>*<span class="number">1</span></span><br><span class="line">    # <span class="attribute">cors</span>: <span class="attribute">http</span>:<span class="comment">//localhost:3000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Admin</div><div class="line"><span class="symbol">admin:</span></div><div class="line"><span class="symbol">    name:</span> hexo</div><div class="line"><span class="symbol">    password:</span> hey</div><div class="line"><span class="symbol">    secret:</span> hey hexo</div><div class="line"><span class="symbol">    expire:</span> <span class="number">60</span>*<span class="number">1</span></div><div class="line">    <span class="meta"># cors: http:<span class="comment">//localhost:3000</span></span></div></pre></td></tr></table></figure>
 </li>
-<li><p>hexo serve<br>然后访问 <a href="http://localhost:4000/admin">http://localhost:4000/admin</a></p>
+<li><p>hexo serve<br>然后访问 <a href="http://localhost:4000/admin" target="_blank" rel="external">http://localhost:4000/admin</a></p>
 </li>
 </ol>
           <div class="post-more-link text-center">
@@ -413,7 +517,7 @@
 
       
         
-          <h3 id="u5E38_u89C1_u53C2_u6570"><a href="#u5E38_u89C1_u53C2_u6570" class="headerlink" title="常见参数"></a>常见参数</h3><figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby">a 显示所有选项，默认不显示LISTEN相关</span><br><span class="line"></span>-<span class="ruby">t 显示TCP相关</span><br><span class="line"></span>-<span class="ruby">u 显示UDP相关</span><br><span class="line"></span>-<span class="ruby">n 不显示别名</span><br><span class="line"></span>-<span class="ruby">l 仅列出LISTEN状态的服务</span><br><span class="line"></span></span><br><span class="line">-<span class="ruby">p 显示相关的程序名 （需要root权限才能显示http、ftp等服务）</span><br><span class="line"></span>-<span class="ruby">r 显示路由表</span><br><span class="line"></span>-<span class="ruby">e 显示扩展信息，如uid等</span><br><span class="line"></span>-<span class="ruby">s 按协议进行统计</span><br><span class="line"></span>-<span class="ruby">c 每隔固定时间，执行该命令</span></span><br></pre></td></tr></table></figure>
+          <h3 id="常见参数"><a href="#常见参数" class="headerlink" title="常见参数"></a>常见参数</h3><figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby">a 显示所有选项，默认不显示LISTEN相关</span></div><div class="line"><span class="ruby">-t 显示TCP相关</span></div><div class="line"><span class="ruby">-u 显示UDP相关</span></div><div class="line"><span class="ruby">-n 不显示别名</span></div><div class="line"><span class="ruby">-l 仅列出LISTEN状态的服务</span></div><div class="line"><span class="ruby"></span></div><div class="line"><span class="ruby">-p 显示相关的程序名 （需要root权限才能显示http、ftp等服务）</span></div><div class="line"><span class="ruby">-r 显示路由表</span></div><div class="line"><span class="ruby">-e 显示扩展信息，如uid等</span></div><div class="line"><span class="ruby">-s 按协议进行统计</span></div><div class="line"><span class="ruby">-c 每隔固定时间，执行该命令</span></div></pre></td></tr></table></figure>
 <p>LISTEN和LISTENING的状态只有用-a或者-l才能看到</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/05/19/netstat/#more" rel="contents">
@@ -517,8 +621,8 @@
 
       
         
-          <h3 id="u77E5_u9053_u7AEF_u53E3_u53F7"><a href="#u77E5_u9053_u7AEF_u53E3_u53F7" class="headerlink" title="知道端口号"></a>知道端口号</h3><ol>
-<li>查看端口使用情况：<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -tln <span class="string">| grep 8080</span></span><br></pre></td></tr></table></figure>
+          <h3 id="知道端口号"><a href="#知道端口号" class="headerlink" title="知道端口号"></a>知道端口号</h3><ol>
+<li>查看端口使用情况：<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -tln <span class="string">| grep 8080</span></div></pre></td></tr></table></figure>
 </li>
 </ol>
           <div class="post-more-link text-center">
@@ -625,8 +729,8 @@
         
           <ol>
 <li>单例模式 <ul>
-<li><a href="http://www.hollischuang.com/archives/1373">http://www.hollischuang.com/archives/1373</a></li>
-<li>JDK中的单例 <a href="http://www.hollischuang.com/archives/1383">http://www.hollischuang.com/archives/1383</a></li>
+<li><a href="http://www.hollischuang.com/archives/1373" target="_blank" rel="external">http://www.hollischuang.com/archives/1373</a></li>
+<li>JDK中的单例 <a href="http://www.hollischuang.com/archives/1383" target="_blank" rel="external">http://www.hollischuang.com/archives/1383</a></li>
 </ul>
 </li>
 </ol>
@@ -732,7 +836,7 @@
 
       
         
-          <h3 id="u4E0D_u7528Enum_u7684_u57FA_u672C_u5199_u6CD5"><a href="#u4E0D_u7528Enum_u7684_u57FA_u672C_u5199_u6CD5" class="headerlink" title="不用Enum的基本写法"></a>不用Enum的基本写法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CurrencyDenom</span> </span>&#123; </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PENNY = <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> NICKLE = <span class="number">5</span>; </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DIME = <span class="number">10</span>; </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> QUARTER = <span class="number">25</span>; </span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Currency</span> </span>&#123; </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> currency; </span><br><span class="line">    <span class="comment">// CurrencyDenom.PENNY,CurrencyDenom.NICKLE, </span></span><br><span class="line">    <span class="comment">// CurrencyDenom.DIME,CurrencyDenom.QUARTER </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h3 id="不用Enum的基本写法"><a href="#不用Enum的基本写法" class="headerlink" title="不用Enum的基本写法"></a>不用Enum的基本写法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CurrencyDenom</span> </span>&#123; </div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PENNY = <span class="number">1</span>; </div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> NICKLE = <span class="number">5</span>; </div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DIME = <span class="number">10</span>; </div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> QUARTER = <span class="number">25</span>; </div><div class="line">&#125; </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Currency</span> </span>&#123; </div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> currency; </div><div class="line">    <span class="comment">// CurrencyDenom.PENNY,CurrencyDenom.NICKLE, </span></div><div class="line">    <span class="comment">// CurrencyDenom.DIME,CurrencyDenom.QUARTER </span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>缺点：</p>
 <ol>
 <li>类型不安全，可以给currency赋值任何数，而不是限制在CurrentyDenom中的一种。编译器无法检查。</li>
@@ -949,7 +1053,7 @@
 
       
         
-          <p><a href="https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#">https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> listdir</span><br><span class="line"><span class="keyword">from</span> os.path <span class="keyword">import</span> isfile, join</span><br><span class="line">onlyfiles = [ f <span class="keyword">for</span> f <span class="keyword">in</span> listdir(mypath) <span class="keyword">if</span> isfile(join(mypath,f)) ]</span><br></pre></td></tr></table></figure></p>
+          <p><a href="https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#" target="_blank" rel="external">https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> os <span class="keyword">import</span> listdir</div><div class="line"><span class="keyword">from</span> os.path <span class="keyword">import</span> isfile, join</div><div class="line">onlyfiles = [ f <span class="keyword">for</span> f <span class="keyword">in</span> listdir(mypath) <span class="keyword">if</span> isfile(join(mypath,f)) ]</div></pre></td></tr></table></figure></p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/05/14/python-list-dir/#more" rel="contents">
               more>>
@@ -1052,7 +1156,7 @@
 
       
         
-          <h3 id="u57FA_u672C_u7406_u89E3"><a href="#u57FA_u672C_u7406_u89E3" class="headerlink" title="基本理解"></a>基本理解</h3><p>异常的本质：</p>
+          <h3 id="基本理解"><a href="#基本理解" class="headerlink" title="基本理解"></a>基本理解</h3><p>异常的本质：</p>
 <ul>
 <li>编程错误导致的异常，如NullPointerException和IllegalArgumentException。</li>
 <li>客户端错误导致的异常，如解析一个不正常的xml文档抛出异常。</li>
@@ -1165,113 +1269,10 @@
 
       
         
-          <p>转自：<a href="https://movie.douban.com/review/1277871/">https://movie.douban.com/review/1277871/</a></p>
+          <p>转自：<a href="https://movie.douban.com/review/1277871/" target="_blank" rel="external">https://movie.douban.com/review/1277871/</a></p>
 <p>十多年前看过一部日本医院正剧《回首又见他》，同样具有高超医术的司马和石川，一个冷酷威严，另一个温柔和善，然而两个人却走向同样的生命悲剧。多年之后再回忆起来，或许死对他们而言是另一种形式的完满。到生命的尽头再回首时，那人仍站在原处，不曾走远。此时百感交集。这是一个温馨而又苍凉的名字。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/04/25/白色巨塔影评/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/23/python-split/" itemprop="url">
-                  Python split函数的坑
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-02-23T09:34:04+08:00" content="2016-02-23">
-              2016-02-23
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/02/23/python-split/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/23/python-split/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">line = <span class="string">"#9999#calillemilla#11: ElQuerido92, theola3lanclosb, Abigaille19, myherolancelot, dzastin03, DECIJEZ, lostsoul1987, canderse, ktornbjerg, L1nc0ln, BigDumbFate,"</span></span><br><span class="line"></span><br><span class="line">sp1 = line.split(<span class="string">":"</span>)[<span class="number">0</span>]</span><br><span class="line">sp2 = sp1.split(sep=<span class="string">"#"</span>)</span><br><span class="line">print(sp1)</span><br><span class="line">print(sp2)</span><br></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/23/python-split/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1339,7 +1340,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

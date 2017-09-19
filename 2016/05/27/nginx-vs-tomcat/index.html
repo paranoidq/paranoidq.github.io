@@ -54,11 +54,13 @@
 
 
 <meta name="description" content="解析Apache/Nginx应该叫做HTTP Server；而Tomcat则是一个Web App Server，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。">
+<meta name="keywords" content="碎片,server,nginx,tomcat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx与tomcat有什么区别">
 <meta property="og:url" content="http://paranoidq.github.io/2016/05/27/nginx-vs-tomcat/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="解析Apache/Nginx应该叫做HTTP Server；而Tomcat则是一个Web App Server，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx与tomcat有什么区别">
@@ -289,7 +291,7 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="u89E3_u6790"><a href="#u89E3_u6790" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
+        <span itemprop="articleBody"><h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
 <a id="more"></a>
 <p>Http Server的核心是Http协议层面的传输和访问控制，包括代理、负载均衡等。客户端通过Http协议访问Http Server上的文件资源(HTML文件、图片等)，然后Http Server如实将文件通过Http协议传输给客户端。当然，通过<code>CGI</code>技术也可以对Http Server传输的内容进行一些处理。<br>大多数时候，Nginx主要作为Tomcat前端的负载均衡器和代理，负责请求的转发和静态内容的直接返回。因为其高效的IO机制[2]，能够显著提高系统的吞吐率。</p>
 <p>Web App Server，应用执行的容器。它首先需要支持开发语言的 Runtime（对于 Tomcat 来说，就是 Java），保证应用能够在应用服务器上正常运行。其次，需要支持应用相关的规范，例如类库、安全方面的特性。对于 Tomcat 来说，就是需要提供 JSP/Sevlet 运行需要的标准类库、Interface 等。为了方便，<br>应用服务器往往也会集成 HTTP Server 的功能，但是不如专业的 HTTP Server 那么强大，所以应用服务器往往是运行在 HTTP Server 的背后，执行应用，将动态的内容转化为静态的内容之后，通过 HTTP Server 分发到客户端。<br>Tomcat和Jetty，WebLogic同属一类。</p>
@@ -298,7 +300,7 @@
 <p>“tomcat用在java后台程序上，java后台程序难道不能用apache和nginx吗？”</p>
 </blockquote>
 <p>—— 不能。apache和nginx不是servlet容器。什么是servlet容器呢？即实现HttpServletRequest、HttpServletResponse、HttpSession等等接口，解析http请求，通过类加载器加载对应的servlet实现类并调用，也就是说servlet容器必须由java或者基于jvm的语言实现。<br><strong>本质上，Servlet是J2EE规范的一部分，规定了容器和Web App必须遵循的接口规范。容器必须按照接口解析Java类，然后处理请求；同样Web App也只有按照规范来编写实现类，才能被容器所加载解析，从而完成特定的功能。</strong></p>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="https://www.zhihu.com/question/32212996" target="_blank" rel="external">https://www.zhihu.com/question/32212996</a></li>
 <li><a href="http://90112526.blog.51cto.com/6013499/1059700" target="_blank" rel="external">http://90112526.blog.51cto.com/6013499/1059700</a></li>
 </ol>
@@ -325,16 +327,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/27/Git-branch-management/" rel="next" title="Git 分支管理与实践（hexo博客源文件管理）">
-                <i class="fa fa-chevron-left"></i> Git 分支管理与实践（hexo博客源文件管理）
+              <a href="/2016/05/27/front-end-trend/" rel="next" title="近几年前端技术盘点以及2016年技术发展方向(好文，转)">
+                <i class="fa fa-chevron-left"></i> 近几年前端技术盘点以及2016年技术发展方向(好文，转)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/27/front-end-trend/" rel="prev" title="近几年前端技术盘点以及2016年技术发展方向(好文，转)">
-                近几年前端技术盘点以及2016年技术发展方向(好文，转) <i class="fa fa-chevron-right"></i>
+              <a href="/2016/05/27/Python-parameters-explained/" rel="prev" title="Python parameters">
+                Python parameters <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -407,7 +409,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -489,7 +491,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u89E3_u6790"><span class="nav-number">1.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#解析"><span class="nav-number">1.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

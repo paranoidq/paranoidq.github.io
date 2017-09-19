@@ -53,27 +53,20 @@
 
 
 
-<meta name="description" content="理解Java垃圾回收
-Java垃圾回收的监控
-GC调优
-Apache的MaxClients设置及其对Tomcat Full GC的影响">
+<meta name="description" content="理解Java垃圾回收 Java垃圾回收的监控 GC调优 Apache的MaxClients设置及其对Tomcat Full GC的影响">
+<meta name="keywords" content="java,jvm,gc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GC专家系列-笔记">
 <meta property="og:url" content="http://paranoidq.github.io/2016/01/24/java-gc-experts/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
-<meta property="og:description" content="理解Java垃圾回收
-Java垃圾回收的监控
-GC调优
-Apache的MaxClients设置及其对Tomcat Full GC的影响">
+<meta property="og:description" content="理解Java垃圾回收 Java垃圾回收的监控 GC调优 Apache的MaxClients设置及其对Tomcat Full GC的影响">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://paranoidq.github.io/img/2016-1-22-1.png">
 <meta property="og:image" content="http://paranoidq.github.io/img/2016-1-22-2.png">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GC专家系列-笔记">
-<meta name="twitter:description" content="理解Java垃圾回收
-Java垃圾回收的监控
-GC调优
-Apache的MaxClients设置及其对Tomcat Full GC的影响">
+<meta name="twitter:description" content="理解Java垃圾回收 Java垃圾回收的监控 GC调优 Apache的MaxClients设置及其对Tomcat Full GC的影响">
 <meta name="twitter:image" content="http://paranoidq.github.io/img/2016-1-22-1.png">
 
 
@@ -308,11 +301,11 @@ Apache的MaxClients设置及其对Tomcat Full GC的影响">
 <li><a href="http://segmentfault.com/a/1190000004316645" target="_blank" rel="external">Apache的MaxClients设置及其对Tomcat Full GC的影响</a></li>
 </ol>
 <a id="more"></a>
-<h3 id="u57FA_u4E8E_u5206_u4EE3_u7684_u5783_u573E_u56DE_u6536"><a href="#u57FA_u4E8E_u5206_u4EE3_u7684_u5783_u573E_u56DE_u6536" class="headerlink" title="基于分代的垃圾回收"></a>基于分代的垃圾回收</h3><h4 id="u5F31_u5206_u4EE3_u5047_u8BBE"><a href="#u5F31_u5206_u4EE3_u5047_u8BBE" class="headerlink" title="弱分代假设"></a>弱分代假设</h4><ul>
+<h3 id="基于分代的垃圾回收"><a href="#基于分代的垃圾回收" class="headerlink" title="基于分代的垃圾回收"></a>基于分代的垃圾回收</h3><h4 id="弱分代假设"><a href="#弱分代假设" class="headerlink" title="弱分代假设"></a>弱分代假设</h4><ul>
 <li>大多数对象很快不可达</li>
 <li>极少数对象出现旧对象持有新对象的引用</li>
 </ul>
-<h4 id="u57FA_u672C_u5206_u4EE3"><a href="#u57FA_u672C_u5206_u4EE3" class="headerlink" title="基本分代"></a>基本分代</h4><p><img src="/img/2016-1-22-1.png" alt="java-gc-areas"></p>
+<h4 id="基本分代"><a href="#基本分代" class="headerlink" title="基本分代"></a>基本分代</h4><p><img src="/img/2016-1-22-1.png" alt="java-gc-areas"></p>
 <ul>
 <li>新生代(minor gc)</li>
 <li>老年代(major gc/full gc)</li>
@@ -327,7 +320,7 @@ Apache的MaxClients设置及其对Tomcat Full GC的影响">
 <ul>
 <li>为了处理这种场景，在老年代中设计了”索引表(card table)”，是一个512字节的数据块。不管何时老年代需要持有新生代对象的引用时，都会记录到此表中。当新生代中需要执行GC时，通过搜索此表决定新生代的对象是否为GC的目标对象，从而降低遍历所有老年代对象进行检查的代价。该索引表使用写栅栏(write barrier)进行管理。write barrier是一个允许高性能执行minor GC的设备。尽管它会引入一个数据位的开销，却能带来总体GC时间的大幅降低</li>
 </ul>
-<h4 id="u65B0_u751F_u4EE3"><a href="#u65B0_u751F_u4EE3" class="headerlink" title="新生代"></a>新生代</h4><p><img src="/img/2016-1-22-2.png" alt="java-eden-areas"></p>
+<h4 id="新生代"><a href="#新生代" class="headerlink" title="新生代"></a>新生代</h4><p><img src="/img/2016-1-22-2.png" alt="java-eden-areas"></p>
 <p>1个Eden区 + 2个Survivor区</p>
 <ul>
 <li>大多数新生对象都被分配在Eden区。</li>
@@ -341,7 +334,7 @@ Apache的MaxClients设置及其对Tomcat Full GC的影响">
 <li>Bump-the-pointer技术会跟踪在Eden上新创建的对象。由于新对象被分配在Eden空间的最上面，所以后续如果有新对象创建，只需要判断新创建对象的大小是否满足剩余的Eden空间。如果新对象满足要求，则其会被分配到Eden空间，同样位于Eden的最上面。所以当有新对象创建时，只需要判断此新对象的大小即可，因此具有更快的内存分配速度。</li>
 <li>在多线程环境下，将会有别样的状况。为了满足多个线程在Eden空间上创建对象时的线程安全，不可避免的会引入锁，因此随着锁竞争的开销，创建对象的性能也大打折扣。在HotSpot中正是通过TLABs解决了多线程问题。TLABs允许每个线程在Eden上有自己的小片空间，线程只能访问其自己的TLAB区域，因此bump-the-pointer能通过TLAB在不加锁的情况下完成快速的内存分配。</li>
 </ul>
-<h4 id="u8001_u5E74_u4EE3"><a href="#u8001_u5E74_u4EE3" class="headerlink" title="老年代"></a>老年代</h4><p>五种GC</p>
+<h4 id="老年代"><a href="#老年代" class="headerlink" title="老年代"></a>老年代</h4><p>五种GC</p>
 <ul>
 <li>Serial GC</li>
 <li>Parallel GC</li>
@@ -350,7 +343,7 @@ Apache的MaxClients设置及其对Tomcat Full GC的影响">
 <li>Garbage First (G1) GC<br>（这里原文讲得不好，参见周志明老师的《深入理解JVM虚拟机》第三章）</li>
 </ul>
 <p><a href="http://www.cnblogs.com/redcreen/archive/2011/05/04/2037057.html" target="_blank" rel="external">如何选择和设置虚拟机参数</a></p>
-<h3 id="GC_u76D1_u63A7"><a href="#GC_u76D1_u63A7" class="headerlink" title="GC监控"></a>GC监控</h3><h4 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jps # 找到运行的java程序的vid</span><br><span class="line">jstat -gc [vid] 1000  # 每1s显示一次</span><br></pre></td></tr></table></figure>
+<h3 id="GC监控"><a href="#GC监控" class="headerlink" title="GC监控"></a>GC监控</h3><h4 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">jps # 找到运行的java程序的vid</div><div class="line">jstat -gc [vid] 1000  # 每1s显示一次</div></pre></td></tr></table></figure>
 <p>其他选项：</p>
 <ul>
 <li>gc  输出堆空间上各分区当前的大小及使用量(Ede, Survivor, Old等)，GC执行的总次数以及累积消耗的执行时长。</li>
@@ -363,32 +356,32 @@ Apache的MaxClients设置及其对Tomcat Full GC的影响">
 <li>gcpermcapacity  持久代(方法区)上的统计信息。</li>
 <li>gcutil  以%的格式输出每个分区的使用量。同时也会输出GC执行的总次数及累积耗时。</li>
 </ul>
-<p>GC输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">S0C: Current survivor space 0 capacity (kB).</span><br><span class="line"></span><br><span class="line">S1C: Current survivor space 1 capacity (kB).</span><br><span class="line"></span><br><span class="line">S0U: Survivor space 0 utilization (kB).</span><br><span class="line"></span><br><span class="line">S1U: Survivor space 1 utilization (kB).</span><br><span class="line"></span><br><span class="line">EC: Current eden space capacity (kB).</span><br><span class="line"></span><br><span class="line">EU: Eden space utilization (kB).</span><br><span class="line"></span><br><span class="line">OC: Current old space capacity (kB).</span><br><span class="line"></span><br><span class="line">OU: Old space utilization (kB).</span><br><span class="line"></span><br><span class="line">MC: Metaspace capacity (kB).</span><br><span class="line"></span><br><span class="line">MU: Metacspace utilization (kB).</span><br><span class="line"></span><br><span class="line">CCSC: Compressed class space capacity (kB).</span><br><span class="line"></span><br><span class="line">CCSU: Compressed class space used (kB).</span><br><span class="line"></span><br><span class="line">YGC: Number of young generation garbage collection events.</span><br><span class="line"></span><br><span class="line">YGCT: Young generation garbage collection time.</span><br><span class="line"></span><br><span class="line">FGC: Number of full GC events.</span><br><span class="line"></span><br><span class="line">FGCT: Full garbage collection time.</span><br><span class="line"></span><br><span class="line">GCT: Total garbage collection time.</span><br></pre></td></tr></table></figure></p>
+<p>GC输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">S0C: Current survivor space 0 capacity (kB).</div><div class="line"></div><div class="line">S1C: Current survivor space 1 capacity (kB).</div><div class="line"></div><div class="line">S0U: Survivor space 0 utilization (kB).</div><div class="line"></div><div class="line">S1U: Survivor space 1 utilization (kB).</div><div class="line"></div><div class="line">EC: Current eden space capacity (kB).</div><div class="line"></div><div class="line">EU: Eden space utilization (kB).</div><div class="line"></div><div class="line">OC: Current old space capacity (kB).</div><div class="line"></div><div class="line">OU: Old space utilization (kB).</div><div class="line"></div><div class="line">MC: Metaspace capacity (kB).</div><div class="line"></div><div class="line">MU: Metacspace utilization (kB).</div><div class="line"></div><div class="line">CCSC: Compressed class space capacity (kB).</div><div class="line"></div><div class="line">CCSU: Compressed class space used (kB).</div><div class="line"></div><div class="line">YGC: Number of young generation garbage collection events.</div><div class="line"></div><div class="line">YGCT: Young generation garbage collection time.</div><div class="line"></div><div class="line">FGC: Number of full GC events.</div><div class="line"></div><div class="line">FGCT: Full garbage collection time.</div><div class="line"></div><div class="line">GCT: Total garbage collection time.</div></pre></td></tr></table></figure></p>
 <p>尤其需要关注YGC, YGCT, FGC, FGCT和GCT数量的变化。</p>
-<h4 id="u2013verbose_3Agc"><a href="#u2013verbose_3Agc" class="headerlink" title="–verbose:gc"></a>–verbose:gc</h4><ul>
+<h4 id="–verbose-gc"><a href="#–verbose-gc" class="headerlink" title="–verbose:gc"></a>–verbose:gc</h4><ul>
 <li>运行Java应用时的一个JVM选项</li>
 <li>输出每次GC前后新生代和老年代的容量变化及GC耗时</li>
 </ul>
-<h4 id="VisualVM_+_Visual_GC_u63D2_u4EF6"><a href="#VisualVM_+_Visual_GC_u63D2_u4EF6" class="headerlink" title="VisualVM + Visual GC插件"></a>VisualVM + Visual GC插件</h4><ul>
+<h4 id="VisualVM-Visual-GC插件"><a href="#VisualVM-Visual-GC插件" class="headerlink" title="VisualVM + Visual GC插件"></a>VisualVM + Visual GC插件</h4><ul>
 <li>jvisualvm</li>
 </ul>
 <h4 id="HPJMeter"><a href="#HPJMeter" class="headerlink" title="HPJMeter"></a>HPJMeter</h4><ul>
 <li>分析–verbose:gc输出的结果的GUI</li>
 </ul>
-<h3 id="GC_u8C03_u4F18"><a href="#GC_u8C03_u4F18" class="headerlink" title="GC调优"></a>GC调优</h3><p>GC调优未必需要，如果你做了以下三个事情：</p>
+<h3 id="GC调优"><a href="#GC调优" class="headerlink" title="GC调优"></a>GC调优</h3><p>GC调优未必需要，如果你做了以下三个事情：</p>
 <ul>
 <li>通过-Xms和-Xmx指定了JVM的堆内存大小</li>
 <li>使用了-server选项</li>
 <li>系统未产生太多的超市日志</li>
 </ul>
 <p><strong>gc调优是不得已的选择！</strong></p>
-<h4 id="GC_u8C03_u4F18_u7684_u76EE_u6807_u5206_u4E3A_u4E24_u7C7B_uFF1A"><a href="#GC_u8C03_u4F18_u7684_u76EE_u6807_u5206_u4E3A_u4E24_u7C7B_uFF1A" class="headerlink" title="GC调优的目标分为两类："></a>GC调优的目标分为两类：</h4><ul>
+<h4 id="GC调优的目标分为两类："><a href="#GC调优的目标分为两类：" class="headerlink" title="GC调优的目标分为两类："></a>GC调优的目标分为两类：</h4><ul>
 <li>降低移动到老年代的对象数量</li>
 <li>缩短Full GC的执行时间</li>
 </ul>
 <p>老年代的GC较新生代会耗时更长，因此减少移动到老年代的对象数量可以降低full GC的频率。减少对象转移到老年代可能会被误解为把对象保留在新生代，然而这是不可能的，相反你可以<strong>调整新生代的空间大小。</strong><br>如果企图通过缩小老年代空间的方式来降低Full GC执行时间，可能会面临OutOfMemoryError或者带来更频繁的Full GC。如果通过增加老年代空间来减少Full GC执行次数，单次Full GC耗时将会增加。因此，<strong>需要为老年代空间设置适当的大小</strong>。</p>
 <p><strong>GC调优的基本规则是对两台或更多的服务器设置不同的选项，并对比性能表现，然后把被证明能提升性能的选项添加到应用服务器上.</strong></p>
-<h4 id="u5F71_u54CDGC_u7684_u9009_u9879_uFF1A"><a href="#u5F71_u54CDGC_u7684_u9009_u9879_uFF1A" class="headerlink" title="影响GC的选项："></a>影响GC的选项：</h4><ol>
+<h4 id="影响GC的选项："><a href="#影响GC的选项：" class="headerlink" title="影响GC的选项："></a>影响GC的选项：</h4><ol>
 <li><p>空间设置：</p>
 <ul>
 <li><p>堆空间：</p>
@@ -418,7 +411,7 @@ Apache的MaxClients设置及其对Tomcat Full GC的影响">
 <p>通常Serial GC只有在client端用。</p>
 </li>
 </ol>
-<h4 id="GC_u8C03_u4F18_u7684_u8FC7_u7A0B"><a href="#GC_u8C03_u4F18_u7684_u8FC7_u7A0B" class="headerlink" title="GC调优的过程"></a>GC调优的过程</h4><ol>
+<h4 id="GC调优的过程"><a href="#GC调优的过程" class="headerlink" title="GC调优的过程"></a>GC调优的过程</h4><ol>
 <li>监控</li>
 <li>分析数据并决定是否需要GC调优<ul>
 <li>如果分析结果显示GC耗时在0.1-0.3秒以内的话，一般不需要花费额外的时间做GC调优。然而，如果GC耗时达到1-3秒甚至10秒以上，就需要立即对系统进行GC调优。</li>
@@ -546,7 +539,7 @@ Apache的MaxClients设置及其对Tomcat Full GC的影响">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -628,7 +621,7 @@ Apache的MaxClients设置及其对Tomcat Full GC的影响">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u57FA_u4E8E_u5206_u4EE3_u7684_u5783_u573E_u56DE_u6536"><span class="nav-number">1.</span> <span class="nav-text">基于分代的垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u5F31_u5206_u4EE3_u5047_u8BBE"><span class="nav-number">1.1.</span> <span class="nav-text">弱分代假设</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u57FA_u672C_u5206_u4EE3"><span class="nav-number">1.2.</span> <span class="nav-text">基本分代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u65B0_u751F_u4EE3"><span class="nav-number">1.3.</span> <span class="nav-text">新生代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u8001_u5E74_u4EE3"><span class="nav-number">1.4.</span> <span class="nav-text">老年代</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC_u76D1_u63A7"><span class="nav-number">2.</span> <span class="nav-text">GC监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#jstat"><span class="nav-number">2.1.</span> <span class="nav-text">jstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u2013verbose_3Agc"><span class="nav-number">2.2.</span> <span class="nav-text">–verbose:gc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VisualVM_+_Visual_GC_u63D2_u4EF6"><span class="nav-number">2.3.</span> <span class="nav-text">VisualVM + Visual GC插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HPJMeter"><span class="nav-number">2.4.</span> <span class="nav-text">HPJMeter</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC_u8C03_u4F18"><span class="nav-number">3.</span> <span class="nav-text">GC调优</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GC_u8C03_u4F18_u7684_u76EE_u6807_u5206_u4E3A_u4E24_u7C7B_uFF1A"><span class="nav-number">3.1.</span> <span class="nav-text">GC调优的目标分为两类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u5F71_u54CDGC_u7684_u9009_u9879_uFF1A"><span class="nav-number">3.2.</span> <span class="nav-text">影响GC的选项：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC_u8C03_u4F18_u7684_u8FC7_u7A0B"><span class="nav-number">3.3.</span> <span class="nav-text">GC调优的过程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于分代的垃圾回收"><span class="nav-number">1.</span> <span class="nav-text">基于分代的垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#弱分代假设"><span class="nav-number">1.1.</span> <span class="nav-text">弱分代假设</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本分代"><span class="nav-number">1.2.</span> <span class="nav-text">基本分代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新生代"><span class="nav-number">1.3.</span> <span class="nav-text">新生代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#老年代"><span class="nav-number">1.4.</span> <span class="nav-text">老年代</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC监控"><span class="nav-number">2.</span> <span class="nav-text">GC监控</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#jstat"><span class="nav-number">2.1.</span> <span class="nav-text">jstat</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#–verbose-gc"><span class="nav-number">2.2.</span> <span class="nav-text">–verbose:gc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VisualVM-Visual-GC插件"><span class="nav-number">2.3.</span> <span class="nav-text">VisualVM + Visual GC插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HPJMeter"><span class="nav-number">2.4.</span> <span class="nav-text">HPJMeter</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GC调优"><span class="nav-number">3.</span> <span class="nav-text">GC调优</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GC调优的目标分为两类："><span class="nav-number">3.1.</span> <span class="nav-text">GC调优的目标分为两类：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#影响GC的选项："><span class="nav-number">3.2.</span> <span class="nav-text">影响GC的选项：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC调优的过程"><span class="nav-number">3.3.</span> <span class="nav-text">GC调优的过程</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

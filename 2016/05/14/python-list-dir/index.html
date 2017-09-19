@@ -54,11 +54,13 @@
 
 
 <meta name="description" content="https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#123from os import listdirfrom os.path import isfile, joinonlyfiles = [ f for f in listdir(mypath) if isfile(join(mypat">
+<meta name="keywords" content="碎片,python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python如何列出目录下的所有文件">
 <meta property="og:url" content="http://paranoidq.github.io/2016/05/14/python-list-dir/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#123from os import listdirfrom os.path import isfile, joinonlyfiles = [ f for f in listdir(mypath) if isfile(join(mypat">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python如何列出目录下的所有文件">
@@ -289,9 +291,9 @@
       
 
       
-        <span itemprop="articleBody"><p><a href="https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#" target="_blank" rel="external">https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> listdir</span><br><span class="line"><span class="keyword">from</span> os.path <span class="keyword">import</span> isfile, join</span><br><span class="line">onlyfiles = [ f <span class="keyword">for</span> f <span class="keyword">in</span> listdir(mypath) <span class="keyword">if</span> isfile(join(mypath,f)) ]</span><br></pre></td></tr></table></figure></p>
+        <span itemprop="articleBody"><p><a href="https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#" target="_blank" rel="external">https://taizilongxu.gitbooks.io/stackoverflow-about-python/content/39/README.html#</a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> os <span class="keyword">import</span> listdir</div><div class="line"><span class="keyword">from</span> os.path <span class="keyword">import</span> isfile, join</div><div class="line">onlyfiles = [ f <span class="keyword">for</span> f <span class="keyword">in</span> listdir(mypath) <span class="keyword">if</span> isfile(join(mypath,f)) ]</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> <span class="built_in">os</span> <span class="keyword">import</span> walk</span><br><span class="line"></span><br><span class="line">f = []</span><br><span class="line"><span class="keyword">for</span> (dirpath, dirnames, filenames) <span class="keyword">in</span> walk(mypath):</span><br><span class="line">    f.extend(filenames)</span><br><span class="line">    <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> <span class="built_in">os</span> <span class="keyword">import</span> walk</div><div class="line"></div><div class="line">f = []</div><div class="line"><span class="keyword">for</span> (dirpath, dirnames, filenames) <span class="keyword">in</span> walk(mypath):</div><div class="line">    f.extend(filenames)</div><div class="line">    <span class="keyword">break</span></div></pre></td></tr></table></figure>
 </span>
       
     </div>
@@ -393,7 +395,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

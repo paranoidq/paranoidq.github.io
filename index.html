@@ -57,6 +57,7 @@
 <meta property="og:url" content="http://paranoidq.github.io/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="So we beat on, boats against the current, borne back ceaselessly into the past.">
+<meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="钱唯の个人博客">
 <meta name="twitter:description" content="So we beat on, boats against the current, borne back ceaselessly into the past.">
@@ -217,6 +218,98 @@
 
     
     
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/19/log4j/" itemprop="url">
+                  log4j
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2017-09-19T16:42:30+08:00" content="2017-09-19">
+              2017-09-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/19/log4j/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/19/log4j/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            
+            
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/09/19/log4j/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
      
       
@@ -409,7 +502,7 @@
 
       
         
-          <h3 id="u4EBA_u6587"><a href="#u4EBA_u6587" class="headerlink" title="人文"></a>人文</h3><p><a href="http://book.douban.com/subject/1059336/">往事并不如烟</a> (完成)<br><a href="http://book.douban.com/subject/1438394/">更多的人死于心碎</a></p>
+          <h3 id="人文"><a href="#人文" class="headerlink" title="人文"></a>人文</h3><p><a href="http://book.douban.com/subject/1059336/" target="_blank" rel="external">往事并不如烟</a> (完成)<br><a href="http://book.douban.com/subject/1438394/" target="_blank" rel="external">更多的人死于心碎</a></p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/11/29/just-reading/#more" rel="contents">
               more>>
@@ -821,7 +914,7 @@
 
       
         
-          <h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice客户端的方式有很多种，概括起来分为两个环节：客户端stub生成和调用远程服务。对于生成stub而言，主要的方式是有两种：<strong>通过wsdl静态生成然后导入客户端代码</strong>和<strong>通过Java反射机制动态生成（利用了JAXB API）</strong>。</p>
+          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice客户端的方式有很多种，概括起来分为两个环节：客户端stub生成和调用远程服务。对于生成stub而言，主要的方式是有两种：<strong>通过wsdl静态生成然后导入客户端代码</strong>和<strong>通过Java反射机制动态生成（利用了JAXB API）</strong>。</p>
 <p>动态生成这里不介绍了，介绍一下静态生成的方法，具体可以细分为以下几种：</p>
 <ul>
 <li>jdk1.6+/bin中自带工具: <code>wsimport</code></li>
@@ -946,7 +1039,7 @@
 
       
         
-          <h3 id="u6982_u8FF0"><a href="#u6982_u8FF0" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
+          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
 <p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/20/java-webservice-tutorial-3/#more" rel="contents">
@@ -1155,115 +1248,10 @@
 
       
         
-          <h3 id="u573A_u666F"><a href="#u573A_u666F" class="headerlink" title="场景"></a>场景</h3><p>在性能测试的时候，使用apache httpclient连续发送报文到server进行压测。压测的配置如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">总数：10000</span><br><span class="line">并发：400</span><br><span class="line">每个发送线程的QPS限制：20</span><br></pre></td></tr></table></figure></p>
+          <h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>在性能测试的时候，使用apache httpclient连续发送报文到server进行压测。压测的配置如下：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">总数：<span class="number">10000</span></div><div class="line">并发：<span class="number">400</span></div><div class="line">每个发送线程的QPS限制：<span class="number">20</span></div></pre></td></tr></table></figure></p>
 <p>出现的问题是： 大概1000左右的报文会出现 <code>NoHttpResponseException [server ip] failed to respond</code>。调低并发度到300一下时，不会出现这样的异常。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/17/NoHttpResponseException-problem-analysis/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/" itemprop="url">
-                  (翻译) Using HttpClient properly to avoid CLOSE_WAIT TCP connections
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-10-11T20:46:41+08:00" content="2016-10-11">
-              2016-10-11
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>原文链接：<a href="https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/">https://www.nuxeo.com/blog/using-httpclient-properly-avoid-closewait-tcp-connections/</a></p>
-<p>在我帮助我的客户debug一个TCP connection关于CLOSE_WAIT状态的问题时，我发现我们错误的使用了HttpClient。在这个问题上，如果你试图google <a href="http://www.google.com/search?q=HttpClient+CLOSE_WAIT">HttpClient CLOSE_WAIT</a>，你会发现很多人跟我们一样存在疑惑。但是关于这个问题，很多的解答不够直观，甚至<a href="http://hc.apache.org/httpclient-legacy/tutorial.html">官方文档</a>都是错误的。所以我在这篇文章中进行了分析。</p>
-<p>Apache HttpClient的基本用法如下：<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HttpClient httpClient = <span class="keyword">new</span> HttpClient();</span><br><span class="line">HttpMethod <span class="function"><span class="keyword">method</span> = <span class="title">new</span> <span class="title">GetMethod</span><span class="params">(uri)</span>;</span></span><br><span class="line"><span class="keyword">try</span> <span class="comment">&#123;</span><br><span class="line">    int statusCode = httpClient.executeMethod(method);</span><br><span class="line">    byte[] responseBody = method.getResponseBody();</span><br><span class="line">    // ...</span><br><span class="line">    return stuff;</span><br><span class="line">&#125;</span> <span class="keyword">finally</span> <span class="comment">&#123;</span><br><span class="line">    method.releaseConnection();</span><br><span class="line">&#125;</span></span><br></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/11/Using-HttpClient-properly-to-avoid-CLOSE-WAIT-TCP-connections/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1331,7 +1319,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

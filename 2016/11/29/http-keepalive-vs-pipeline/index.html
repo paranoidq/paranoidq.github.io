@@ -54,11 +54,13 @@
 
 
 <meta name="description" content="本篇结合资料，阐述了Http协议中的keep alive的理解。">
+<meta name="keywords" content="http,network,keepalive">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Http KeepAlive的理解">
 <meta property="og:url" content="http://paranoidq.github.io/2016/11/29/http-keepalive-vs-pipeline/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="本篇结合资料，阐述了Http协议中的keep alive的理解。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-11-29T13:18:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Http KeepAlive的理解">
@@ -290,7 +292,7 @@
 
       
         <span itemprop="articleBody"><p>本篇结合资料，阐述了Http协议中的keep alive的理解。<br><a id="more"></a></p>
-<h3 id="keepalive_u4E3A_u4EC0_u4E48_u4E0D_u80FD_u8FDE_u7EED_u53D1_u9001_u591A_u4E2A_u8BF7_u6C42_u62A5_u6587"><a href="#keepalive_u4E3A_u4EC0_u4E48_u4E0D_u80FD_u8FDE_u7EED_u53D1_u9001_u591A_u4E2A_u8BF7_u6C42_u62A5_u6587" class="headerlink" title="keepalive为什么不能连续发送多个请求报文"></a>keepalive为什么不能连续发送多个请求报文</h3><p>知乎原贴：<a href="https://www.zhihu.com/question/26515427" target="_blank" rel="external">https://www.zhihu.com/question/26515427</a></p>
+<h3 id="keepalive为什么不能连续发送多个请求报文"><a href="#keepalive为什么不能连续发送多个请求报文" class="headerlink" title="keepalive为什么不能连续发送多个请求报文"></a>keepalive为什么不能连续发送多个请求报文</h3><p>知乎原贴：<a href="https://www.zhihu.com/question/26515427" target="_blank" rel="external">https://www.zhihu.com/question/26515427</a></p>
 <p>keepalive之前，是发出一个request,然后等待收取 response,在没有 conten-length的时候利用关闭链接的事件来判断 response接收完毕。因为那个时候网站就是一个HTML的文本，你仅仅需要请求一次就可以得到整个页面了。</p>
 <p>后来,随着网页表现形式的多样化，一个页面的资源增多，构成一个页面的文件数不再是一个，为了快速加载网页(是快速，理论上你只开一个socket用完了关，再用再开也行)，同时并行地打开多个socket来获取资源(网络IO时间和页面渲染时间的比重越大，这个效果越明显)。</p>
 <p>这个时候有一个问题就来了，我们为什么不在 一个socket上连续发送多个request。原因是因为HTTP1.1 及更低版本的协议，并没有一个字段用来区分一个response是归属于哪一个request的。但HTTP 2 就有这个字段了。因此在HTTP1.1 及更低版本，你只能在发送一个request之后，等待response的到来。</p>
@@ -428,7 +430,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -510,7 +512,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#keepalive_u4E3A_u4EC0_u4E48_u4E0D_u80FD_u8FDE_u7EED_u53D1_u9001_u591A_u4E2A_u8BF7_u6C42_u62A5_u6587"><span class="nav-number">1.</span> <span class="nav-text">keepalive为什么不能连续发送多个请求报文</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#keepalive为什么不能连续发送多个请求报文"><span class="nav-number">1.</span> <span class="nav-text">keepalive为什么不能连续发送多个请求报文</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

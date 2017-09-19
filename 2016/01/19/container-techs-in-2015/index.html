@@ -53,25 +53,18 @@
 
 
 
-<meta name="description" content="解读docker，runc等容器技术发展的好文，值得一读拓展视野。
-编者按2015年，整个IT技术领域发生了许多深刻而又复杂的变化，InfoQ策划了“解读2015”年终技术盘点系列文章，希望能够给读者清晰地梳理出技术领域在这一年的发展变化，回顾过去，继续前行。
-回顾2015年容器技术的发展历程，我们可以用两个关键词来概括：扩张与进化。
-如果说2014年仅仅是Docker为主的容器技术在云计算以及D">
+<meta name="description" content="解读docker，runc等容器技术发展的好文，值得一读拓展视野。 编者按2015年，整个IT技术领域发生了许多深刻而又复杂的变化，InfoQ策划了“解读2015”年终技术盘点系列文章，希望能够给读者清晰地梳理出技术领域在这一年的发展变化，回顾过去，继续前行。 回顾2015年容器技术的发展历程，我们可以用两个关键词来概括：扩张与进化。 如果说2014年仅仅是Docker为主的容器技术在云计算以及D">
+<meta name="keywords" content="docker,虚拟化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解读2015之容器篇：扩张与进化（转载）">
 <meta property="og:url" content="http://paranoidq.github.io/2016/01/19/container-techs-in-2015/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
-<meta property="og:description" content="解读docker，runc等容器技术发展的好文，值得一读拓展视野。
-编者按2015年，整个IT技术领域发生了许多深刻而又复杂的变化，InfoQ策划了“解读2015”年终技术盘点系列文章，希望能够给读者清晰地梳理出技术领域在这一年的发展变化，回顾过去，继续前行。
-回顾2015年容器技术的发展历程，我们可以用两个关键词来概括：扩张与进化。
-如果说2014年仅仅是Docker为主的容器技术在云计算以及D">
+<meta property="og:description" content="解读docker，runc等容器技术发展的好文，值得一读拓展视野。 编者按2015年，整个IT技术领域发生了许多深刻而又复杂的变化，InfoQ策划了“解读2015”年终技术盘点系列文章，希望能够给读者清晰地梳理出技术领域在这一年的发展变化，回顾过去，继续前行。 回顾2015年容器技术的发展历程，我们可以用两个关键词来概括：扩张与进化。 如果说2014年仅仅是Docker为主的容器技术在云计算以及D">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解读2015之容器篇：扩张与进化（转载）">
-<meta name="twitter:description" content="解读docker，runc等容器技术发展的好文，值得一读拓展视野。
-编者按2015年，整个IT技术领域发生了许多深刻而又复杂的变化，InfoQ策划了“解读2015”年终技术盘点系列文章，希望能够给读者清晰地梳理出技术领域在这一年的发展变化，回顾过去，继续前行。
-回顾2015年容器技术的发展历程，我们可以用两个关键词来概括：扩张与进化。
-如果说2014年仅仅是Docker为主的容器技术在云计算以及D">
+<meta name="twitter:description" content="解读docker，runc等容器技术发展的好文，值得一读拓展视野。 编者按2015年，整个IT技术领域发生了许多深刻而又复杂的变化，InfoQ策划了“解读2015”年终技术盘点系列文章，希望能够给读者清晰地梳理出技术领域在这一年的发展变化，回顾过去，继续前行。 回顾2015年容器技术的发展历程，我们可以用两个关键词来概括：扩张与进化。 如果说2014年仅仅是Docker为主的容器技术在云计算以及D">
 
 
 
@@ -299,11 +292,11 @@
 
       
         <span itemprop="articleBody"><p>解读docker，runc等容器技术发展的好文，值得一读拓展视野。</p>
-<h3 id="u7F16_u8005_u6309"><a href="#u7F16_u8005_u6309" class="headerlink" title="编者按"></a>编者按</h3><p>2015年，整个IT技术领域发生了许多深刻而又复杂的变化，InfoQ策划了“解读2015”年终技术盘点系列文章，希望能够给读者清晰地梳理出技术领域在这一年的发展变化，回顾过去，继续前行。</p>
+<h3 id="编者按"><a href="#编者按" class="headerlink" title="编者按"></a>编者按</h3><p>2015年，整个IT技术领域发生了许多深刻而又复杂的变化，InfoQ策划了“解读2015”年终技术盘点系列文章，希望能够给读者清晰地梳理出技术领域在这一年的发展变化，回顾过去，继续前行。</p>
 <p>回顾2015年容器技术的发展历程，我们可以用两个关键词来概括：扩张与进化。</p>
 <p>如果说2014年仅仅是Docker为主的容器技术在云计算以及DevOps圈初露锋芒的话，那么2015年则是以Docker为核心的容器生态圈迅猛扩张的一年。这种扩张的态势，一直从2015上半年火爆的DockerCon蔓延到了2015年的最后一天。伴随着容器技术快速发展的过程，国内外的技术人员有幸亲历了OCI、CNCF两大标准组织的确立，第一时间体验了Docker 1.8和1.9两大关键版本的发布，见识到了CoreOS一系列关键技术革新与战略布局，也感受到了国内Docker创业圈的如火如荼。</p>
 <a id="more"></a>
-<h3 id="u56FD_u5916_u5BB9_u5668_u6280_u672F_u9879_u76EE"><a href="#u56FD_u5916_u5BB9_u5668_u6280_u672F_u9879_u76EE" class="headerlink" title="国外容器技术项目"></a>国外容器技术项目</h3><p>在2015年，一直以“善意独裁”面孔示人的Docker公司终于迈出了合作的第一步。OCI组织的成立宣告了工业界对Docker提出的容器技术的高度认同，也暗含了后进场玩家试图从这个由startup开创的新领域中分得一杯羹的决心。然而runC项目运作到现在，依然没能够进入Docker Daemon的实现主干，也没有任何巨头发布以runC为基础的新容器实现。Docker而不是runC被用户当作容器技术的事实标准的现状在短期内（1-2年）恐怕还很难发生本质改变。容器技术领域多样化的任务目前还是落在直接竞争对手CoreOS，以及另辟蹊径的虚拟化容器技术比如Hyper和Intel Clear Linux身上。但是无论如何，诞生于startup的Docker容器注定要经历更多的考验才能在巨头林立的云计算领域真正地扎根生长，无论其是否愿意，将容器技术标准化是这条道路上必须面对的选择和进化方向。</p>
+<h3 id="国外容器技术项目"><a href="#国外容器技术项目" class="headerlink" title="国外容器技术项目"></a>国外容器技术项目</h3><p>在2015年，一直以“善意独裁”面孔示人的Docker公司终于迈出了合作的第一步。OCI组织的成立宣告了工业界对Docker提出的容器技术的高度认同，也暗含了后进场玩家试图从这个由startup开创的新领域中分得一杯羹的决心。然而runC项目运作到现在，依然没能够进入Docker Daemon的实现主干，也没有任何巨头发布以runC为基础的新容器实现。Docker而不是runC被用户当作容器技术的事实标准的现状在短期内（1-2年）恐怕还很难发生本质改变。容器技术领域多样化的任务目前还是落在直接竞争对手CoreOS，以及另辟蹊径的虚拟化容器技术比如Hyper和Intel Clear Linux身上。但是无论如何，诞生于startup的Docker容器注定要经历更多的考验才能在巨头林立的云计算领域真正地扎根生长，无论其是否愿意，将容器技术标准化是这条道路上必须面对的选择和进化方向。</p>
 <p>另一方面，Docker公司这种独一无二的亲和力和号召力正是2015年Docker为主的容器生态圈版图迅速扩张的主要基石。当然，既然是扩张，这张容器生态圈版图的背后也必然少不了大小领主“封地”的确立和斗争。</p>
 <p>2015年，Google和RedHat联盟以Kubernetes 1.0为阵地宣告了大规模容器编排与管理领域的领主地位。号称以Borg等Google多年容器技术实践经验为理论指导、以Google和RedHat PaaS团队为主要工程力量的Kubernetes项目一经宣布生产级别可用，便立刻吸引了的工业界乃至学术界的大量关注和投入。尽管不是第一家，但是我们不得不承认Google的号召力和Kubernetes不凡的背景直接推动了CNCF这一容器编排管理标准组织的诞生。在技术方向上，Kubernetes团队则试图以Kubernetes为依托来对外输出Google的容器技术的思想和经验，或多或少有点要弥补LMCTFY项目中途夭折的意思。无论如何，Kubernetes所体现出的前瞻性的容器技术实践思路，确实值得我们每一个容器技术实践者重点关注和学习。无论是Pod及伙伴容器、单Pod单IP网络模型、volume插件机制、容器生命周期钩子这种对容器技术本身的改造，还是虚拟IP与负载均衡、垂直健康检查、密码数据卷管理、元数据API等平台级别能力的实现，都展现出了Kubernetes与其他编排管理项目与众不同的技术视野和团队实力。在未来发展方向上，Kubernetes已经开始向1000+节点的集群规模进发，毕竟在性能和规模化领域，Kubernetes没有理由落后竞争者太久。另一方面，除了常规的long time running任务，其他类型任务比如短任务和daemon任务的支持都已经引入了项目主干，类似big data业务的支持将是未来的一个重要方向。</p>
 <p>在与Docker”分手“之后，CoreOS一直在积极地寻求展示自己技术想法的机会，包括加入OCI组织以及在Kubernetes上同Google开展深度的合作。鉴于OCI最开始只关注于container runtime的实现标准，CoreOS的AppC一直在积极推进镜像标准的概念。目前这个标准已经在Kubernetes上初见雏形。最值得关注的是，CoreOS还在0.8.0版本发布时高调宣布了同Intel Clear Linux团队合作在rkt上实现了基于虚拟化技术隔离的容器（这与国内的Hyper团队的做法不谋而合，只不过后者是在Docker上做出的类似实现）。这种hypervisor-based container是目前在公有云上提供容器服务最佳选择，CoreOS在容器安全和隔离性问题上进行本质革新的做法的确很有说服力。而在容器编排管理领域，CoreOS公司将Kubernetes组件内置到CoreOS项目中作为主要的底层依赖之一。Etcd的作者目前也正在Kubernetes社区积极推进项目整体性能提升和调度效率优化的工作，毕竟作为整个项目的核心依赖，Etcd的作者们有足够的理由和能力承担起Kubernetes性能提升的重任。这一点上其他容器管理项目可能要稍微眼红一下了。</p>
@@ -318,7 +311,7 @@
 </ol>
 <p>在容器编排与管理领域，Docker已经构建出了Compose+Swarm+Machine的技术闭环，这套技术栈的最大亮点是全面兼容Docker API。当然，这个优势的前提是目前Docker而不是runC仍然是业界公认的容器标准。在这个领域，Docker目前选择了重点照顾用户友好度而适当放弃性能和规模能力的路线，毕竟在兼容Docker API的前提下引入更复杂的编排、调度和管理能力是比较困难的。这也是为什么Swarm现在正在推进同Mesos集成以提高调度方面的性能和可扩展能力，虽然笔者认为这个路线可能并不太友好(想象一下宿主机上同时运行着Docker dameon，Swarm agent和Mesos Slave的场景）。</p>
 <p>总之，Docker目前在容器界的领导地位已经毋庸置疑。一系列产品和技术布局的完成也确立了Docker公司在这一由它自己开拓的疆土上的霸主地位。接下来，如何在不甘心的巨头们设置的规则丛林里生存、壮大并且健康发展下去，甚至达成Linux项目的创举，则是考验这家已经创造了一个不小的奇迹的初创团队真正实力和水平的难题。</p>
-<h3 id="u56FD_u5185_u5BB9_u5668_u6280_u672F_u5708"><a href="#u56FD_u5185_u5BB9_u5668_u6280_u672F_u5708" class="headerlink" title="国内容器技术圈"></a>国内容器技术圈</h3><p>与国外相比，以Docker为主的容器技术在国内的发展势头甚至要更猛烈一些，其中部分原因是因为2014年以前的PaaS风潮没能够在国内掀起本质上的变革，使得国内云计算圈子在除了IaaS之外的领域颇有点一筹莫展的感觉。在这层意义上，Docker容器技术的诞生和普及绝对起到了久旱逢甘霖的效果。容器创业组织雨后春笋般萌发，不少团队的背景也跟经典PaaS领域息息相关；另一方面原先经典PaaS从业者的转型到容器创业领域的也不在少数。所以目前国内Docker创业项目的产品形态，有一部分延续了原先PaaS项目的产品路线（尤其是Cloud Foundry），比如：</p>
+<h3 id="国内容器技术圈"><a href="#国内容器技术圈" class="headerlink" title="国内容器技术圈"></a>国内容器技术圈</h3><p>与国外相比，以Docker为主的容器技术在国内的发展势头甚至要更猛烈一些，其中部分原因是因为2014年以前的PaaS风潮没能够在国内掀起本质上的变革，使得国内云计算圈子在除了IaaS之外的领域颇有点一筹莫展的感觉。在这层意义上，Docker容器技术的诞生和普及绝对起到了久旱逢甘霖的效果。容器创业组织雨后春笋般萌发，不少团队的背景也跟经典PaaS领域息息相关；另一方面原先经典PaaS从业者的转型到容器创业领域的也不在少数。所以目前国内Docker创业项目的产品形态，有一部分延续了原先PaaS项目的产品路线（尤其是Cloud Foundry），比如：</p>
 <ol>
 <li>重点关注应用生命周期管理</li>
 <li>强调应用访问和域名绑定</li>
@@ -335,10 +328,10 @@
 </ol>
 <p>这种类型的创业组织提供出来的更类似基于容器的IaaS，意在给用户更大的自由度和发挥空间。当然，无论哪种形态，大家一般都会把CI/CD流程的支持纳入到自己的主要产品体系，毕竟这是Docker最受大家认同的一个场景；而且各家产品也都在功能上互相渗透，其实并没有一个非常明确的边界。从这个角度出发，当前的大多数创业组织的产品在大方向上会逐渐趋同，毕竟Docker本来的发展路线也是淡化云计算的分层理念，变轻，变薄。然后在小方向上营造差异化，比如有的组织会选择构建各类开发者工具形成产品链，有的会选择在Infra层面提供更优质、廉价、可靠的计算和存储资源（比如SSD，高效的调度策略，最大程度压榨IaaS层利用率，甚至提供基于虚拟化技术的容器以彻底解决安全和隔离性问题）。总之，目前国内容器创业圈子产品能力优秀，相比之下即使是刚刚被Docker收购的Tutum恐怕在这一领域也没有太多优势；但是创新能力稍显不足，各个技术和产品点都是跟随者，尚没有展现出自己独有的优势。</p>
 <p>2015年国内容器技术圈的另一大事件便是巨头的跟进。各类互联网甚至传统技术企业在自己内部进行容器的规模化应用的案例早已不是新闻，而阿里云，阿里百川TAE，新浪SAE，网易等诸多厂商也都在2015年开始对外提供或基于容器提供云计算服务，我们相信还有更多的团队还在酝酿中。一般来说国内的AE类型的厂商（TAE SAE BAE）会优先选择提供PaaS类型的产品，原先的IaaS厂商则更愿意提供容器云服务。不管是哪种形态，国内容器服务的热度值的确做到了另前来布道的Docker、Google的老外们都惊叹不已的程度。但是稍微另笔者担忧的是，这种热度的发展，可能会过早的将国内容器技术提供商拖到价格战的泥潭，届时大家过早停滞技术和产品的打磨而开始拼价格、拼渠道、拼运营，长远来看可能并不利于国内容器圈子的发展。</p>
-<h3 id="u5173_u4E8E_u4F20_u7EDFPaaS_u548CIaaS"><a href="#u5173_u4E8E_u4F20_u7EDFPaaS_u548CIaaS" class="headerlink" title="关于传统PaaS和IaaS"></a>关于传统PaaS和IaaS</h3><p>国内容器技术热火朝天的背后，或多或少反衬出了传统PaaS和IaaS提供商的些许落寞。而事实上，传统PaaS和IaaS厂商在2015年依旧取得了不菲的成绩，仅以Pivotal Cloud Foundry为例，其商业产品已打入了大量国际一线制造业和金融业巨头，仅其中某一个大客户的日均运行容器数量恐怕目前尚没有哪家互联网公司能望其项背。就这一点而言，目前的Docker容器服务商恐怕在很长一段时间之后都很难出现这种规模和高质量的客户案例。但是商业归商业，开发者归开发者，Docker为主的容器技术掀起的风潮起始于一线技术人员，也风靡于一线技术人员，这与商业产品的成功路线本质上就是不同的。这也正是为什么很多PaaS和IaaS厂商2015年甚至更早开始宣布支持Docker的最主要原因，OpenShift甚至完全转型基于Kubernetes进行彻底重构。但是无论如何，在关系更密切的开发者服务场景下，目前startup做的更好。</p>
+<h3 id="关于传统PaaS和IaaS"><a href="#关于传统PaaS和IaaS" class="headerlink" title="关于传统PaaS和IaaS"></a>关于传统PaaS和IaaS</h3><p>国内容器技术热火朝天的背后，或多或少反衬出了传统PaaS和IaaS提供商的些许落寞。而事实上，传统PaaS和IaaS厂商在2015年依旧取得了不菲的成绩，仅以Pivotal Cloud Foundry为例，其商业产品已打入了大量国际一线制造业和金融业巨头，仅其中某一个大客户的日均运行容器数量恐怕目前尚没有哪家互联网公司能望其项背。就这一点而言，目前的Docker容器服务商恐怕在很长一段时间之后都很难出现这种规模和高质量的客户案例。但是商业归商业，开发者归开发者，Docker为主的容器技术掀起的风潮起始于一线技术人员，也风靡于一线技术人员，这与商业产品的成功路线本质上就是不同的。这也正是为什么很多PaaS和IaaS厂商2015年甚至更早开始宣布支持Docker的最主要原因，OpenShift甚至完全转型基于Kubernetes进行彻底重构。但是无论如何，在关系更密切的开发者服务场景下，目前startup做的更好。</p>
 <p>另一方面，OpenStack社区也在积极的寻求同Docker等容器技术的结合点来试图扩展一线技术人员这一不能忽视客户群，但是稍显遗憾的是哪怕是2015年被反复提及的Magnum项目都没有针对容器而对OpenStack本身做本质的改进和集成，项目依然是停留在调用OpenStack API然后把容器运行在VM里的程度。笔者认为，考虑到当前情况下虚拟机的不可替代性，OpenStack如果能够提供虚拟机和物理机上容器的统一调度，或者引入类似Hyper或者Clear Linux这样的虚拟化技术容器，进而提供任务优先级、抢占、混部等一系列数据中心级别的高级特性，也不失为一种进取的手段。仅就OpenStack社区目前的应对方案来看，仍然不足以解决开发者的目光被Docker吸引并且采用容器作为OpenStack替代方案的情况。当然，OpenStack无论是社区质量、规模还是产品、生态圈都不是现在的Docker所能挑战的，只是在社区层面对Docker以及容器技术的支持上做的还不够好。</p>
-<h3 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h3><p>综上所述，2015年的容器技术圈，是各家施展手脚封疆划土的扩张一年，也是Docker以及容器技术生态参与者不断完善自己的进化一年。总的来说，尽管有不少亮点涌现，这一年的容器技术仍然处于厚积阶段，标准尚未达成，社区缺乏平衡，跟进者多创新者少。但是，我们也不得不考虑到很可能这才是容器技术发展的一种常态，而不是重复其他开源项目的发展模式。或许在未来，容器技术生态圈的参与者始终会保持着这种不断进化的姿态以应对瞬息万变的应用场景和捉摸不定的开发者意图，很难达成一种平衡或者稳定的状态。毕竟在容器技术这种无限贴近于每一个一线技术人员的特殊领域里，“唯有适者，才能生存”。</p>
-<h3 id="u4F5C_u8005_u7B80_u4ECB"><a href="#u4F5C_u8005_u7B80_u4ECB" class="headerlink" title="作者简介"></a>作者简介</h3><p>张磊，浙江大学VLIS/SEL实验室云计算团队负责人，Kubernetes项目Collaborator。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>综上所述，2015年的容器技术圈，是各家施展手脚封疆划土的扩张一年，也是Docker以及容器技术生态参与者不断完善自己的进化一年。总的来说，尽管有不少亮点涌现，这一年的容器技术仍然处于厚积阶段，标准尚未达成，社区缺乏平衡，跟进者多创新者少。但是，我们也不得不考虑到很可能这才是容器技术发展的一种常态，而不是重复其他开源项目的发展模式。或许在未来，容器技术生态圈的参与者始终会保持着这种不断进化的姿态以应对瞬息万变的应用场景和捉摸不定的开发者意图，很难达成一种平衡或者稳定的状态。毕竟在容器技术这种无限贴近于每一个一线技术人员的特殊领域里，“唯有适者，才能生存”。</p>
+<h3 id="作者简介"><a href="#作者简介" class="headerlink" title="作者简介"></a>作者简介</h3><p>张磊，浙江大学VLIS/SEL实验室云计算团队负责人，Kubernetes项目Collaborator。</p>
 <p>原文链接: <a href="http://www.infoq.com/cn/articles/2015-review-container-chapter-expansion-and-evolution?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=Docker" target="_blank" rel="external">http://www.infoq.com/cn/articles/2015-review-container-chapter-expansion-and-evolution?utm_campaign=infoq_content&amp;utm_source=infoq&amp;utm_medium=feed&amp;utm_term=Docker</a></p>
 </span>
       
@@ -441,7 +434,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -523,7 +516,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u7F16_u8005_u6309"><span class="nav-number">1.</span> <span class="nav-text">编者按</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u56FD_u5916_u5BB9_u5668_u6280_u672F_u9879_u76EE"><span class="nav-number">2.</span> <span class="nav-text">国外容器技术项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u56FD_u5185_u5BB9_u5668_u6280_u672F_u5708"><span class="nav-number">3.</span> <span class="nav-text">国内容器技术圈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5173_u4E8E_u4F20_u7EDFPaaS_u548CIaaS"><span class="nav-number">4.</span> <span class="nav-text">关于传统PaaS和IaaS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u603B_u7ED3"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F5C_u8005_u7B80_u4ECB"><span class="nav-number">6.</span> <span class="nav-text">作者简介</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编者按"><span class="nav-number">1.</span> <span class="nav-text">编者按</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#国外容器技术项目"><span class="nav-number">2.</span> <span class="nav-text">国外容器技术项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#国内容器技术圈"><span class="nav-number">3.</span> <span class="nav-text">国内容器技术圈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于传统PaaS和IaaS"><span class="nav-number">4.</span> <span class="nav-text">关于传统PaaS和IaaS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作者简介"><span class="nav-number">6.</span> <span class="nav-text">作者简介</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

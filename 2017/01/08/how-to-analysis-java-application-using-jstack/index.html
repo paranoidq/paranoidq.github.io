@@ -53,30 +53,20 @@
 
 
 
-<meta name="description" content="前言在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。
-整体过程
-首先用jps查看java应用的进程号
-然后根据进程号查找java中各个线程的情况，命令如下：
-1top -Hp [pid]">
+<meta name="description" content="前言在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。 整体过程 首先用jps查看java应用的进程号 然后根据进程号查找java中各个线程的情况，命令如下： 1top -Hp [pid]">
+<meta name="keywords" content="java,jstack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何用jstack命令分析java应用的性能问题">
 <meta property="og:url" content="http://paranoidq.github.io/2017/01/08/how-to-analysis-java-application-using-jstack/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
-<meta property="og:description" content="前言在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。
-整体过程
-首先用jps查看java应用的进程号
-然后根据进程号查找java中各个线程的情况，命令如下：
-1top -Hp [pid]">
+<meta property="og:description" content="前言在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。 整体过程 首先用jps查看java应用的进程号 然后根据进程号查找java中各个线程的情况，命令如下： 1top -Hp [pid]">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/zhengyun_ustc/255879/o_clipboard%20-%20%E5%89%AF%E6%9C%AC039.png">
 <meta property="og:image" content="http://www.jiacheo.org/wp-content/uploads/2013/04/6db341bbd7680bbc2e6ae37a66329397.png">
 <meta property="og:updated_time" content="2017-01-08T15:38:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何用jstack命令分析java应用的性能问题">
-<meta name="twitter:description" content="前言在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。
-整体过程
-首先用jps查看java应用的进程号
-然后根据进程号查找java中各个线程的情况，命令如下：
-1top -Hp [pid]">
+<meta name="twitter:description" content="前言在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。 整体过程 首先用jps查看java应用的进程号 然后根据进程号查找java中各个线程的情况，命令如下： 1top -Hp [pid]">
 <meta name="twitter:image" content="http://images.cnblogs.com/cnblogs_com/zhengyun_ustc/255879/o_clipboard%20-%20%E5%89%AF%E6%9C%AC039.png">
 
 
@@ -304,25 +294,25 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h3><p>在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。</p>
-<h3 id="u6574_u4F53_u8FC7_u7A0B"><a href="#u6574_u4F53_u8FC7_u7A0B" class="headerlink" title="整体过程"></a>整体过程</h3><ol>
+        <span itemprop="articleBody"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在进行WCG项目优化的时候，性能测试的效果一直不理想。于是乎进行性能分析，除了查找内存、CPU等基本的参数之外，还从业务角度入手，查找了日志打印出来的时间，按照报文的时间进行分析对比。其中一项就是用jstack分析线程的情况。这里记录一下整个分析的过程以及收获。</p>
+<h3 id="整体过程"><a href="#整体过程" class="headerlink" title="整体过程"></a>整体过程</h3><ol>
 <li>首先用jps查看java应用的进程号</li>
 <li><p>然后根据进程号查找java中各个线程的情况，命令如下：</p>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">top</span> -Hp <span class="selector-attr">[pid]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">top</span> -Hp <span class="selector-attr">[pid]</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>然后会看到哪个线程占用了较高的CPU，记住这个线程号。</p>
 </li>
 <li><p>用jstack命令dump下来应用的线程栈，命令如下：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">jstack</span> <span class="selector-tag">-l</span> <span class="selector-attr">[pid]</span> &gt; <span class="selector-tag">jstack</span><span class="selector-class">.log</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">jstack</span> <span class="selector-tag">-l</span> <span class="selector-attr">[pid]</span> &gt; <span class="selector-tag">jstack</span><span class="selector-class">.log</span></div></pre></td></tr></table></figure>
 <p>-l选项表示长列表. 打印关于锁的附加信息,例如属于java.util.concurrent的ownable synchronizers列表</p>
 </li>
 <li><p>将第3步中的线程号转换为16进制，然后在dump下来的线程栈中查找到对应的线程调用栈，然后对其进行分析和判断，就有可能找到问题的所在，例如发生了死锁、大量线程等待某一个condition等。从而能够分析出问题的原因。</p>
 </li>
 <li><p>如果需要的话，还可以统计一些线程状态的数量，这里需要用到shell的一些命令：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cat</span> thread.tmp | <span class="keyword">grep</span> <span class="string">"java.lang.Thread.State"</span> | <span class="keyword">sort</span> | uniq -<span class="keyword">c</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat thread.tmp | <span class="type">grep</span> <span class="string">"java.lang.Thread.State"</span> | <span class="type">sort</span> | <span class="type">uniq</span> -c</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="Java_u7EBF_u7A0B_u7684_u72B6_u6001"><a href="#Java_u7EBF_u7A0B_u7684_u72B6_u6001" class="headerlink" title="Java线程的状态"></a>Java线程的状态</h3><p><img src="http://images.cnblogs.com/cnblogs_com/zhengyun_ustc/255879/o_clipboard%20-%20%E5%89%AF%E6%9C%AC039.png" alt="java-thread-states"></p>
+<h3 id="Java线程的状态"><a href="#Java线程的状态" class="headerlink" title="Java线程的状态"></a>Java线程的状态</h3><p><img src="http://images.cnblogs.com/cnblogs_com/zhengyun_ustc/255879/o_clipboard%20-%20%E5%89%AF%E6%9C%AC039.png" alt="java-thread-states"></p>
 <ol>
 <li><p><strong>NEW</strong> 状态是指线程刚创建, 尚未启动</p>
 </li>
@@ -337,10 +327,10 @@
 <li><p><strong>TERMINATED</strong> 这个状态下表示 该线程的run方法已经执行完毕了, 基本上就等于死亡了(当时如果线程被持久持有, 可能不会被回收)</p>
 </li>
 </ol>
-<h3 id="u7EBF_u7A0Bdump_u6587_u4EF6_u7684_u5206_u6790"><a href="#u7EBF_u7A0Bdump_u6587_u4EF6_u7684_u5206_u6790" class="headerlink" title="线程dump文件的分析"></a>线程dump文件的分析</h3><p>分析如下的一段线程栈：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"RMI TCP Connection(267865)-172.16.5.25"</span> daemon prio=<span class="number">10</span> tid=<span class="number">0</span>x00007fd508371000 nid=<span class="number">0</span>x55ae waiting <span class="keyword">for</span> monitor entry [<span class="number">0</span>x00007fd4f8684000]</span><br><span class="line">   java<span class="selector-class">.lang</span><span class="selector-class">.Thread</span><span class="selector-class">.State</span>: BLOCKED (on <span class="selector-tag">object</span> monitor)</span><br><span class="line">at org<span class="selector-class">.apache</span><span class="selector-class">.log4j</span><span class="selector-class">.Category</span><span class="selector-class">.callAppenders</span>(Category<span class="selector-class">.java</span>:<span class="number">201</span>)</span><br><span class="line">- waiting to lock &lt;<span class="number">0</span>x00000000acf4d0c0&gt; (<span class="selector-tag">a</span> org<span class="selector-class">.apache</span><span class="selector-class">.log4j</span><span class="selector-class">.Logger</span>)</span><br><span class="line">at org<span class="selector-class">.apache</span><span class="selector-class">.log4j</span><span class="selector-class">.Category</span><span class="selector-class">.forcedLog</span>(Category<span class="selector-class">.java</span>:<span class="number">388</span>)</span><br><span class="line">at org<span class="selector-class">.apache</span><span class="selector-class">.log4j</span><span class="selector-class">.Category</span><span class="selector-class">.log</span>(Category<span class="selector-class">.java</span>:<span class="number">853</span>)</span><br><span class="line">at org<span class="selector-class">.apache</span><span class="selector-class">.commons</span><span class="selector-class">.logging</span><span class="selector-class">.impl</span><span class="selector-class">.Log4JLogger</span><span class="selector-class">.warn</span>(Log4JLogger<span class="selector-class">.java</span>:<span class="number">234</span>)</span><br><span class="line">at com<span class="selector-class">.tuan</span><span class="selector-class">.core</span><span class="selector-class">.common</span><span class="selector-class">.lang</span><span class="selector-class">.cache</span><span class="selector-class">.remote</span><span class="selector-class">.SpyMemcachedClient</span><span class="selector-class">.get</span>(SpyMemcachedClient<span class="selector-class">.java</span>:<span class="number">110</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="线程dump文件的分析"><a href="#线程dump文件的分析" class="headerlink" title="线程dump文件的分析"></a>线程dump文件的分析</h3><p>分析如下的一段线程栈：<br><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="string">"RMI TCP Connection(267865)-172.16.5.25"</span> daemon prio=<span class="number">10</span> tid=<span class="number">0</span>x00007fd508371000 nid=<span class="number">0</span>x55ae waiting <span class="keyword">for</span> monitor entry [<span class="number">0</span>x00007fd4f8684000]</div><div class="line">   java<span class="selector-class">.lang</span><span class="selector-class">.Thread</span><span class="selector-class">.State</span>: BLOCKED (on <span class="selector-tag">object</span> monitor)</div><div class="line">at org<span class="selector-class">.apache</span><span class="selector-class">.log4j</span><span class="selector-class">.Category</span><span class="selector-class">.callAppenders</span>(Category<span class="selector-class">.java</span>:<span class="number">201</span>)</div><div class="line">- waiting to lock &lt;<span class="number">0</span>x00000000acf4d0c0&gt; (<span class="selector-tag">a</span> org<span class="selector-class">.apache</span><span class="selector-class">.log4j</span><span class="selector-class">.Logger</span>)</div><div class="line">at org<span class="selector-class">.apache</span><span class="selector-class">.log4j</span><span class="selector-class">.Category</span><span class="selector-class">.forcedLog</span>(Category<span class="selector-class">.java</span>:<span class="number">388</span>)</div><div class="line">at org<span class="selector-class">.apache</span><span class="selector-class">.log4j</span><span class="selector-class">.Category</span><span class="selector-class">.log</span>(Category<span class="selector-class">.java</span>:<span class="number">853</span>)</div><div class="line">at org<span class="selector-class">.apache</span><span class="selector-class">.commons</span><span class="selector-class">.logging</span><span class="selector-class">.impl</span><span class="selector-class">.Log4JLogger</span><span class="selector-class">.warn</span>(Log4JLogger<span class="selector-class">.java</span>:<span class="number">234</span>)</div><div class="line">at com<span class="selector-class">.tuan</span><span class="selector-class">.core</span><span class="selector-class">.common</span><span class="selector-class">.lang</span><span class="selector-class">.cache</span><span class="selector-class">.remote</span><span class="selector-class">.SpyMemcachedClient</span><span class="selector-class">.get</span>(SpyMemcachedClient<span class="selector-class">.java</span>:<span class="number">110</span>)</div></pre></td></tr></table></figure></p>
 <p>1）线程状态是 Blocked，阻塞状态。说明线程等待资源超时！<br>2）“ waiting to lock <0x00000000acf4d0c0>”指，线程在等待给这个 0x00000000acf4d0c0 地址上锁（英文可描述为：trying to obtain  0x00000000acf4d0c0 lock）。<br>3）在 dump 日志里查找字符串 0x00000000acf4d0c0，发现有大量线程都在等待给这个地址上锁。如果能在日志里找到谁获得了这个锁（如locked &lt; 0x00000000acf4d0c0 &gt;），就可以顺藤摸瓜了。<br>4）“waiting for monitor entry”说明此线程通过 synchronized(obj) {……} 申请进入了临界区，从而进入了上图中的“Entry Set”队列，但该 obj 对应的 monitor 被其他线程拥有，所以本线程在 Entry Set 队列中等待。<br>5）第一行里，”RMI TCP Connection(267865)-172.16.5.25”是 Thread Name 。tid指Java Thread id。nid指native线程的id。prio是线程优先级。[0x00007fd4f8684000]是线程栈起始地址。</0x00000000acf4d0c0></p>
 <p>当java系统运行慢的时候, 我们想到的应该先找到性能的瓶颈, 而jstack等工具, 通过jvm当前的stack可以看到当前整个vm所有线程的状态, 当我们看到一个线程状态经常处于<br>WAITING 或者 BLOCKED的时候, 要小心了, 他可能在等待资源经常没有得到释放(当然, 线程池的调度用的也是各种队列各种锁, 要区分一下, 比如下图)<br><img src="http://www.jiacheo.org/wp-content/uploads/2013/04/6db341bbd7680bbc2e6ae37a66329397.png" alt="pool-waiting-demo"><br>这是个经典的并发包里面的线程池, 其调度队列用的是LinkedBlockingQueue, 执行take的时候会block住, 等待下一个任务进入队列中, 然后进入执行, <strong>这种理论上不是系统的性能瓶颈, 找瓶颈一般先找自己的代码stack,再去排查那些开源的组件/JDK的问题</strong></p>
-<h3 id="u5982_u4F55_u6392_u67E5"><a href="#u5982_u4F55_u6392_u67E5" class="headerlink" title="如何排查"></a>如何排查</h3><ol>
+<h3 id="如何排查"><a href="#如何排查" class="headerlink" title="如何排查"></a>如何排查</h3><ol>
 <li><p>发现有线程进入BLOCK, 而且持续好久, 这说明性能瓶颈存在于synchronized块中, 因为他一直block住, 进不去, 说明另一个线程一直没有处理好, 也就这个synchronized块中处理速度比较慢, 然后再深入查看.<br><strong>当然也有可能同时block的线程太多, 排队太久造成.</strong></p>
 </li>
 <li><p>发现有线程进入WAITING, 而且持续好久, 说明<strong>性能瓶颈存在于触发notify的那段逻辑</strong>. <strong>当然还有就是同时WAITING的线程过多, 老是等不到释放</strong>.</p>
@@ -348,7 +338,7 @@
 <li><p>线程进入TIME_WAITING 状态且持续好久的, 跟2的排查方式一样.</p>
 </li>
 </ol>
-<h3 id="u53C2_u8003_u8D44_u6599"><a href="#u53C2_u8003_u8D44_u6599" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
 <li><a href="http://www.jointforce.com/jfperiodical/article/3729" target="_blank" rel="external">http://www.jointforce.com/jfperiodical/article/3729</a> </li>
 <li><a href="http://www.jiacheo.org/blog/338" target="_blank" rel="external">http://www.jiacheo.org/blog/338</a></li>
 <li><a href="http://blog.csdn.net/yaowj2/article/details/48735247" target="_blank" rel="external">http://blog.csdn.net/yaowj2/article/details/48735247</a></li>
@@ -379,6 +369,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/19/log4j/" rel="prev" title="log4j">
+                log4j <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -450,7 +444,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -532,7 +526,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u524D_u8A00"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6574_u4F53_u8FC7_u7A0B"><span class="nav-number">2.</span> <span class="nav-text">整体过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java_u7EBF_u7A0B_u7684_u72B6_u6001"><span class="nav-number">3.</span> <span class="nav-text">Java线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u7EBF_u7A0Bdump_u6587_u4EF6_u7684_u5206_u6790"><span class="nav-number">4.</span> <span class="nav-text">线程dump文件的分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5982_u4F55_u6392_u67E5"><span class="nav-number">5.</span> <span class="nav-text">如何排查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003_u8D44_u6599"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整体过程"><span class="nav-number">2.</span> <span class="nav-text">整体过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java线程的状态"><span class="nav-number">3.</span> <span class="nav-text">Java线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程dump文件的分析"><span class="nav-number">4.</span> <span class="nav-text">线程dump文件的分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何排查"><span class="nav-number">5.</span> <span class="nav-text">如何排查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

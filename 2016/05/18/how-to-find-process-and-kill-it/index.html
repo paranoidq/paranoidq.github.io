@@ -53,19 +53,18 @@
 
 
 
-<meta name="description" content="知道端口号
-查看端口使用情况：1netstat -tln | grep 8080">
+<meta name="description" content="知道端口号 查看端口使用情况：1netstat -tln | grep 8080">
+<meta name="keywords" content="linux,server">
 <meta property="og:type" content="article">
 <meta property="og:title" content="How to find process and kill it">
 <meta property="og:url" content="http://paranoidq.github.io/2016/05/18/how-to-find-process-and-kill-it/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
-<meta property="og:description" content="知道端口号
-查看端口使用情况：1netstat -tln | grep 8080">
+<meta property="og:description" content="知道端口号 查看端口使用情况：1netstat -tln | grep 8080">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="How to find process and kill it">
-<meta name="twitter:description" content="知道端口号
-查看端口使用情况：1netstat -tln | grep 8080">
+<meta name="twitter:description" content="知道端口号 查看端口使用情况：1netstat -tln | grep 8080">
 
 
 
@@ -292,25 +291,25 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="u77E5_u9053_u7AEF_u53E3_u53F7"><a href="#u77E5_u9053_u7AEF_u53E3_u53F7" class="headerlink" title="知道端口号"></a>知道端口号</h3><ol>
-<li>查看端口使用情况：<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -tln <span class="string">| grep 8080</span></span><br></pre></td></tr></table></figure>
+        <span itemprop="articleBody"><h3 id="知道端口号"><a href="#知道端口号" class="headerlink" title="知道端口号"></a>知道端口号</h3><ol>
+<li>查看端口使用情况：<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -tln <span class="string">| grep 8080</span></div></pre></td></tr></table></figure>
 </li>
 </ol>
 <a id="more"></a>
 <ol>
 <li><p>查看端口属于哪个程序：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -<span class="selector-tag">i</span> :<span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lsof -<span class="selector-tag">i</span> :<span class="number">8080</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>kill</p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill -<span class="number">9</span> <span class="string">[pid]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kill -<span class="number">9</span> <span class="string">[pid]</span></div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h3 id="u4E0D_u77E5_u9053_u7AEF_u53E3_u53F7"><a href="#u4E0D_u77E5_u9053_u7AEF_u53E3_u53F7" class="headerlink" title="不知道端口号"></a>不知道端口号</h3><ol>
+<h3 id="不知道端口号"><a href="#不知道端口号" class="headerlink" title="不知道端口号"></a>不知道端口号</h3><ol>
 <li><p>查找进程</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ps</span> aux | <span class="keyword">grep</span> java</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ps</span> aux | <span class="keyword">grep</span> java</div></pre></td></tr></table></figure>
 </li>
 <li><p>kill</p>
-<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill -<span class="number">9</span> <span class="string">[pid]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kill -<span class="number">9</span> <span class="string">[pid]</span></div></pre></td></tr></table></figure>
 </li>
 </ol>
 </span>
@@ -414,7 +413,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -496,7 +495,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u77E5_u9053_u7AEF_u53E3_u53F7"><span class="nav-number">1.</span> <span class="nav-text">知道端口号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E0D_u77E5_u9053_u7AEF_u53E3_u53F7"><span class="nav-number">2.</span> <span class="nav-text">不知道端口号</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#知道端口号"><span class="nav-number">1.</span> <span class="nav-text">知道端口号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不知道端口号"><span class="nav-number">2.</span> <span class="nav-text">不知道端口号</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

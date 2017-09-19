@@ -54,11 +54,13 @@
 
 
 <meta name="description" content="方法1：最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本1/usr/libexec/java_home">
+<meta name="keywords" content="java,mac,碎片">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac中如何查找Java的路径">
 <meta property="og:url" content="http://paranoidq.github.io/2016/05/27/Mac-java-config/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="方法1：最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本1/usr/libexec/java_home">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac中如何查找Java的路径">
@@ -289,17 +291,17 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="u65B9_u6CD51_uFF1A"><a href="#u65B9_u6CD51_uFF1A" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/libexec/jav<span class="built_in">a_home</span></span><br></pre></td></tr></table></figure></p>
+        <span itemprop="articleBody"><h3 id="方法1："><a href="#方法1：" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/libexec/jav<span class="built_in">a_home</span></div></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<h3 id="u65B9_u6CD52_uFF1A"><a href="#u65B9_u6CD52_uFF1A" class="headerlink" title="方法2："></a>方法2：</h3><p>step-wise的方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> java</span><br></pre></td></tr></table></figure>
-<p>如果输出的时/usr/bin/java, 证明是链接，需要找到链接的source<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls <span class="_">-l</span> `<span class="built_in">which</span> java`</span><br></pre></td></tr></table></figure></p>
+<h3 id="方法2："><a href="#方法2：" class="headerlink" title="方法2："></a>方法2：</h3><p>step-wise的方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">which</span> java</div></pre></td></tr></table></figure>
+<p>如果输出的时/usr/bin/java, 证明是链接，需要找到链接的source<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l `which java`</div></pre></td></tr></table></figure></p>
 <p>输出为实际的java安装路径: <code>rwxr-xr-x  1 root  wheel  74 11 25 13:36 /usr/bin/java -&gt; /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java</code></p>
 <p>如果/usr/bin/java指向的仍然是一个symbolic link, 那么继续执行以下命令，直到找到source为止 </p>
 <p>[注]</p>
 <p>ls -l ` which java`</p>
 <p>单引号把Linux命令视为字符集合。反引号会强迫执行Linux命令。和<code>$()</code>一样。在执行一条命令时，会先将其中或者是<code>$()</code> 中的语句当作命令执行一遍，再将结果加入到外层命令中执行</p>
-<h3 id="u53C2_u8003_uFF1A"><a href="#u53C2_u8003_uFF1A" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://stackoverflow.com/questions/18144660/what-is-path-of-jdk-on-mac" target="_blank" rel="external">http://stackoverflow.com/questions/18144660/what-is-path-of-jdk-on-mac</a></p>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a href="http://stackoverflow.com/questions/18144660/what-is-path-of-jdk-on-mac" target="_blank" rel="external">http://stackoverflow.com/questions/18144660/what-is-path-of-jdk-on-mac</a></p>
 </span>
       
     </div>
@@ -321,16 +323,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/27/Big-data-ecosystem/" rel="next" title="大数据生态圈技术总结（持续补充）">
-                <i class="fa fa-chevron-left"></i> 大数据生态圈技术总结（持续补充）
+              <a href="/2016/05/27/linux-server-monitoring-tools/" rel="next" title="20个工具监控Linux服务性的性能(转)">
+                <i class="fa fa-chevron-left"></i> 20个工具监控Linux服务性的性能(转)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/27/SSH-Principles/" rel="prev" title="SSH Principles（总结和笔记）">
-                SSH Principles（总结和笔记） <i class="fa fa-chevron-right"></i>
+              <a href="/2016/05/27/how-to-be-more-productive/" rel="prev" title="How to be more productive(转)">
+                How to be more productive(转) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -403,7 +405,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -485,7 +487,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u65B9_u6CD51_uFF1A"><span class="nav-number">1.</span> <span class="nav-text">方法1：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u65B9_u6CD52_uFF1A"><span class="nav-number">2.</span> <span class="nav-text">方法2：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003_uFF1A"><span class="nav-number">3.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法1："><span class="nav-number">1.</span> <span class="nav-text">方法1：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法2："><span class="nav-number">2.</span> <span class="nav-text">方法2：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考："><span class="nav-number">3.</span> <span class="nav-text">参考：</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

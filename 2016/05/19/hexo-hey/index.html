@@ -53,37 +53,18 @@
 
 
 
-<meta name="description" content="有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。
-
-安装
-install hexo-hey
-1npm install hexo-hey --save
-
-add admin user to _config.yaml
-1234567Adminadmin:    name: hexo    password: hey    secret: hey hexo    expire: 6">
+<meta name="description" content="有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。  安装 install hexo-hey 1npm install hexo-hey --save  add admin user to _config.yaml 1234567Adminadmin:    name: hexo    password: hey    secret: hey hexo    expire: 6">
+<meta name="keywords" content="碎片,hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo博客管理神器：hexo hey">
 <meta property="og:url" content="http://paranoidq.github.io/2016/05/19/hexo-hey/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
-<meta property="og:description" content="有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。
-
-安装
-install hexo-hey
-1npm install hexo-hey --save
-
-add admin user to _config.yaml
-1234567Adminadmin:    name: hexo    password: hey    secret: hey hexo    expire: 6">
+<meta property="og:description" content="有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。  安装 install hexo-hey 1npm install hexo-hey --save  add admin user to _config.yaml 1234567Adminadmin:    name: hexo    password: hey    secret: hey hexo    expire: 6">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo博客管理神器：hexo hey">
-<meta name="twitter:description" content="有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。
-
-安装
-install hexo-hey
-1npm install hexo-hey --save
-
-add admin user to _config.yaml
-1234567Adminadmin:    name: hexo    password: hey    secret: hey hexo    expire: 6">
+<meta name="twitter:description" content="有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。  安装 install hexo-hey 1npm install hexo-hey --save  add admin user to _config.yaml 1234567Adminadmin:    name: hexo    password: hey    secret: hey hexo    expire: 6">
 
 
 
@@ -313,25 +294,25 @@ add admin user to _config.yaml
         <span itemprop="articleBody"><blockquote>
 <p>有了 hexo hey，妈妈再也不用担心我的hexo博客无法管理了。</p>
 </blockquote>
-<h3 id="u5B89_u88C5"><a href="#u5B89_u88C5" class="headerlink" title="安装"></a>安装</h3><ol>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
 <li><p>install hexo-hey</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">install</span> hexo-hey <span class="comment">--save</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="keyword">install</span> hexo-hey <span class="comment">--save</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>add admin user to <code>_config.yaml</code></p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Admin</span><br><span class="line"><span class="attribute">admin</span>:</span><br><span class="line">    <span class="attribute">name</span>: hexo</span><br><span class="line">    <span class="attribute">password</span>: hey</span><br><span class="line">    <span class="attribute">secret</span>: hey hexo</span><br><span class="line">    <span class="attribute">expire</span>: <span class="number">60</span>*<span class="number">1</span></span><br><span class="line">    # <span class="attribute">cors</span>: <span class="attribute">http</span>:<span class="comment">//localhost:3000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Admin</div><div class="line"><span class="symbol">admin:</span></div><div class="line"><span class="symbol">    name:</span> hexo</div><div class="line"><span class="symbol">    password:</span> hey</div><div class="line"><span class="symbol">    secret:</span> hey hexo</div><div class="line"><span class="symbol">    expire:</span> <span class="number">60</span>*<span class="number">1</span></div><div class="line">    <span class="meta"># cors: http:<span class="comment">//localhost:3000</span></span></div></pre></td></tr></table></figure>
 </li>
 <li><p>hexo serve<br>然后访问 <a href="http://localhost:4000/admin" target="_blank" rel="external">http://localhost:4000/admin</a></p>
 </li>
 </ol>
 <a id="more"></a>
-<h3 id="u6CE8_u610F_u95EE_u9898"><a href="#u6CE8_u610F_u95EE_u9898" class="headerlink" title="注意问题"></a>注意问题</h3><ol>
+<h3 id="注意问题"><a href="#注意问题" class="headerlink" title="注意问题"></a>注意问题</h3><ol>
 <li><p>更新npm，否则有可能出现<code>TypeError: Cannot read property &#39;_id&#39; of undefined]</code>错误</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm <span class="keyword">update</span> -<span class="built_in">S</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="keyword">update</span> -<span class="built_in">S</span></div></pre></td></tr></table></figure>
 </li>
 <li><p>关于添加多个tag或category的问题:<br>需要手动Enter才能添加</p>
 </li>
 </ol>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><p><a href="https://github.com/hexojs/hexo" target="_blank" rel="external">https://github.com/hexojs/hexo</a><br><a href="https://github.com/nihgwu/hexo-hey/issues/17" target="_blank" rel="external">https://github.com/nihgwu/hexo-hey/issues/17</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://github.com/hexojs/hexo" target="_blank" rel="external">https://github.com/hexojs/hexo</a><br><a href="https://github.com/nihgwu/hexo-hey/issues/17" target="_blank" rel="external">https://github.com/nihgwu/hexo-hey/issues/17</a></p>
 </span>
       
     </div>
@@ -433,7 +414,7 @@ add admin user to _config.yaml
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -515,7 +496,7 @@ add admin user to _config.yaml
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B89_u88C5"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6CE8_u610F_u95EE_u9898"><span class="nav-number">2.</span> <span class="nav-text">注意问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意问题"><span class="nav-number">2.</span> <span class="nav-text">注意问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -54,11 +54,13 @@
 
 
 <meta name="description" content="123456line = &quot;#9999#calillemilla#11: ElQuerido92, theola3lanclosb, Abigaille19, myherolancelot, dzastin03, DECIJEZ, lostsoul1987, canderse, ktornbjerg, L1nc0ln, BigDumbFate,&quot;sp1 = line.split(&quot;:&quot;)[0]sp">
+<meta name="keywords" content="碎片,python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python split函数的坑">
 <meta property="og:url" content="http://paranoidq.github.io/2016/02/23/python-split/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="123456line = &quot;#9999#calillemilla#11: ElQuerido92, theola3lanclosb, Abigaille19, myherolancelot, dzastin03, DECIJEZ, lostsoul1987, canderse, ktornbjerg, L1nc0ln, BigDumbFate,&quot;sp1 = line.split(&quot;:&quot;)[0]sp">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T15:45:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python split函数的坑">
@@ -289,9 +291,9 @@
       
 
       
-        <span itemprop="articleBody"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">line = <span class="string">"#9999#calillemilla#11: ElQuerido92, theola3lanclosb, Abigaille19, myherolancelot, dzastin03, DECIJEZ, lostsoul1987, canderse, ktornbjerg, L1nc0ln, BigDumbFate,"</span></span><br><span class="line"></span><br><span class="line">sp1 = line.split(<span class="string">":"</span>)[<span class="number">0</span>]</span><br><span class="line">sp2 = sp1.split(sep=<span class="string">"#"</span>)</span><br><span class="line">print(sp1)</span><br><span class="line">print(sp2)</span><br></pre></td></tr></table></figure>
+        <span itemprop="articleBody"><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">line = <span class="string">"#9999#calillemilla#11: ElQuerido92, theola3lanclosb, Abigaille19, myherolancelot, dzastin03, DECIJEZ, lostsoul1987, canderse, ktornbjerg, L1nc0ln, BigDumbFate,"</span></div><div class="line"></div><div class="line">sp1 = line.split(<span class="string">":"</span>)[<span class="number">0</span>]</div><div class="line">sp2 = sp1.split(sep=<span class="string">"#"</span>)</div><div class="line">print(sp1)</div><div class="line">print(sp2)</div></pre></td></tr></table></figure>
 <a id="more"></a>
-<p>输出：<br><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#9999#calillemilla#11</span><br><span class="line"><span class="meta">[</span><span class="string">''</span>, <span class="string">'9999'</span>, <span class="string">'calillemilla'</span>, <span class="string">'11'</span><span class="meta">]</span></span><br></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight clean"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#<span class="number">9999</span>#calillemilla#<span class="number">11</span></div><div class="line">[<span class="string">''</span>, <span class="string">'9999'</span>, <span class="string">'calillemilla'</span>, <span class="string">'11'</span>]</div></pre></td></tr></table></figure></p>
 <p>由于sp1的第一个字符就是<code>#</code>，所以在按照<code>#</code>分割的时候，会出现sp[0]为空的情况。因此要取实际的名字，应该用<code>sp[2]</code>，而不是<code>sp[1]</code></p>
 </span>
       
@@ -394,7 +396,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

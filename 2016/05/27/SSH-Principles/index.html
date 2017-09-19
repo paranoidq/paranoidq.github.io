@@ -54,11 +54,13 @@
 
 
 <meta name="description" content="前提服务器需要开启远程服务123456789# 针对fedora的检测方法service sshd status# 通用检测方法：ps -e | grep ssh# 开启 in fedoraservice sshd start# 开启 in ubuntu/etc/init.d/ssh start[/stop/restart]">
+<meta name="keywords" content="ssh,server">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SSH Principles（总结和笔记）">
 <meta property="og:url" content="http://paranoidq.github.io/2016/05/27/SSH-Principles/index.html">
 <meta property="og:site_name" content="钱唯の个人博客">
 <meta property="og:description" content="前提服务器需要开启远程服务123456789# 针对fedora的检测方法service sshd status# 通用检测方法：ps -e | grep ssh# 开启 in fedoraservice sshd start# 开启 in ubuntu/etc/init.d/ssh start[/stop/restart]">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-05-27T16:01:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SSH Principles（总结和笔记）">
@@ -289,9 +291,9 @@
       
 
       
-        <span itemprop="articleBody"><h3 id="u524D_u63D0"><a href="#u524D_u63D0" class="headerlink" title="前提"></a>前提</h3><p>服务器需要开启远程服务<br><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 针对fedora的检测方法</span></span><br><span class="line">service sshd status</span><br><span class="line"><span class="meta"># 通用检测方法：</span></span><br><span class="line">ps -e | grep ssh</span><br><span class="line"></span><br><span class="line"><span class="meta"># 开启 in fedora</span></span><br><span class="line">service sshd start</span><br><span class="line"><span class="meta"># 开启 in ubuntu</span></span><br><span class="line">/etc/init.d/ssh start[/stop/restart]</span><br></pre></td></tr></table></figure></p>
+        <span itemprop="articleBody"><h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>服务器需要开启远程服务<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 针对fedora的检测方法</span></div><div class="line">service sshd status</div><div class="line"><span class="comment"># 通用检测方法：</span></div><div class="line">ps -e | grep ssh</div><div class="line"></div><div class="line"><span class="comment"># 开启 in fedora</span></div><div class="line">service sshd start</div><div class="line"><span class="comment"># 开启 in ubuntu</span></div><div class="line">/etc/init.d/ssh start[/stop/restart]</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<h3 id="u539F_u7406"><a href="#u539F_u7406" class="headerlink" title="原理"></a>原理</h3><ol>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ol>
 <li>基本流程：<ul>
 <li>client请求登陆remote server</li>
 <li>server发送公钥给client，并告知client发送自己的密码</li>
@@ -310,11 +312,11 @@
 </ul>
 </li>
 </ol>
-<h3 id="u4E24_u79CD_u767B_u5F55_u65B9_u5F0F"><a href="#u4E24_u79CD_u767B_u5F55_u65B9_u5F0F" class="headerlink" title="两种登录方式"></a>两种登录方式</h3><h4 id="u53E3_u4EE4_u767B_u5F55"><a href="#u53E3_u4EE4_u767B_u5F55" class="headerlink" title="口令登录"></a>口令登录</h4><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ssh user@host</span><br><span class="line">The authenticity <span class="keyword">of</span> host <span class="comment">'host (12.18.429.21)' can't be established.</span></span><br><span class="line">RSA <span class="keyword">key</span> fingerprint <span class="keyword">is</span> <span class="number">98</span>:<span class="number">2</span>e:d7:e0:de:<span class="number">9</span>f:ac:<span class="number">67</span>:<span class="number">28</span>:c2:<span class="number">42</span>:<span class="number">2</span>d:<span class="number">37</span>:<span class="number">16</span>:<span class="number">58</span>:<span class="number">4</span>d.</span><br><span class="line">Are you sure you want <span class="keyword">to</span> <span class="keyword">continue</span> connecting (yes/no)?</span><br></pre></td></tr></table></figure>
-<p>假定经过风险衡量以后，用户决定接受这个远程主机的公钥。然后要求用户输入密码<br>    <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Warning: Permanently added <span class="string">'host,12.18.429.21'</span> (RSA) <span class="built_in">to</span> <span class="keyword">the</span> list <span class="keyword">of</span> known hosts.</span><br><span class="line">Password: (enter password)</span><br></pre></td></tr></table></figure></p>
+<h3 id="两种登录方式"><a href="#两种登录方式" class="headerlink" title="两种登录方式"></a>两种登录方式</h3><h4 id="口令登录"><a href="#口令登录" class="headerlink" title="口令登录"></a>口令登录</h4><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ ssh user@host</div><div class="line">The authenticity <span class="keyword">of</span> host <span class="comment">'host (12.18.429.21)' can't be established.</span></div><div class="line">RSA <span class="keyword">key</span> fingerprint <span class="keyword">is</span> <span class="number">98</span>:<span class="number">2</span>e:d7:e0:de:<span class="number">9</span>f:ac:<span class="number">67</span>:<span class="number">28</span>:c2:<span class="number">42</span>:<span class="number">2</span>d:<span class="number">37</span>:<span class="number">16</span>:<span class="number">58</span>:<span class="number">4</span>d.</div><div class="line">Are you sure you want <span class="keyword">to</span> <span class="keyword">continue</span> connecting (yes/no)?</div></pre></td></tr></table></figure>
+<p>假定经过风险衡量以后，用户决定接受这个远程主机的公钥。然后要求用户输入密码<br>    <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Warning: Permanently added <span class="string">'host,12.18.429.21'</span> (RSA) <span class="built_in">to</span> <span class="keyword">the</span> list <span class="keyword">of</span> known hosts.</div><div class="line">Password: (enter password)</div></pre></td></tr></table></figure></p>
 <p>保存远程主机的公钥在<code>$HOME/.ssh/known_hosts</code>中，以后连接主机时client能识别公钥已经保存在本地，跳过警告部分。（但是仍然需要输入密码）</p>
 <p><code>/etc/ssh/ssh_known_hosts</code>保存对所有用户可信的远程主机公钥</p>
-<h4 id="u516C_u94A5_u767B_u5F55"><a href="#u516C_u94A5_u767B_u5F55" class="headerlink" title="公钥登录"></a>公钥登录</h4><blockquote>
+<h4 id="公钥登录"><a href="#公钥登录" class="headerlink" title="公钥登录"></a>公钥登录</h4><blockquote>
 <p>原理：</p>
 </blockquote>
 <ol>
@@ -325,14 +327,14 @@
 <blockquote>
 <p>操作：</p>
 </blockquote>
-<p>用户生成自己的公钥：在<code>$HOME/.ssh</code>下会生成<code>id_rsa.pub</code>和<code>id_rsa</code><br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure></p>
+<p>用户生成自己的公钥：在<code>$HOME/.ssh</code>下会生成<code>id_rsa.pub</code>和<code>id_rsa</code><br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">ssh-keygen</span></div></pre></td></tr></table></figure></p>
 <p>拷贝公钥到server：</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh-copy-id user<span class="variable">@host</span></span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line"><span class="variable">$ </span>scp /Users/paranoidq/.ssh/id_rsa.pub paranoidq<span class="variable">@192</span>.<span class="number">168.235</span>.<span class="number">131</span><span class="symbol">:/home/paranoidq/</span>.ssh/authorized_keys </span><br><span class="line"><span class="comment"># 但是scp不能附加多个authorized_keys，所以貌似只能支持一个用户一个公钥！</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>ssh-copy-id user<span class="variable">@host</span></div><div class="line"><span class="comment"># 或</span></div><div class="line"><span class="variable">$ </span>scp /Users/paranoidq/.ssh/id_rsa.pub paranoidq<span class="variable">@192</span>.<span class="number">168.235</span>.<span class="number">131</span><span class="symbol">:/home/paranoidq/</span>.ssh/authorized_keys </div><div class="line"><span class="comment"># 但是scp不能附加多个authorized_keys，所以貌似只能支持一个用户一个公钥！</span></div></pre></td></tr></table></figure>
 <blockquote>
 <p>关于ssh-copy-id的过程：</p>
 </blockquote>
 <p>远程主机将用户的公钥，保存在登录后的用户主目录的<code>$HOME/.ssh/authorized_keys</code>文件中。公钥就是一段字符串，只要把它追加在authorized_keys文件的末尾就行了</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>ssh user<span class="variable">@host</span> <span class="string">'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys'</span> &lt; ~<span class="regexp">/.ssh/id</span>_rsa.pub</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$ </span>ssh user<span class="variable">@host</span> <span class="string">'mkdir -p .ssh &amp;&amp; cat &gt;&gt; .ssh/authorized_keys'</span> &lt; ~<span class="regexp">/.ssh/id</span>_rsa.pub</div></pre></td></tr></table></figure>
 <p>解释：</p>
 <ol>
 <li><code>$ ssh user@host</code>表示登录远程主机；</li>
@@ -341,7 +343,7 @@
 <li><code>cat &gt;&gt; .ssh/authorized_keys &lt; ~/.ssh/id_rsa.pub</code>的作用是，将本地的公钥文件<code>~/.ssh/id_rsa.pub</code>，重定向追加到远程文件<code>authorized_keys</code>的末尾</li>
 </ol>
 <p>注：有必要学习一下bash和shell的知识了，推荐Mendel Cooper的<a href="http://www.tldp.org/LDP/abs/html/" target="_blank" rel="external">《Advanced Bash: Scrpiting Guide》</a></p>
-<h3 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h3><ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
 <li><a href="http://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html" target="_blank" rel="external">廖雪峰的官方网站，ssh原理与运用</a></li>
 </ol>
 </span>
@@ -363,16 +365,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/27/Mac-java-config/" rel="next" title="Mac中如何查找Java的路径">
-                <i class="fa fa-chevron-left"></i> Mac中如何查找Java的路径
+              <a href="/2016/05/27/mac-terminal-commands/" rel="next" title="Mac Terminal Commands">
+                <i class="fa fa-chevron-left"></i> Mac Terminal Commands
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/27/mac-terminal-commands/" rel="prev" title="Mac Terminal Commands">
-                Mac Terminal Commands <i class="fa fa-chevron-right"></i>
+              <a href="/2016/05/27/Git-branch-management/" rel="prev" title="Git 分支管理与实践（hexo博客源文件管理）">
+                Git 分支管理与实践（hexo博客源文件管理） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -445,7 +447,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/tags/碎片/">
-              <span class="site-state-item-count">73</span>
+              <span class="site-state-item-count">74</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -527,7 +529,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u524D_u63D0"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u539F_u7406"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E24_u79CD_u767B_u5F55_u65B9_u5F0F"><span class="nav-number">3.</span> <span class="nav-text">两种登录方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#u53E3_u4EE4_u767B_u5F55"><span class="nav-number">3.1.</span> <span class="nav-text">口令登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u516C_u94A5_u767B_u5F55"><span class="nav-number">3.2.</span> <span class="nav-text">公钥登录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前提"><span class="nav-number">1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种登录方式"><span class="nav-number">3.</span> <span class="nav-text">两种登录方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#口令登录"><span class="nav-number">3.1.</span> <span class="nav-text">口令登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#公钥登录"><span class="nav-number">3.2.</span> <span class="nav-text">公钥登录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
