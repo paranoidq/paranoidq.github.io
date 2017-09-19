@@ -241,8 +241,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/09/19/log4j/" itemprop="url">
-                  log4j
+                <a class="post-title-link" href="/2017/09/19/customize-rollingFileAppender-inlog4j/" itemprop="url">
+                  定制log4j中的RollingFileAppender
                 </a>
               
             
@@ -252,19 +252,34 @@
         <div class="post-meta">
           <span class="post-time">
             更新于
-            <time itemprop="dateCreated" datetime="2017-09-19T16:42:30+08:00" content="2017-09-19">
+            <time itemprop="dateCreated" datetime="2017-09-19T17:22:04+08:00" content="2017-09-19">
               2017-09-19
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/log4j/" itemprop="url" rel="index">
+                    <span itemprop="name">log4j</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/09/19/log4j/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/19/log4j/" itemprop="commentsCount"></span>
+                <a href="/2017/09/19/customize-rollingFileAppender-inlog4j/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/19/customize-rollingFileAppender-inlog4j/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -284,13 +299,13 @@
 
       
         
-          <span itemprop="articleBody">
-            
-            
-            
-          </span>
+          <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>在业务开发中，RollingFileAppender往往是按照序号依次backup的，并且在backup的时候文件名会变动。在大量业务都写日志的时候，就会造成查找的不方便，可能现在看到某段日志在test.log.1中，过会儿就改成了test.log.2了。因此，根据团队的需求，对log4j中的RollingFileAppender进行了定制开发。主要有两点需求</p>
+<ul>
+<li>以时间为后缀，方便根据时间找到出问题的日志的大概文件，这样不用全局grep了。</li>
+<li>日志文件一旦backup了，就不要再重命名了。也就是不要所有文件一直往后“滚动”</li>
+</ul>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/09/19/log4j/#more" rel="contents">
+            <a class="btn" href="/2017/09/19/customize-rollingFileAppender-inlog4j/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -856,6 +871,110 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/20/java-webservice-tutorial-3/" itemprop="url">
+                  Java Webservice实践（3）在tomcat容器中发布webservice服务
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-10-20T21:39:04+08:00" content="2016-10-20">
+              2016-10-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/20/java-webservice-tutorial-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/java-webservice-tutorial-3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
+<p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/20/java-webservice-tutorial-3/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/20/java-webservice-tutorial-2/" itemprop="url">
                   Java Webservice实践（2）构建Webservice客户端
                 </a>
@@ -939,110 +1058,6 @@
 </ul>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/20/java-webservice-tutorial-2/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/20/java-webservice-tutorial-3/" itemprop="url">
-                  Java Webservice实践（3）在tomcat容器中发布webservice服务
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-10-20T21:39:04+08:00" content="2016-10-20">
-              2016-10-20
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/20/java-webservice-tutorial-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/20/java-webservice-tutorial-3/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在<a href="http://paranoidq.github.io/2016/10/20/java-webservice-tutorial-2/">第一篇实践</a>中，我们讲述了如何用standalone的方式部署一个webservice服务。但是很多情况下，我们需要将webservice部署在web服务器上，因此本文实践如何在tomcat服务器上部署webservice。</p>
-<p>本文中，我们将讲述web容器的两种配置部署方式，一种是<strong>基于Java Servlet的方式</strong>，一种是<strong>基于Spring框架的方式</strong>。我们知道CXF本身设计就是与Spring无缝集成的，因此基于Spring框架的方式更方便通用；但是，有时候我们也希望通过简单的servlet就能够快速搞定一个webservice的发布。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/20/java-webservice-tutorial-3/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1326,14 +1341,14 @@
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">分类</span>
               </a>
           </div>
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">74</span>
+              <span class="site-state-item-count">76</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

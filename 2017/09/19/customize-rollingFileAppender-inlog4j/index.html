@@ -1,0 +1,775 @@
+<!doctype html>
+<html class="theme-next ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="log4j,RollingFileAppender," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="钱唯の个人博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="需求在业务开发中，RollingFileAppender往往是按照序号依次backup的，并且在backup的时候文件名会变动。在大量业务都写日志的时候，就会造成查找的不方便，可能现在看到某段日志在test.log.1中，过会儿就改成了test.log.2了。因此，根据团队的需求，对log4j中的RollingFileAppender进行了定制开发。主要有两点需求  以时间为后缀，方便根据时间找到">
+<meta name="keywords" content="log4j,RollingFileAppender">
+<meta property="og:type" content="article">
+<meta property="og:title" content="定制log4j中的RollingFileAppender">
+<meta property="og:url" content="http://paranoidq.github.io/2017/09/19/customize-rollingFileAppender-inlog4j/index.html">
+<meta property="og:site_name" content="钱唯の个人博客">
+<meta property="og:description" content="需求在业务开发中，RollingFileAppender往往是按照序号依次backup的，并且在backup的时候文件名会变动。在大量业务都写日志的时候，就会造成查找的不方便，可能现在看到某段日志在test.log.1中，过会儿就改成了test.log.2了。因此，根据团队的需求，对log4j中的RollingFileAppender进行了定制开发。主要有两点需求  以时间为后缀，方便根据时间找到">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-19T10:59:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="定制log4j中的RollingFileAppender">
+<meta name="twitter:description" content="需求在业务开发中，RollingFileAppender往往是按照序号依次backup的，并且在backup的时候文件名会变动。在大量业务都写日志的时候，就会造成查找的不方便，可能现在看到某段日志在test.log.1中，过会儿就改成了test.log.2了。因此，根据团队的需求，对log4j中的RollingFileAppender进行了定制开发。主要有两点需求  以时间为后缀，方便根据时间找到">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'always',
+    motion: false
+  };
+</script>
+
+  <title> 定制log4j中的RollingFileAppender | 钱唯の个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">钱唯の个人博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">佳思忽来，书能下酒；侠情一往，云可赠人。</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu menu-left">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tops">
+          <a href="/tags/top/" rel="section">
+            
+              <i class="menu-item-icon fa fa-收藏 fa-fw"></i> <br />
+            
+            收藏
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/tags/碎片/" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            碎片
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-todo">
+          <a href="/tags/todo/" rel="section">
+            
+              <i class="menu-item-icon fa fa-TODO fa-fw"></i> <br />
+            
+            待办
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                定制log4j中的RollingFileAppender
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2017-09-19T17:22:04+08:00" content="2017-09-19">
+              2017-09-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/log4j/" itemprop="url" rel="index">
+                    <span itemprop="name">log4j</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/19/customize-rollingFileAppender-inlog4j/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/19/customize-rollingFileAppender-inlog4j/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>在业务开发中，RollingFileAppender往往是按照序号依次backup的，并且在backup的时候文件名会变动。在大量业务都写日志的时候，就会造成查找的不方便，可能现在看到某段日志在test.log.1中，过会儿就改成了test.log.2了。因此，根据团队的需求，对log4j中的RollingFileAppender进行了定制开发。主要有两点需求</p>
+<ul>
+<li>以时间为后缀，方便根据时间找到出问题的日志的大概文件，这样不用全局grep了。</li>
+<li>日志文件一旦backup了，就不要再重命名了。也就是不要所有文件一直往后“滚动”</li>
+</ul>
+<a id="more"></a>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>定义FILO队列，用于存储已经backup的文件名。当日志文件个数达到<code>maxBackUpIndex</code>时，从FILO队列中取出首节点，删除对应的日志文件。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 存储backUp的文件名</span></div><div class="line"><span class="comment"> * existedFiles.capacity == maxBackUp</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="keyword">private</span> LinkedBlockingDeque&lt;String&gt; existedFiles;</div></pre></td></tr></table></figure></p>
+<p>重写<code>rollOver()</code>方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="comment">// synchronization not necessary since doAppend is alreasy synched</span></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">rollOver</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(existedFiles.remainingCapacity());</div><div class="line">    File file;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (qw != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">long</span> size = ((CountingQuietWriter) qw).getCount();</div><div class="line">        LogLog.debug(<span class="string">"rolling over count="</span> + size);</div><div class="line">        <span class="comment">//   if operation fails, do not roll again until</span></div><div class="line">        <span class="comment">//      maxFileSize more bytes are written</span></div><div class="line">        nextRollover = size + maxFileSize;</div><div class="line">    &#125;</div><div class="line">    LogLog.debug(<span class="string">"maxBackupIndex="</span>+maxBackupIndex);</div><div class="line"></div><div class="line">    <span class="keyword">boolean</span> deleteSuccess = <span class="keyword">true</span>;</div><div class="line">    <span class="comment">// If maxBackups &lt;= 0, then there is no file renaming to be done.</span></div><div class="line">    <span class="keyword">if</span>(maxBackupIndex &gt; <span class="number">0</span> &amp;&amp; existedFiles.size() &gt;= maxBackupIndex) &#123;</div><div class="line">        <span class="comment">// Delete the oldest file, to keep Windows happy.</span></div><div class="line">        file = <span class="keyword">new</span> File(existedFiles.pollFirst());</div><div class="line">        <span class="keyword">if</span> (file.exists()) &#123;</div><div class="line">            deleteSuccess = file.delete();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">boolean</span> renameSuccess = <span class="keyword">true</span>;</div><div class="line">    <span class="keyword">if</span> (deleteSuccess) &#123;</div><div class="line">        <span class="comment">// 将当前日志文件backUp重命名</span></div><div class="line">        File target = <span class="keyword">new</span> File(renameAsBackup());</div><div class="line">        <span class="keyword">this</span>.closeFile();</div><div class="line">        file = <span class="keyword">new</span> File(fileName);</div><div class="line">        LogLog.debug(<span class="string">"Renaming file "</span> + file + <span class="string">" to "</span> + target);</div><div class="line">        renameSuccess = file.renameTo(target);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (renameSuccess) &#123;</div><div class="line">            <span class="comment">// 将重命名后的文件名存入FILO队列</span></div><div class="line">            renameSuccess = existedFiles.offerLast(target.getName());</div><div class="line">            <span class="keyword">if</span> (renameSuccess) &#123;</div><div class="line">                <span class="comment">// 将FILO队列序列化到磁盘，以便系统重启时读取</span></div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    File f = <span class="keyword">new</span> File(fileName + SERIALIZE_POSTFIX);</div><div class="line">                    f.createNewFile();</div><div class="line">                    SerializationUtils.serialize(existedFiles, <span class="keyword">new</span> FileOutputStream(f, <span class="keyword">false</span>));</div><div class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                    LogLog.debug(<span class="string">"Error serialize existed file queue"</span>, e);</div><div class="line">                    renameSuccess = <span class="keyword">false</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">//</span></div><div class="line">        <span class="comment">//   if file rename failed, reopen file with append = true</span></div><div class="line">        <span class="comment">//</span></div><div class="line">        <span class="keyword">if</span> (!renameSuccess) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">this</span>.setFile(fileName, <span class="keyword">true</span>, bufferedIO, bufferSize);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">catch</span>(IOException e) &#123;</div><div class="line">                <span class="keyword">if</span> (e <span class="keyword">instanceof</span> InterruptedIOException) &#123;</div><div class="line">                    Thread.currentThread().interrupt();</div><div class="line">                &#125;</div><div class="line">                LogLog.error(<span class="string">"setFile("</span>+fileName+<span class="string">", true) call failed."</span>, e);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//</span></div><div class="line">    <span class="comment">//   if deletes were successful, then</span></div><div class="line">    <span class="comment">//</span></div><div class="line">    <span class="keyword">if</span> (renameSuccess) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">// This will also close the file. This is OK since multiple</span></div><div class="line">            <span class="comment">// close operations are safe.</span></div><div class="line">            <span class="keyword">this</span>.setFile(fileName, <span class="keyword">false</span>, bufferedIO, bufferSize);</div><div class="line">            nextRollover = <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">catch</span>(IOException e) &#123;</div><div class="line">            <span class="keyword">if</span> (e <span class="keyword">instanceof</span> InterruptedIOException) &#123;</div><div class="line">                Thread.currentThread().interrupt();</div><div class="line">            &#125;</div><div class="line">            LogLog.error(<span class="string">"setFile("</span>+fileName+<span class="string">", false) call failed."</span>, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    printQueue();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其中，<code>renameAsBackup</code>方法根据当前时间作为后缀重命名日志文件。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> String <span class="title">renameAsBackup</span><span class="params">()</span> </span>&#123;</div><div class="line">   SimpleDateFormat format = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyyMMdd_HHmmss_SSS"</span>);</div><div class="line">   String dateString = format.format(<span class="keyword">new</span> Date(System.currentTimeMillis()));</div><div class="line">   <span class="keyword">return</span> fileName + <span class="string">"."</span> + dateString;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>另外，为了保证系统重启时能够正确识别已经存在的日志文件数量和名称，需要序列化和反序列化FILO队列。序列化的操作在每次rename的时候做，反序列化的操作在logger初始化的时候做，这里放在了setFile方法里面完成：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMaxBackupIndex</span><span class="params">(<span class="keyword">int</span> maxBackups)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.maxBackupIndex = maxBackups;</div><div class="line">    <span class="keyword">if</span> (existedFiles == <span class="keyword">null</span>) &#123;</div><div class="line">        existedFiles = <span class="keyword">new</span> LinkedBlockingDeque&lt;String&gt;(maxBackups);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            LinkedBlockingDeque&lt;String&gt; restore = (LinkedBlockingDeque&lt;String&gt;) SerializationUtils.deserialize(</div><div class="line">                <span class="keyword">new</span> FileInputStream(fileName + SERIALIZE_POSTFIX));</div><div class="line">            existedFiles.addAll(restore);</div><div class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><a href="http://blog.csdn.net/s464036801/article/details/22915963" target="_blank" rel="external">http://blog.csdn.net/s464036801/article/details/22915963</a></li>
+</ul>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/log4j/" rel="tag">#log4j</a>
+          
+            <a href="/tags/RollingFileAppender/" rel="tag">#RollingFileAppender</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/08/how-to-analysis-java-application-using-jstack/" rel="next" title="如何用jstack命令分析java应用的性能问题">
+                <i class="fa fa-chevron-left"></i> 如何用jstack命令分析java应用的性能问题
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/19/customize-rollingFileAppender-inlog4j/"
+           data-title="定制log4j中的RollingFileAppender" data-url="http://paranoidq.github.io/2017/09/19/customize-rollingFileAppender-inlog4j/">
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/avatar.jpg" alt="Paranoid Qian" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Paranoid Qian</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">So we beat on, boats against the current, borne back ceaselessly into the past.</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/tags/碎片/">
+              <span class="site-state-item-count">74</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">76</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/paranoidq" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/2094289700/profile?topnav=1&wvr=6&is_all=1" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.hollischuang.com/" target="_blank">HollisChuang</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文档"><span class="nav-number">3.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Paranoid Qian</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"paranoidq"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+
+
+    
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+</body>
+</html>
