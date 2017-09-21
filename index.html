@@ -999,8 +999,8 @@ rolling的时候会统一将所有已经存在的日志文件序号向后偏移�
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/webservice/" itemprop="url" rel="index">
+                    <span itemprop="name">webservice</span>
                   </a>
                 </span>
 
@@ -1036,29 +1036,14 @@ rolling的时候会统一将所有已经存在的日志文件序号向后偏移�
 
       
         
-          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice客户端的方式有很多种，概括起来分为两个环节：客户端stub生成和调用远程服务。对于生成stub而言，主要的方式是有两种：<strong>通过wsdl静态生成然后导入客户端代码</strong>和<strong>通过Java反射机制动态生成（利用了JAXB API）</strong>。</p>
-<p>动态生成这里不介绍了，介绍一下静态生成的方法，具体可以细分为以下几种：</p>
-<ul>
-<li>jdk1.6+/bin中自带工具: <code>wsimport</code></li>
-<li>cxf/bin中的工具: <code>wsdl2java</code></li>
-<li>axis/bin中工具</li>
-</ul>
-<p>调用的方法可以分为：</p>
-<ul>
-<li>通过stub静态调用</li>
-<li>通过JaxWsProxyFactoryBean半动态调用</li>
-<li>通过CXF动态调用：<ul>
-<li>DynamicClientFactory方式（对于非JAX-WS标准）</li>
-<li>JaxWsDynamicClientFactory方式（针对JAX-WS标准）</li>
-</ul>
-</li>
-<li>通过Axis动态调用：<ul>
-<li>Service.createCall()</li>
-</ul>
-</li>
+          <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>总体而言，构建Webservice的方式有很多种，概括起来可以分为以下几种：</p>
+<ol>
+<li>通过Stub的方式，用工具生成客户端的代理，具体的工具可以细分为很多：<br>a. jdk1.6+/bin中自带工具: <code>wsimport</code><br>b. cxf/bin中的工具: <code>wsdl2java</code><br>c. axis/bin中工具</li>
+<li>通过CXF动态调用：<br>a. DynamicClientFactory<br>b. JaxWsDynamicClientFactory</li>
+<li>通过Axis动态调用：<br>a. Service.createCall()</li>
 <li>通过HTTPURLConnection的方式调用（手动组装SOAP报文）</li>
-<li>通过JAX Dispatch API的方式构建SOAP报文并调用</li>
-</ul>
+<li>通过SOAPConnection的方式调用</li>
+</ol>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/10/20/java-webservice-tutorial-2/#more" rel="contents">
               more>>
