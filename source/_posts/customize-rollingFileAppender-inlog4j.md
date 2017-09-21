@@ -18,7 +18,7 @@ categories:
 
 ## 具体方案
 RollingFileAppender继承与FIleAppender，内部函数包括：
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/1.png)
+![Alt text](/img/log4j-rollingAppender/1.png)
 
 大致可以知道，其实就是要修改`rollOver()`函数的逻辑。我们先看原有`rollOver()`函数相关的代码：
 
@@ -344,10 +344,10 @@ public class Test {
 ```
 
 测试通过，能够正常写文件和删除文件。重启之后也没问题。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/2.png)
+![Alt text](/img/log4j-rollingAppender/2.png)
 
 但是在同事测试的时候却发现重启之后无法加载FILO队列，在加载FILO队列时抛出`FileNotFoundException`：
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/3.png)
+![Alt text](/img/log4j-rollingAppender/3.png)
 从报错信息可以看出，在`setMaxBackUpIndex()`中调用`restoreBackUpsIfNull()`获取的fileName为null。经过一系列的排查，最终定位到同事配置文件的写法与我不同：
 ```
 log4j.rootLogger=DEBUG
@@ -374,10 +374,10 @@ log4j.appender.FILE.MaxBackupIndex=10
 通过断点一步步进行debug，log4j加载Logger的大致流程如下：
 
 ##### 1. `Logger`调用`LoggerManager.getLogger(clazz.getName())`：
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/4.png)
+![Alt text](/img/log4j-rollingAppender/4.png)
 
 ##### 2. `LoggerManager`中会从`LoggerRepository`中根据名称获取Logger
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/5.png)
+![Alt text](/img/log4j-rollingAppender/5.png)
 而这个LoggerRepository则是在LoggerManager的static初始化块中进行一系列的初始化工作的。那么继续定位static初始化块。
 
 ##### 3. 初始化块做了几件事情：
@@ -519,7 +519,7 @@ public
   }
 ```
 前面的代码都是做一些debug性的工作，我们暂时忽略，关键的加载和初始化代码是三句话：
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/6.png)
+![Alt text](/img/log4j-rollingAppender/6.png)
 
 ###### 5.1 configureRootCategory
 configureRootCategory主要负责解析根Logger相关的Category，Category在log4j中已经基本被Logger代替了。
@@ -612,10 +612,10 @@ protected
 ```
 这段代码主要是解析非root的配置元素
 它首先会根据配置文件的前缀通过subString获取到loggerName：例如如果配置的是`log4j.logger.me.zex`，那么就会通过`loggerName = key.substring(LOGGER_PREFIX.length());`获取到loggerName为`me.zex`。这个loggerName会唯一确定一个Logger。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/7.png)
+![Alt text](/img/log4j-rollingAppender/7.png)
 
 获取Logger后，对Logger进行初始化，包括设置Category和Additivity。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/8.png)
+![Alt text](/img/log4j-rollingAppender/8.png)
 
 ###### 5.4 parseCategory
 ```java
@@ -674,7 +674,7 @@ void parseCategory(Properties props, Logger logger, String optionKey,
 parseCategory函数会根据log4j.properties中读取的配置行提取出appender和level，并进行初始化工作。例如从`log4j.logger.me.zes=DEBUG, FILE`提取leve为`DEBUG`，而通过逗号分隔提取出appender。
 
 appender的解析在parseAppender中进行，配置行中的逗号可以分隔多个appender，会因此进行解析。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/9.png)
+![Alt text](/img/log4j-rollingAppender/9.png)
 
 ###### 5.5 parseAppender
 ```java
@@ -755,36 +755,36 @@ Appender parseAppender(Properties props, String appenderName) {
 ```
 该函数负责根据appenderName解析对应的appender配置。
 首先检查是否已经解析过了，如果已经解析过了，则直接返回。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/10.png)
+![Alt text](/img/log4j-rollingAppender/10.png)
 然后通过调用`OptionConveter.instantizeByKey`方法根据配置的appender类名来反射构造一个appender
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/11.png)
+![Alt text](/img/log4j-rollingAppender/11.png)
 
 **--> --> -->**
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/12.png)
+![Alt text](/img/log4j-rollingAppender/12.png)
 
 **--> --> -->**
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/13.png)
+![Alt text](/img/log4j-rollingAppender/13.png)
 
 此时会进入到自定义的NamedRollingFileAppender的默认构造函数，创建一个对象，并执行初始化。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/14.png)
+![Alt text](/img/log4j-rollingAppender/14.png)
 但是需要注意的是，由于调用的是默认构造函数，因此除了显示指定的成员变量值外，其他成员变量没有赋值。**fileName此时也是null。**
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/15.png)
+![Alt text](/img/log4j-rollingAppender/15.png)
 
 
 返回到parseAppender之后，NamedRollingFileAppender已经构造完成。此时需要进一步对他进行配置
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/16.png)
+![Alt text](/img/log4j-rollingAppender/16.png)
 
 首先配置layout，通过`OptionConveter.instantizeByKey`反射构造layout对象，并set进appender中：
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/17.png)
+![Alt text](/img/log4j-rollingAppender/17.png)
 
 然后通过`PropertySetter`类对layout中的属性进行设置。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/18.png)
+![Alt text](/img/log4j-rollingAppender/18.png)
 
 `PropertySetter类`利用了Java中的**内省机制**（java.beans.Instrospect），根据剔除前缀后的配置项的key来找到对应的对象中的成员变量，并将配置项的value设置到成员变量中。例如：对于layout的配置`log4j.appender.console.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} [%5p] - %c -%F(%L) -%m%n`，`PropertySetter`会根据前缀`log4j.appender.console.layout`进行匹配，然后提取`ConversionPattern`这个key，通过`getPropertyDescriptor(Introspector.decapitalize(key))`来内省地获取已经构造的layout对象中的对应属性，并通过set函数完成设值。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/19.png)
+![Alt text](/img/log4j-rollingAppender/19.png)
 
 layout初始化完毕之后，进行appender的初始化。这里与layout的做法相同，也是通过`PropertySetter`将配置设置到对象中去。这些都完成后就一个Logger就正式初始化完毕，可以被使用了。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/20.png)
+![Alt text](/img/log4j-rollingAppender/20.png)
 
 
 ## 问题分析
@@ -796,13 +796,13 @@ layout初始化完毕之后，进行appender的初始化。这里与layout的做
 
 
 >由于`Properties`内部是以`HashTable`的方式存储配置项的，因此在遍历配置项的时候，是按照key值的所在的hash桶来顺序访问。而这个顺序是随着不同的配置项的名称而变化的。因此才会出现有些appender名称会先调用`setFile`函数，而有些appender名称会先调用`setMaxBackupIndex`函数，从而导致了fileName还没有被设值的情况发生。
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/21.png)
+![Alt text](/img/log4j-rollingAppender/21.png)
 
 为了验证上面解释，我们在不同的appender名字下，debug观察Properties中HashTable的元素的顺序：
 - 配置`log4j.appender.FILE`的情况下：`log4j.appender.FILE.MaxBackUpIndex`排在`log4j.appender.FILE.File`前面：
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/22.png)
+![Alt text](/img/log4j-rollingAppender/22.png)
 - 配置配置`log4j.appender.file`的情况下：`log4j.appender.file.MaxBackUpIndex`排在`log4j.appender.file.File`后面：
-![Alt text](https://github.com/paranoidq/paranoidq.github.io/blob/master/img/log4j-rollingAppender/23.png)
+![Alt text](/img/log4j-rollingAppender/23.png)
 
 
 因此造成问题的根源就在于此。
