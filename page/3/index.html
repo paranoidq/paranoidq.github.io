@@ -241,8 +241,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/Python-parameters-explained/" itemprop="url">
-                  Python parameters
+                <a class="post-title-link" href="/2016/05/27/java-producer-and-consumer/" itemprop="url">
+                  Java Producer and Consumer
                 </a>
               
             
@@ -262,8 +262,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
                   </a>
                 </span>
 
@@ -278,8 +278,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-parameters-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-parameters-explained/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/java-producer-and-consumer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/java-producer-and-consumer/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -299,120 +299,9 @@
 
       
         
-          <h3 id="提纲"><a href="#提纲" class="headerlink" title="提纲"></a>提纲</h3><p>本文主要从以下几个方面分析python的参数机制：</p>
-<ol>
-<li>固定参数(位置参数)</li>
-<li>默认参数</li>
-<li>可变参数</li>
-<li>关键字参数</li>
-</ol>
-<p>在每个部分中，我们区分<strong>函数的定义</strong>和<strong>函数的调用</strong>。<br>对于函数定义时的参数，我们称为parameter（形参）；对于函数调用时的参数，我们称之为argument(实参)。区分这两点对于解释清楚一些混淆的东西很重要</p>
-<p>所以，以上的参数机制其实都是指的是函数定义时的形参，而不是调用时的实参！</p>
+          <h3 id="生产者消费者模式（以下简称PC"><a href="#生产者消费者模式（以下简称PC" class="headerlink" title="生产者消费者模式（以下简称PC)"></a>生产者消费者模式（以下简称PC)</h3><p>生产者消费者模式是通过一个容器来解决生产者和消费者的强耦合问题。生产者和消费者彼此之间不直接通讯，而通过阻塞队列来进行通讯，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产者要数据，而是直接从阻塞队列里取，<code>阻塞队列就相当于一个缓冲区</code>，平衡了生产者和消费者的处理能力。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-parameters-explained/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/nginx-vs-tomcat/" itemprop="url">
-                  nginx与tomcat有什么区别
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/中间件/" itemprop="url" rel="index">
-                    <span itemprop="name">中间件</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/nginx-vs-tomcat/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/nginx-vs-tomcat/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>Apache/Nginx应该叫做<code>HTTP Server</code>；而Tomcat则是一个<code>Web App Server</code>，更准确的说是JSP/Servlet的Web App Server，因为其他语言开发的web应用无法在Tomcat上运行。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/nginx-vs-tomcat/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/java-producer-and-consumer/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -563,8 +452,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/mac-terminal-commands/" itemprop="url">
-                  Mac Terminal Commands
+                <a class="post-title-link" href="/2016/05/27/Git-branch-management/" itemprop="url">
+                  Git 分支管理与实践（hexo博客源文件管理）
                 </a>
               
             
@@ -584,8 +473,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/mac/" itemprop="url" rel="index">
-                    <span itemprop="name">mac</span>
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
                   </a>
                 </span>
 
@@ -600,8 +489,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/mac-terminal-commands/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/mac-terminal-commands/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Git-branch-management/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Git-branch-management/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -623,232 +512,13 @@
         
           <span itemprop="articleBody">
             
-               本文所有快捷键基于iterm2. 有些快捷键被系统屏蔽了，到系统偏好设置中删除无用的快捷键即可
-光标操作
-显示光标位置： command + /
-移动到行首： ctrl + a
-移动到行尾： ctrl + e
-向前移动一个字符： ctrl + f = Forward
-向后移动一个字符： ctrl + b = Backward
-向前移动一个单词： alt + f
-向后移动一个单词： alt +
+            查看查看本地分支git branch
+查看包括远程分支git branch -a
+查看本地分支和远程分支的push情况git log &lt;local-branch&gt; ^origin/&lt;remote-branch&gt;   # 可以查看本地有远程没有的提交。git log &lt;remote-branch&gt; ^&lt;local-branch&gt;       # 可以查
             ...
           </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/mac-terminal-commands/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/linux-server-monitoring-tools/" itemprop="url">
-                  20个工具监控Linux服务性的性能(转)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/linux-server-monitoring-tools/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-monitoring-tools/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <p>对于每个系统管理员或网络管理员来说，每天要监控和调试 Linux 系统性能问题都是非常困难的工作。我已经有5年 Linux 管理员的工作经历，知道如何监控系统使其保持正常运行。为此，我们编写了对于 Linux/Unix 系统管理员非常有用的并且最常用的20个命令行系统监视工具。这些命令可以在所有版本的 Linux 下使用去监控和查找系统性能的实际原因。这些监控命令足够你选择适合你的监控场景。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/linux-server-monitoring-tools/#more" rel="contents">
-              more>>
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/27/vim-commands/" itemprop="url">
-                  Vim Commands
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            更新于
-            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
-              2016-05-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; 分类于
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/05/27/vim-commands/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/vim-commands/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <h3 id="光标操作"><a href="#光标操作" class="headerlink" title="光标操作"></a>光标操作</h3><h4 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h4><ul>
-<li>文首：<code>gg</code> / <code>:0</code></li>
-<li>文末：<code>shift + g</code> / <code>:$</code></li>
-<li>行首：<code>0</code></li>
-<li>行末：<code>$</code></li>
-<li>到第一个不是空字符的位置：<code>^</code></li>
-<li>到最后一个不是空字符的位置：<code>g_</code></li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/vim-commands/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Git-branch-management/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1001,8 +671,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/Python-decorator-explained/" itemprop="url">
-                  Python decorator(译)
+                <a class="post-title-link" href="/2016/05/27/Mac-java-config/" itemprop="url">
+                  Mac中如何查找Java的路径
                 </a>
               
             
@@ -1022,8 +692,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -1038,8 +708,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/Python-decorator-explained/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Python-decorator-explained/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/Mac-java-config/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/Mac-java-config/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1059,9 +729,221 @@
 
       
         
-          <h3 id="Python函数就是对象"><a href="#Python函数就是对象" class="headerlink" title="Python函数就是对象"></a>Python函数就是对象</h3><p>首先要理解python中函数就是object。一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">shout</span><span class="params">(word=<span class="string">"yes"</span>)</span>:</span></div><div class="line">    <span class="keyword">return</span> word.capitalize()+<span class="string">"!"</span></div><div class="line"><span class="keyword">print</span> shout()</div><div class="line"><span class="comment"># outputs : 'Yes!'</span></div><div class="line"></div><div class="line"><span class="comment"># 因为function是对象，因此可以被赋值给变量。</span></div><div class="line"><span class="comment"># 注意这里没有用双括号，所以不是调用函数</span></div><div class="line">scream = shout</div><div class="line"></div><div class="line"><span class="comment"># 用变量srceam调用函数</span></div><div class="line"><span class="keyword">print</span> scream()</div><div class="line"><span class="comment"># outputs : 'Yes!'</span></div><div class="line"></div><div class="line"><span class="comment"># 删除原来的函数名，同样可以利用scream调用函数</span></div><div class="line"><span class="keyword">del</span> shout</div><div class="line"><span class="keyword">try</span>:</div><div class="line">    <span class="keyword">print</span> shout()</div><div class="line"><span class="keyword">except</span> NameError, e:</div><div class="line">    <span class="keyword">print</span> e</div><div class="line">    <span class="comment">#outputs: "name 'shout' is not defined"</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> scream()</div><div class="line"><span class="comment"># outputs: 'Yes!'</span></div></pre></td></tr></table></figure></p>
+          <h3 id="方法1："><a href="#方法1：" class="headerlink" title="方法1："></a>方法1：</h3><p>最直接的方法，运行以下命令可以列出系统的default java版本和所有备选的java版本<br><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/libexec/jav<span class="built_in">a_home</span></div></pre></td></tr></table></figure></p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/Python-decorator-explained/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/Mac-java-config/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/ResourceBundle-source-code-inside/" itemprop="url">
+                  java.util.ResourceBundle 源码分析
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/ResourceBundle-source-code-inside/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/ResourceBundle-source-code-inside/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+            ResourceBundle简介顾名思义，ResourceBundle主要就是管理Java程序的一些配置资源的工具类。但是这个管理与一般管理不同的地方在于:
+
+locale-independent, 即ResourceBundle封装了本地化的读取方法，并且根据Locale参数读对应的本地化配置，从而能够使程序自动在不同地区载入不同的配置文件(name_CN.properties, name_US
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/ResourceBundle-source-code-inside/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/SSH-Principles/" itemprop="url">
+                  SSH Principles（总结和笔记）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/SSH-Principles/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/SSH-Principles/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>服务器需要开启远程服务<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 针对fedora的检测方法</span></div><div class="line">service sshd status</div><div class="line"><span class="comment"># 通用检测方法：</span></div><div class="line">ps -e | grep ssh</div><div class="line"></div><div class="line"><span class="comment"># 开启 in fedora</span></div><div class="line">service sshd start</div><div class="line"><span class="comment"># 开启 in ubuntu</span></div><div class="line">/etc/init.d/ssh start[/stop/restart]</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/SSH-Principles/#more" rel="contents">
               more>>
             </a>
           </div>
@@ -1214,8 +1096,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/27/linux-server-command/" itemprop="url">
-                  Linux Server Commands
+                <a class="post-title-link" href="/2016/05/27/java-implementing-softhashmap/" itemprop="url">
+                  SoftReference及其缓存应用
                 </a>
               
             
@@ -1235,8 +1117,8 @@
               &nbsp; | &nbsp; 分类于
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -1251,8 +1133,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/27/linux-server-command/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/linux-server-command/" itemprop="commentsCount"></span>
+                <a href="/2016/05/27/java-implementing-softhashmap/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/java-implementing-softhashmap/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -1272,10 +1154,131 @@
 
       
         
-          <h3 id="ssh远程登录"><a href="#ssh远程登录" class="headerlink" title="ssh远程登录"></a>ssh远程登录</h3><p>服务器需要开启远程服务</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 针对fedora</span></div><div class="line">service sshd status</div><div class="line"><span class="comment"># 通用检测方法：</span></div><div class="line">ps -e | grep ssh</div><div class="line"></div><div class="line"><span class="comment"># fedora</span></div><div class="line">service sshd start</div><div class="line"><span class="comment"># ubuntu</span></div><div class="line">/etc/init.d/ssh start[/stop/restart]</div></pre></td></tr></table></figure>
+          <span itemprop="articleBody">
+            
+            参考原文http://www.javaspecialists.eu/archive/Issue015.html
+SoftReferenceStrong Reference首先解释强引用，是Java默认的引用形式，即一个对象被一个变量直接引用的情况，如：1Object o = new Object();
+这种情况下，对象是不会被GC清除的，除非变量的引用解除（例如超出作用域之后，变量被清空）。
+We
+            ...
+          </span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/27/linux-server-command/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/java-implementing-softhashmap/#more" rel="contents">
+              more>>
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/27/mac-terminal-commands/" itemprop="url">
+                  Mac Terminal Commands
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            更新于
+            <time itemprop="dateCreated" datetime="2016-05-27T23:45:36+08:00" content="2016-05-27">
+              2016-05-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; 分类于
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/mac/" itemprop="url" rel="index">
+                    <span itemprop="name">mac</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/27/mac-terminal-commands/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/27/mac-terminal-commands/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+               本文所有快捷键基于iterm2. 有些快捷键被系统屏蔽了，到系统偏好设置中删除无用的快捷键即可
+光标操作
+显示光标位置： command + /
+移动到行首： ctrl + a
+移动到行尾： ctrl + e
+向前移动一个字符： ctrl + f = Forward
+向后移动一个字符： ctrl + b = Backward
+向前移动一个单词： alt + f
+向后移动一个单词： alt +
+            ...
+          </span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/27/mac-terminal-commands/#more" rel="contents">
               more>>
             </a>
           </div>
