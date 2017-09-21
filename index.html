@@ -299,11 +299,14 @@
 
       
         
-          <h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>在业务开发中，RollingFileAppender往往是按照序号依次backup的，并且在backup的时候文件名会变动。在大量业务都写日志的时候，就会造成查找的不方便，可能现在看到某段日志在test.log.1中，过会儿就改成了test.log.2了。因此，根据团队的需求，对log4j中的RollingFileAppender进行了定制开发。主要有两点需求</p>
-<ul>
-<li>以时间为后缀，方便根据时间找到出问题的日志的大概文件，这样不用全局grep了。</li>
-<li>日志文件一旦backup了，就不要再重命名了。也就是不要所有文件一直往后“滚动”</li>
-</ul>
+          <span itemprop="articleBody">
+            
+            场景描述在开发中，一直使用的RollingFileAppender，但是存在几个问题：
+
+这个appender是按照序号作为后缀来命名日志文件的，生产中日志较为频繁的情况下，根据发生时间定位问题日志需要全局grep，耗费时间并且对业务运行有一定的影响。
+rolling的时候会统一将所有已经存在的日志文件序号向后偏移，即原来是test.log、test.log.1，现在变成了test.log(新建的
+            ...
+          </span>
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/09/19/customize-rollingFileAppender-inlog4j/#more" rel="contents">
               more>>
