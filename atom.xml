@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://paranoidq.github.io/"/>
-  <updated>2017-09-21T11:15:40.000Z</updated>
+  <updated>2017-09-21T10:56:26.000Z</updated>
   <id>http://paranoidq.github.io/</id>
   
   <author>
@@ -15,28 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>log4j-rollingAppender-custom</title>
-    <link href="http://paranoidq.github.io/2017/09/21/log4j-rollingAppender-custom/"/>
-    <id>http://paranoidq.github.io/2017/09/21/log4j-rollingAppender-custom/</id>
-    <published>2017-09-21T10:56:12.000Z</published>
-    <updated>2017-09-21T11:15:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/img/log4j.jpeg" alt="Alt text"></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;img src=&quot;/img/log4j.jpeg&quot; alt=&quot;Alt text&quot;&gt;&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>定制log4j中的RollingFileAppender</title>
@@ -537,6 +515,34 @@
       <category term="nodejs" scheme="http://paranoidq.github.io/tags/nodejs/"/>
     
       <category term="express" scheme="http://paranoidq.github.io/tags/express/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pyenv神器</title>
+    <link href="http://paranoidq.github.io/2016/06/04/pyenv%E7%A5%9E%E5%99%A8/"/>
+    <id>http://paranoidq.github.io/2016/06/04/pyenv神器/</id>
+    <published>2016-06-04T09:23:24.000Z</published>
+    <updated>2016-06-07T12:09:46.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>python版本管理神器： pyenv</p><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">brew </span><span class="keyword">install </span>pyenv</div></pre></td></tr></table></figure><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>将一下shell加入.bash_profile或.zshrc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># set up pyenv</span></div><div class="line"><span class="built_in">export</span> PYENV_ROOT=/usr/<span class="built_in">local</span>/var/pyenv</div><div class="line"><span class="keyword">if</span> <span class="built_in">which</span> pyenv &gt; /dev/null; <span class="keyword">then</span> <span class="built_in">eval</span> <span class="string">"<span class="variable">$(pyenv init -)</span>"</span>; <span class="keyword">fi</span></div></pre></td></tr></table></figure></p><a id="more"></a><h3 id="设置国内镜像"><a href="#设置国内镜像" class="headerlink" title="设置国内镜像"></a>设置国内镜像</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># mirrors</span></div><div class="line"><span class="builtin-name">export</span> <span class="attribute">PYTHON_BUILD_MIRROR_URL</span>=<span class="string">"http://pyenv.qiniudn.com/pythons/"</span></div></pre></td></tr></table></figure><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">pyenv versions</div><div class="line"></div><div class="line">pyenv version <span class="comment">// 正在使用的版本</span></div><div class="line"></div><div class="line">pyenv install --<span class="type">list</span></div><div class="line"></div><div class="line">pyenv install <span class="number">3.5</span><span class="number">.0</span></div><div class="line"></div><div class="line">pyenv uninstall <span class="number">3.5</span><span class="number">.0</span></div><div class="line"></div><div class="line">pyenv local <span class="number">3.5</span><span class="number">.0</span>  <span class="comment">// 全局设置</span></div><div class="line"></div><div class="line">pyenv global <span class="number">3.5</span><span class="number">.0</span>  <span class="comment">// 本地目录设置</span></div><div class="line"></div><div class="line">pyenv local system  <span class="comment">// 直接使用系统自带版本</span></div></pre></td></tr></table></figure><h3 id="PS"><a href="#PS" class="headerlink" title="PS"></a>PS</h3><ol><li>如何删除已经安装的python版本: <a href="http://stackoverflow.com/questions/22774529/what-is-the-safest-way-to-removing-python-framework-files-that-are-located-in-di" target="_blank" rel="external">http://stackoverflow.com/questions/22774529/what-is-the-safest-way-to-removing-python-framework-files-that-are-located-in-di</a></li><li>一般而言，系统库放/System/Library，而应用程序依赖的放/Library，所以，苹果自带的python放在前者，而用户自己装的python（比如官方网站下载的）会自动装在后者。（homebrew安装的就在后者）</li></ol><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://github.com/yyuu/pyenv" target="_blank" rel="external">https://github.com/yyuu/pyenv</a><br><a href="http://v2in.com/pyenv-installation-and-usage.html" target="_blank" rel="external">http://v2in.com/pyenv-installation-and-usage.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;python版本管理神器： pyenv&lt;/p&gt;
+&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;figure class=&quot;highlight mipsasm&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;brew &lt;/span&gt;&lt;span class=&quot;keyword&quot;&gt;install &lt;/span&gt;pyenv&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot; title=&quot;配置&quot;&gt;&lt;/a&gt;配置&lt;/h3&gt;&lt;p&gt;将一下shell加入.bash_profile或.zshrc&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# set up pyenv&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;export&lt;/span&gt; PYENV_ROOT=/usr/&lt;span class=&quot;built_in&quot;&gt;local&lt;/span&gt;/var/pyenv&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;which&lt;/span&gt; pyenv &amp;gt; /dev/null; &lt;span class=&quot;keyword&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;&lt;span class=&quot;variable&quot;&gt;$(pyenv init -)&lt;/span&gt;&quot;&lt;/span&gt;; &lt;span class=&quot;keyword&quot;&gt;fi&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="python" scheme="http://paranoidq.github.io/categories/python/"/>
+    
+    
+      <category term="碎片" scheme="http://paranoidq.github.io/tags/%E7%A2%8E%E7%89%87/"/>
+    
+      <category term="python" scheme="http://paranoidq.github.io/tags/python/"/>
+    
+      <category term="pyenv" scheme="http://paranoidq.github.io/tags/pyenv/"/>
     
   </entry>
   
